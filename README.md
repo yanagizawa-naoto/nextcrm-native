@@ -21,7 +21,7 @@
 
 ## ビルドして使う
 
-Apple SiliconのMac、Apple SDKとSwiftツールチェーン、Python 3、Node.js 22.13.0以降（推奨：24 LTS）、pnpm 11.20.0が必要です。ビルド時の生成処理は、ロックファイルに固定したTypeScriptなどのNode依存を使用します。
+Apple SiliconのMac、Xcode 26.5相当の開発環境（Swift 6.3系、macOS SDK 26.5）、Python 3、Node.js 22.13.0以降（推奨：24 LTS）、pnpm 11.20.0が必要です。ビルド時の生成処理は、ロックファイルに固定したTypeScriptなどのNode依存を使用します。
 
 リポジトリ直下で実行します。
 

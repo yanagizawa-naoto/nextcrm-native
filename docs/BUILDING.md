@@ -4,12 +4,14 @@
 
 ## 必要な環境
 
-- Apple SDK、`swiftc`、`clang`、`xcrun`、`codesign`を利用できるmacOS開発環境
+- macOS 26.2以降で使えるXcode 26.5相当のApple開発環境（Swift 6.3系、macOS SDK 26.5）。`swiftc`、`clang`、`xcrun`、`codesign`を使用します。
 - Python 3、zsh
 - Node.js 22.13.0以降（推奨：24 LTS）
 - pnpm 11.20.0（`package.json`の`packageManager`に指定）と、ロックファイルに固定したNode依存
 
 アプリ本体はSwift・Cでビルドします。Node.jsは、元のTypeScriptコードからプロンプトやリモート実行用のコードを生成する処理などに必要です。`desktop/native`だけでなく、`prisma`、`lib`などの参照先も含めてリポジトリを用意してください。
+
+ビルド環境とアプリの実行対象OSは別です。ビルド時のdeployment targetはmacOS 13ですが、現在の公開CIはmacOS 26で動作します。ローカルではSwift 6.3.3 / macOS SDK 26.5でビルドを確認しています。Xcode 16.4 / Swift 6.1.2では、メール詳細画面の式の型判定で時間切れになることを確認しています。ビルドには上記の開発環境を使用してください。[AppleのXcode要件](https://developer.apple.com/xcode/system-requirements)
 
 ## 依存関係を用意する
 
@@ -49,6 +51,6 @@ zsh desktop/native/smoke-test.sh
 python3 desktop/native/test-provider-review.py
 ```
 
-公開CIはmacOS 15のarm64環境で、これらの確認、復元後のメール・Google予定に関する433チェック、既存の生成・ビルド処理を実行します。外部サービスへの実接続や、全機能のAppKit操作を検証するCIではありません。
+公開CIはmacOS 26のarm64環境とXcode 26.5で、これらの確認、復元後のメール・Google予定に関する433チェック、既存の生成・ビルド処理を実行します。外部サービスへの実接続や、全機能のAppKit操作を検証するCIではありません。
 
 機能別の検証スクリプトは`desktop/native`にあります。Swift・SQLiteの検証、元TypeScriptとの比較、AppKitの操作検証などが含まれます。全体の入口は`zsh desktop/native/test.sh`ですが、GUIセッションや追加の合成フィクスチャなど、各検証の前提を確認して使用してください。多数のバイナリと合成データを生成するため、本体だけのビルドより時間とディスク容量を使います。公開CIでこの全体スイートを実行したという意味にはなりません。[記録された検証範囲](VERIFICATION.md)を参照してください。
