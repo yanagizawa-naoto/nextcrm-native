@@ -6,7 +6,7 @@
 
 - Apple SDK、`swiftc`、`clang`、`xcrun`、`codesign`を利用できるmacOS開発環境
 - Python 3、zsh
-- Node.js 22.12.0以降
+- Node.js 22.13.0以降（推奨：24 LTS）
 - pnpm 11.20.0（`package.json`の`packageManager`に指定）と、ロックファイルに固定したNode依存
 
 アプリ本体はSwift・Cでビルドします。Node.jsは、元のTypeScriptコードからプロンプトやリモート実行用のコードを生成する処理などに必要です。`desktop/native`だけでなく、`prisma`、`lib`などの参照先も含めてリポジトリを用意してください。
