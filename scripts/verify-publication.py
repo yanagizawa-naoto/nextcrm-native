@@ -3,6 +3,9 @@
 from pathlib import Path
 import hashlib
 import json
+import math
+from datetime import datetime
+from statistics import median
 import re
 import subprocess
 
@@ -31,7 +34,63 @@ memory = json.loads((ROOT / 'docs/verification/memory.json').read_text())
 for row in memory['measurements']:
     assert row['MB'] == round(row['bytes'] / 1_000_000, 2)
     assert row['MiB'] == round(row['bytes'] / 1_048_576, 2)
-assert '約49 MB' in (ROOT / 'README.md').read_text()
+# Public comparison evidence is independently recomputed from all 60 samples.
+comparison = json.loads((ROOT / 'docs/verification/memory-comparison-20261126.json').read_text())
+assert comparison['schemaVersion'] == 1
+assert comparison['units'] == {'MB': 1_000_000, 'MiB': 1_048_576}
+assert comparison['dataset']['targetCount'] == 10_000
+assert comparison['dataset']['postMeasurementHashesMatch'] is True
+assert comparison['conditions']['samplesPerLaunch'] == 5
+assert comparison['conditions']['launchesPerVariantPerMode'] == 3
+readme = (ROOT / 'README.md').read_text()
+memory_doc = (ROOT / 'docs/MEMORY.md').read_text()
+assert {e['mode'] for e in comparison['experiments']} == {'background', 'foreground'}
+assert len(comparison['experiments']) == 2
+accepted_samples = 0
+for experiment in comparison['experiments']:
+    trials = experiment['trials']
+    assert len(trials) == 6 and len({t['id'] for t in trials}) == 6
+    assert experiment['acceptedRunOrder'] == [t['variant'] for t in trials]
+    assert {t['variant'] for t in trials} == {'native', 'web'}
+    for trial in trials:
+        samples = trial['samples']
+        assert [s['index'] for s in samples] == [1, 2, 3, 4, 5]
+        assert trial['medianBytes'] == median(s['bytes'] for s in samples)
+        ready = datetime.fromisoformat(trial['uiReadyUTC'])
+        previous = ready
+        for sample in samples:
+            assert type(sample['bytes']) is int and sample['bytes'] > 0
+            assert sample['processCount'] == {'native': 3, 'web': 15}[trial['variant']]
+            assert sample['durationSeconds'] > 0
+            assert re.fullmatch(r'[a-f0-9]{64}', sample['rawSHA256'])
+            start = datetime.fromisoformat(sample['startUTC'])
+            assert (start - ready).total_seconds() >= 30
+            assert start > previous
+            previous = start
+            accepted_samples += 1
+    for variant in ('native', 'web'):
+        runs = [t for t in trials if t['variant'] == variant]
+        assert len(runs) == 3
+        values = [s['bytes'] for t in runs for s in t['samples']]
+        run_medians = [t['medianBytes'] / 1_000_000 for t in runs]
+        expected = median(t['medianBytes'] for t in runs)
+        summary = experiment['summary'][variant]
+        assert summary['bytes'] == expected
+        assert summary['MB'] == expected / 1_000_000
+        assert summary['MiB'] == expected / 1_048_576
+        assert summary['trialMediansMB'] == run_medians
+        assert summary['trialMedianRangeMB'] == [min(run_medians), max(run_medians)]
+        assert summary['allSampleRangeMB'] == [min(values) / 1_000_000, max(values) / 1_000_000]
+        assert summary['samples'] == len(values) == 15
+        assert f"{summary['MB']:.1f} MB" in readme
+        assert f"{expected:,} | {summary['MB']:.2f} | {summary['MiB']:.2f}" in memory_doc
+    summary = experiment['summary']
+    reduction = (1 - summary['native']['bytes'] / summary['web']['bytes']) * 100
+    assert math.isclose(summary['reductionPercent'], reduction, abs_tol=1e-12)
+    assert f"{reduction:.1f}%" in readme and f"{reduction:.1f}%" in memory_doc
+assert accepted_samples == 60
+assert 'Inngest' in readme and '認証エラー' in readme
+assert '本体だけ' in readme and '参考値' in readme
 
 # Check only versioned files when this directory is its own checkout. Builds,
 # dependency links, and temporary test fixtures never become publication input.
@@ -73,4 +132,4 @@ for p in [ROOT / 'README.md', *sorted((ROOT / 'docs').glob('*.md'))]:
         target = target.split('#', 1)[0]
         assert (p.parent / target).exists(), (str(p.relative_to(ROOT)), target)
 print(json.dumps({'publicationChecks': 'passed', 'runtimeSources': len(sources),
-                  'checkedFiles': len(files), 'memoryUnits': 'decimal MB and binary MiB'}))
+                  'checkedFiles': len(files), 'comparisonSamples': accepted_samples, 'memoryUnits': 'decimal MB and binary MiB'}))
