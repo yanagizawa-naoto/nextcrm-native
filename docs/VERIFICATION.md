@@ -13,7 +13,7 @@
 
 機能別の検証を積み重ねたうえで、最後の変更を同じ統合本体で再検証しています。過去の全テスト構成を最終版で一括再実行した、または元Web版の全操作・全入力との完全一致を証明した、という意味ではありません。
 
-公開snapshotでも `python3 desktop/native/test-provider-review.py` で同じ433チェックとDB単独の型検査を再実行できます。実データ・ネットワーク・Keychainへのアクセスを拒否した一時領域で実行します。
+公開snapshotでも `python3 desktop/native/test-provider-review.py` で同じ433チェックとDB単独の型検査を再実行できます。通常のCRM保存先・Keychainへのアクセスとネットワーク通信を拒否し、一時領域で実行します。
 
 ## 外部サービスと移行
 

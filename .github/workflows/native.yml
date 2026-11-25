@@ -35,5 +35,5 @@ jobs:
         run: python3 desktop/native/test-provider-review.py
       - name: Build and verify the native application
         run: zsh desktop/native/build.sh
-      - name: Verify generated source consistency
+      - name: Reverify public sources
         run: python3 scripts/verify-publication.py
