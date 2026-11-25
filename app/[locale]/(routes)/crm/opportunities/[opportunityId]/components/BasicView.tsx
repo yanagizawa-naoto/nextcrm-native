@@ -1,0 +1,223 @@
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { crm_Opportunities } from "@prisma/client";
+import {
+  CalendarDays,
+  ClipboardList,
+  CoinsIcon,
+  Combine,
+  Landmark,
+  List,
+  SquareStack,
+  Text,
+  User,
+} from "lucide-react";
+import moment from "moment";
+import { Clapperboard } from "lucide-react";
+import { prismadb } from "@/lib/prisma";
+import { getAllCrmData } from "@/actions/crm/get-crm-data";
+import { OpportunityDetailActions } from "./OpportunityDetailActions";
+import RequestApprovalButton from "./RequestApprovalButton";
+import { Badge } from "@/components/ui/badge";
+import { formatCurrency, convertAmount, getExchangeRates, getDefaultCurrency } from "@/lib/currency";
+import { Decimal } from "@prisma/client/runtime/client";
+import { cookies } from "next/headers";
+import { serializeDecimals } from "@/lib/serialize-decimals";
+
+interface OppsViewProps {
+  data: {
+    assigned_sales_stage: { name: string };
+    assigned_to_user: { name: string };
+    assigned_account: { name: string };
+    assigned_type: { name: string };
+  } & crm_Opportunities;
+}
+
+export async function BasicView({ data }: OppsViewProps) {
+  //console.log(data, "data");
+  const users = await prismadb.users.findMany();
+  const crmData = await getAllCrmData();
+  const { saleTypes, saleStages, campaigns, currencies } = crmData;
+  const cookieStore = await cookies();
+  const defaultCurrency = await getDefaultCurrency();
+  const displayCurrency = cookieStore.get("display_currency")?.value || defaultCurrency;
+  const rates = await getExchangeRates();
+  if (!data) return <div>{"商談が見つかりません"}</div>;
+
+  const fromCurrency = data.currency || "EUR";
+  const budgetAmount = new Decimal(data.budget?.toString() ?? "0");
+  const displayBudget = displayCurrency !== fromCurrency
+    ? convertAmount(budgetAmount, fromCurrency, displayCurrency, rates)
+    : null;
+  return (
+    <Card>
+      <CardHeader className="pb-3">
+        <div className="flex w-full justify-between">
+          <div>
+            <CardTitle className="flex items-center gap-2">
+              {data.name}
+              {data.approval_status === "PENDING" && (
+                <Badge variant="secondary">{"承認待ち"}</Badge>
+              )}
+              {data.approval_status === "APPROVED" && <Badge>{"承認済み"}</Badge>}
+              {data.approval_status === "REJECTED" && (
+                <Badge variant="destructive" title={data.approval_note ?? undefined}>
+                  {"却下済み"}</Badge>
+              )}
+            </CardTitle>
+            <CardDescription>{"ID："}{data.id}</CardDescription>
+          </div>
+          <div className="flex items-start gap-2">
+          {(data.approval_status === "NONE" ||
+            data.approval_status === "REJECTED") && (
+            <RequestApprovalButton opportunityId={data.id} />
+          )}
+          <OpportunityDetailActions
+            opportunity={serializeDecimals(data)}
+            saleTypes={saleTypes}
+            saleStages={saleStages}
+            campaigns={campaigns}
+            currencies={currencies.map((c: { code: string; name: string; symbol: string }) => ({ code: c.code, name: c.name, symbol: c.symbol }))}
+          />
+          </div>
+        </div>
+      </CardHeader>
+      <CardContent className="grid grid-cols-2 gap-1">
+        <div>
+          <div className="-mx-2 flex items-start space-x-4 rounded-md p-2 transition-all hover:bg-accent hover:text-accent-foreground">
+            <CoinsIcon className="mt-px h-5 w-5" />
+            <div className="space-y-1">
+              <p className="text-sm font-medium leading-none">
+                {"商談金額"}</p>
+              <p className="text-sm text-muted-foreground">
+                {displayBudget
+                  ? formatCurrency(displayBudget, displayCurrency)
+                  : formatCurrency(budgetAmount, fromCurrency)}
+              </p>
+            </div>
+          </div>
+
+          <div className="-mx-2 flex items-start space-x-4 rounded-md p-2 transition-all hover:bg-accent hover:text-accent-foreground">
+            <SquareStack className="mt-px h-5 w-5" />
+            <div className="space-y-1">
+              <p className="text-sm font-medium leading-none">{"商談段階"}</p>
+              <p className="text-sm text-muted-foreground">
+                {data.assigned_sales_stage?.name
+                  ? data.assigned_sales_stage?.name
+                  : "未割り当て"}
+              </p>
+            </div>
+          </div>
+          <div className="-mx-2 flex items-start space-x-4 rounded-md p-2 transition-all hover:bg-accent hover:text-accent-foreground">
+            <Combine className="mt-px h-5 w-5" />
+            <div className="space-y-1">
+              <p className="text-sm font-medium leading-none">{"次の対応"}</p>
+              <p className="text-sm text-muted-foreground">{data.next_step}</p>
+            </div>
+          </div>
+          <div className="-mx-2 flex items-start space-x-4 rounded-md p-2 transition-all hover:bg-accent hover:text-accent-foreground">
+            <ClipboardList className="mt-px h-5 w-5" />
+            <div className="space-y-1">
+              <p className="text-sm font-medium leading-none">{"品名・内容"}</p>
+              <p className="text-sm text-muted-foreground">
+                {data.description}
+              </p>
+            </div>
+          </div>
+          <div className="-mx-2 flex items-start space-x-4 rounded-md p-2 transition-all hover:bg-accent hover:text-accent-foreground">
+            <User className="mt-px h-5 w-5" />
+            <div className="space-y-1">
+              <p className="text-sm font-medium leading-none">{"担当者"}</p>
+              <p className="text-sm text-muted-foreground">
+                {data.assigned_to_user.name}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div className="-mx-2 flex items-start space-x-4 rounded-md p-2 transition-all hover:bg-accent hover:text-accent-foreground">
+            <Landmark className="mt-px h-5 w-5" />
+            <div className="space-y-1">
+              <p className="text-sm font-medium leading-none">{"取引先名"}</p>
+              <p className="text-sm text-muted-foreground">
+                {data.assigned_account?.name
+                  ? data.assigned_account?.name
+                  : "未割り当て"}
+              </p>
+            </div>
+          </div>
+          <div className="-mx-2 flex items-start space-x-4 rounded-md p-2 transition-all hover:bg-accent hover:text-accent-foreground">
+            <CalendarDays className="mt-px h-5 w-5" />
+            <div className="space-y-1">
+              <p className="text-sm font-medium leading-none">
+                {"受注予定日"}</p>
+              <p className="text-sm text-muted-foreground">
+                {moment(data.close_date).format("YYYY年M月D日")}
+              </p>
+            </div>
+          </div>
+          <div className="-mx-2 flex items-start space-x-4 rounded-md p-2 transition-all hover:bg-accent hover:text-accent-foreground">
+            <CalendarDays className="mt-px h-5 w-5" />
+            <div className="space-y-1">
+              <p className="text-sm font-medium leading-none">{"作成日"}</p>
+              <p className="text-sm text-muted-foreground">
+                {moment(data.createdAt).format("YYYY年M月D日")}
+              </p>
+            </div>
+            <div className="space-y-1">
+              <p className="text-sm font-medium leading-none">{"作成者"}</p>
+              <p className="text-sm text-muted-foreground">
+                {users.find((user) => user.id === data.createdBy)?.name}
+              </p>
+            </div>
+          </div>
+          <div className="-mx-2 flex items-start space-x-4 rounded-md p-2 transition-all hover:bg-accent hover:text-accent-foreground">
+            <CalendarDays className="mt-px h-5 w-5" />
+            <div className="space-y-1">
+              <p className="text-sm font-medium leading-none">{"最終更新日"}</p>
+              <p className="text-sm text-muted-foreground">
+                {moment(data.updatedAt).format("YYYY年M月D日")}
+              </p>
+            </div>
+            <div className="space-y-1">
+              <p className="text-sm font-medium leading-none">{"最終更新者"}</p>
+              <p className="text-sm text-muted-foreground">
+                {users.find((user) => user.id === data.updatedBy)?.name}
+              </p>
+            </div>
+          </div>
+          <div className="-mx-2 flex items-start space-x-4 rounded-md p-2 transition-all hover:bg-accent hover:text-accent-foreground">
+            <List className="mt-px h-5 w-5" />
+            <div className="space-y-1">
+              <p className="text-sm font-medium leading-none">{"種別"}</p>
+              <p className="text-sm text-muted-foreground">
+                {data.assigned_type?.name ? data.assigned_type?.name : "N/A"}
+              </p>
+            </div>
+          </div>
+          <div className="-mx-2 flex items-start space-x-4 rounded-md p-2 transition-all hover:bg-accent hover:text-accent-foreground">
+            <Landmark className="mt-px h-5 w-5" />
+            <div className="space-y-1">
+              <p className="text-sm font-medium leading-none">{"獲得経路"}</p>
+              <p className="text-sm text-muted-foreground">
+                {"今後追加予定です"}</p>
+            </div>
+          </div>
+          <div className="-mx-2 flex items-start space-x-4 rounded-md p-2 transition-all hover:bg-accent hover:text-accent-foreground">
+            <Clapperboard className="mt-px h-5 w-5" />
+            <div className="space-y-1">
+              <p className="text-sm font-medium leading-none">{"キャンペーン"}</p>
+              <p className="text-sm text-muted-foreground">
+                {"今後追加予定です"}</p>
+            </div>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}

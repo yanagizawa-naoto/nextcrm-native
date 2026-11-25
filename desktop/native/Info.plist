@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0"><dict>
+<key>CFBundleDevelopmentRegion</key><string>ja</string>
+<key>CFBundleDisplayName</key><string>NextCRM Native</string>
+<key>CFBundleExecutable</key><string>NextCRMNative</string>
+<key>CFBundleIconFile</key><string>AppIcon</string>
+<key>CFBundleIdentifier</key><string>local.nextcrm.native</string>
+<key>CFBundleLocalizations</key><array><string>ja</string></array>
+<key>CFBundleName</key><string>NextCRM Native</string>
+<key>CFBundlePackageType</key><string>APPL</string>
+<key>CFBundleURLTypes</key><array><dict>
+<key>CFBundleURLName</key><string>local.nextcrm.native.order</string>
+<key>CFBundleURLSchemes</key><array><string>nextcrm-native</string></array>
+<key>CFBundleTypeRole</key><string>Viewer</string>
+</dict></array>
+<key>CFBundleShortVersionString</key><string>0.6</string>
+<key>CFBundleVersion</key><string>6</string>
+<key>LSMinimumSystemVersion</key><string>13.0</string>
+<key>NSHighResolutionCapable</key><true/>
+</dict></plist>

@@ -1,0 +1,42 @@
+{
+  "measuredOn": "2026-11-25",
+  "metric": "physical footprint",
+  "MBBytes": 1000000,
+  "MiBBytes": 1048576,
+  "macOS": "26.6.2",
+  "chip": "Apple M2",
+  "machineRAMBytes": 17179869184,
+  "syntheticData": true,
+  "sameBusinessSourceProtectedQABuild": true,
+  "pointSamplesNotPeaks": true,
+  "excludes": [
+    "WindowServer",
+    "other shared OS costs"
+  ],
+  "measurements": [
+    {
+      "scenario": "final-453-10000-cold",
+      "sourceCount": 453,
+      "bytes": 49497072,
+      "MB": 49.5,
+      "MiB": 47.2,
+      "scope": "App main process;10000 synthetic targets after cold launch"
+    },
+    {
+      "scenario": "previous-449-csv-import",
+      "sourceCount": 449,
+      "bytes": 139232264,
+      "MB": 139.23,
+      "MiB": 132.78,
+      "scope": "App main process;10000-row synthetic CSV import in progress"
+    },
+    {
+      "scenario": "previous-449-html-preview",
+      "sourceCount": 449,
+      "bytes": 121802856,
+      "MB": 121.8,
+      "MiB": 116.16,
+      "scope": "Main app, mail viewer, WebContent, GPU and Networking together"
+    }
+  ]
+}

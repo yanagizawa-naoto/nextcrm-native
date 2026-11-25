@@ -1,0 +1,7287 @@
+{
+  "version": 1,
+  "semantics": {
+    "stringLength": "codePoints",
+    "objectUnknownFields": "strip",
+    "regex": "ECMAScriptNoFlags"
+  },
+  "tools": [
+    {
+      "name": "crm_list_accounts",
+      "description": "List CRM accounts visible to the authenticated user",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "limit": {
+            "default": 20,
+            "type": "number",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "offset": {
+            "default": 0,
+            "type": "number",
+            "minimum": 0
+          }
+        }
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 4
+    },
+    {
+      "name": "crm_get_account",
+      "description": "Get a single CRM account by ID (visible to the authenticated user)",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 6
+    },
+    {
+      "name": "crm_search_accounts",
+      "description": "Search accounts visible to the authenticated user by name or website (substring match)",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "minLength": 1
+          },
+          "limit": {
+            "default": 20,
+            "type": "number",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "offset": {
+            "default": 0,
+            "type": "number",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 8
+    },
+    {
+      "name": "crm_create_account",
+      "description": "Create a new CRM account",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "pattern": "^(?:[A-Za-z0-9_'+\\-]+\\.)*[A-Za-z0-9_'+\\-]*[A-Za-z0-9_+-]@(?:[A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
+          },
+          "description": {
+            "type": "string"
+          },
+          "office_phone": {
+            "type": "string"
+          },
+          "website": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 13
+    },
+    {
+      "name": "crm_update_account",
+      "description": "Update an existing CRM account by ID",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "pattern": "^(?:[A-Za-z0-9_'+\\-]+\\.)*[A-Za-z0-9_'+\\-]*[A-Za-z0-9_+-]@(?:[A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
+          },
+          "description": {
+            "type": "string"
+          },
+          "office_phone": {
+            "type": "string"
+          },
+          "website": {
+            "type": "string"
+          },
+          "assigned_to": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 17
+    },
+    {
+      "name": "crm_delete_account",
+      "description": "Soft-delete a CRM account by ID (sets deletedAt timestamp)",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 6
+    },
+    {
+      "name": "crm_list_contacts",
+      "description": "List CRM contacts visible to the authenticated user",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "limit": {
+            "default": 20,
+            "type": "number",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "offset": {
+            "default": 0,
+            "type": "number",
+            "minimum": 0
+          }
+        }
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 4
+    },
+    {
+      "name": "crm_get_contact",
+      "description": "Get a single CRM contact by ID (visible to the authenticated user)",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 6
+    },
+    {
+      "name": "crm_search_contacts",
+      "description": "Search contacts visible to the authenticated user by name, email, or phone (substring match)",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "minLength": 1
+          },
+          "limit": {
+            "default": 20,
+            "type": "number",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "offset": {
+            "default": 0,
+            "type": "number",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 8
+    },
+    {
+      "name": "crm_create_contact",
+      "description": "Create a new CRM contact",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "first_name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "last_name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "pattern": "^(?:[A-Za-z0-9_'+\\-]+\\.)*[A-Za-z0-9_'+\\-]*[A-Za-z0-9_+-]@(?:[A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
+          },
+          "office_phone": {
+            "type": "string"
+          },
+          "mobile_phone": {
+            "type": "string"
+          },
+          "position": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "last_name"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 18
+    },
+    {
+      "name": "crm_update_contact",
+      "description": "Update an existing CRM contact by ID",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "first_name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "last_name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "pattern": "^(?:[A-Za-z0-9_'+\\-]+\\.)*[A-Za-z0-9_'+\\-]*[A-Za-z0-9_+-]@(?:[A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
+          },
+          "office_phone": {
+            "type": "string"
+          },
+          "mobile_phone": {
+            "type": "string"
+          },
+          "position": {
+            "type": "string"
+          },
+          "account": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "assigned_to": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 19
+    },
+    {
+      "name": "crm_delete_contact",
+      "description": "Soft-delete a CRM contact by ID (sets deletedAt timestamp)",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 6
+    },
+    {
+      "name": "crm_list_lead_options",
+      "description": "List the lead statuses, sources and types configured in this CRM (id + name), for lead_status_id / lead_source_id / lead_type_id",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {}
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 20
+    },
+    {
+      "name": "crm_list_leads",
+      "description": "List CRM leads visible to the authenticated user",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "limit": {
+            "default": 20,
+            "type": "number",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "offset": {
+            "default": 0,
+            "type": "number",
+            "minimum": 0
+          }
+        }
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 4
+    },
+    {
+      "name": "crm_get_lead",
+      "description": "Get a single CRM lead by ID (visible to the authenticated user)",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 6
+    },
+    {
+      "name": "crm_search_leads",
+      "description": "Search leads visible to the authenticated user by name, company, or email (substring match)",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "minLength": 1
+          },
+          "limit": {
+            "default": 20,
+            "type": "number",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "offset": {
+            "default": 0,
+            "type": "number",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 8
+    },
+    {
+      "name": "crm_create_lead",
+      "description": "Create a new CRM lead",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string",
+            "minLength": 1
+          },
+          "lastName": {
+            "type": "string",
+            "minLength": 1
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "pattern": "^(?:[A-Za-z0-9_'+\\-]+\\.)*[A-Za-z0-9_'+\\-]*[A-Za-z0-9_+-]@(?:[A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
+          },
+          "company": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "jobTitle": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "campaign": {
+            "type": "string"
+          },
+          "refered_by": {
+            "type": "string"
+          },
+          "lead_status_id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "lead_source_id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "lead_type_id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          }
+        },
+        "required": [
+          "lastName"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 22
+    },
+    {
+      "name": "crm_update_lead",
+      "description": "Update an existing CRM lead by ID",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "firstName": {
+            "type": "string",
+            "minLength": 1
+          },
+          "lastName": {
+            "type": "string",
+            "minLength": 1
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "pattern": "^(?:[A-Za-z0-9_'+\\-]+\\.)*[A-Za-z0-9_'+\\-]*[A-Za-z0-9_+-]@(?:[A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
+          },
+          "company": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "jobTitle": {
+            "type": "string"
+          },
+          "assigned_to": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "description": {
+            "type": "string"
+          },
+          "campaign": {
+            "type": "string"
+          },
+          "refered_by": {
+            "type": "string"
+          },
+          "lead_status_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "lead_source_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "lead_type_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 23
+    },
+    {
+      "name": "crm_delete_lead",
+      "description": "Soft-delete a CRM lead by ID (sets deletedAt timestamp)",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 6
+    },
+    {
+      "name": "crm_list_opportunity_options",
+      "description": "List the opportunity sales stages (id, name, order, probability, stage_kind) and types (id, name, order) configured in this CRM, for sales_stage_id / type_id. Entering a stage whose stage_kind is \"qualified\" needs an approved quote first",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {}
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 20
+    },
+    {
+      "name": "crm_list_opportunities",
+      "description": "List CRM opportunities visible to the authenticated user",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "limit": {
+            "default": 20,
+            "type": "number",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "offset": {
+            "default": 0,
+            "type": "number",
+            "minimum": 0
+          }
+        }
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 4
+    },
+    {
+      "name": "crm_get_opportunity",
+      "description": "Get a single CRM opportunity by ID (visible to the authenticated user)",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 6
+    },
+    {
+      "name": "crm_search_opportunities",
+      "description": "Search opportunities visible to the authenticated user by name or description (substring match)",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "minLength": 1
+          },
+          "limit": {
+            "default": 20,
+            "type": "number",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "offset": {
+            "default": 0,
+            "type": "number",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 8
+    },
+    {
+      "name": "crm_create_opportunity",
+      "description": "Create a new CRM opportunity",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": {
+            "type": "string"
+          },
+          "close_date": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+          },
+          "budget": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "expected_revenue": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "currency": {
+            "type": "string"
+          },
+          "next_step": {
+            "type": "string"
+          },
+          "sales_stage_id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "type_id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 28
+    },
+    {
+      "name": "crm_update_opportunity",
+      "description": "Update an existing CRM opportunity by ID",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": {
+            "type": "string"
+          },
+          "close_date": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+          },
+          "budget": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "expected_revenue": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "currency": {
+            "type": "string"
+          },
+          "next_step": {
+            "type": "string"
+          },
+          "account": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "contact": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "assigned_to": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "sales_stage_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "type_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 29
+    },
+    {
+      "name": "crm_delete_opportunity",
+      "description": "Soft-delete a CRM opportunity by ID",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 6
+    },
+    {
+      "name": "crm_list_targets",
+      "description": "List CRM targets created by the authenticated user",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "limit": {
+            "default": 20,
+            "type": "number",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "offset": {
+            "default": 0,
+            "type": "number",
+            "minimum": 0
+          }
+        }
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 4
+    },
+    {
+      "name": "crm_get_target",
+      "description": "Get a single CRM target by ID",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 6
+    },
+    {
+      "name": "crm_search_targets",
+      "description": "Search targets by name, email, or company (substring match)",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "minLength": 1
+          },
+          "limit": {
+            "default": 20,
+            "type": "number",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "offset": {
+            "default": 0,
+            "type": "number",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 8
+    },
+    {
+      "name": "crm_create_target",
+      "description": "Create a new CRM target",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "first_name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "last_name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "pattern": "^(?:[A-Za-z0-9_'+\\-]+\\.)*[A-Za-z0-9_'+\\-]*[A-Za-z0-9_+-]@(?:[A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
+          },
+          "mobile_phone": {
+            "type": "string"
+          },
+          "office_phone": {
+            "type": "string"
+          },
+          "company": {
+            "type": "string"
+          },
+          "position": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "last_name"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 30
+    },
+    {
+      "name": "crm_update_target",
+      "description": "Update an existing CRM target by ID",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "first_name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "last_name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "pattern": "^(?:[A-Za-z0-9_'+\\-]+\\.)*[A-Za-z0-9_'+\\-]*[A-Za-z0-9_+-]@(?:[A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
+          },
+          "mobile_phone": {
+            "type": "string"
+          },
+          "office_phone": {
+            "type": "string"
+          },
+          "company": {
+            "type": "string"
+          },
+          "position": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 31
+    },
+    {
+      "name": "crm_delete_target",
+      "description": "Soft-delete a CRM target by ID (sets deletedAt timestamp)",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 6
+    },
+    {
+      "name": "crm_list_products",
+      "description": "List CRM products (org-wide catalog)",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "DRAFT",
+              "ACTIVE",
+              "ARCHIVED"
+            ]
+          },
+          "limit": {
+            "default": 20,
+            "type": "number",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "offset": {
+            "default": 0,
+            "type": "number",
+            "minimum": 0
+          }
+        }
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 34
+    },
+    {
+      "name": "crm_get_product",
+      "description": "Get a single CRM product by ID",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 6
+    },
+    {
+      "name": "crm_create_product",
+      "description": "Create a new CRM product",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": {
+            "type": "string"
+          },
+          "sku": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "PRODUCT",
+              "SERVICE"
+            ]
+          },
+          "unit_price": {
+            "type": "number",
+            "minimum": 0
+          },
+          "unit_cost": {
+            "type": "number",
+            "minimum": 0
+          },
+          "currency": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 3
+          },
+          "tax_rate": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "unit": {
+            "type": "string"
+          },
+          "is_recurring": {
+            "type": "boolean"
+          },
+          "billing_period": {
+            "type": "string",
+            "enum": [
+              "MONTHLY",
+              "QUARTERLY",
+              "SEMIANNUALLY",
+              "ANNUALLY"
+            ]
+          },
+          "categoryId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          }
+        },
+        "required": [
+          "name",
+          "type",
+          "unit_price",
+          "currency"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 44
+    },
+    {
+      "name": "crm_update_product",
+      "description": "Update an existing CRM product by ID",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": {
+            "type": "string"
+          },
+          "sku": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "PRODUCT",
+              "SERVICE"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "DRAFT",
+              "ACTIVE",
+              "ARCHIVED"
+            ]
+          },
+          "unit_price": {
+            "type": "number",
+            "minimum": 0
+          },
+          "unit_cost": {
+            "type": "number",
+            "minimum": 0
+          },
+          "currency": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 3
+          },
+          "tax_rate": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "unit": {
+            "type": "string"
+          },
+          "is_recurring": {
+            "type": "boolean"
+          },
+          "billing_period": {
+            "type": "string",
+            "enum": [
+              "MONTHLY",
+              "QUARTERLY",
+              "SEMIANNUALLY",
+              "ANNUALLY"
+            ]
+          },
+          "categoryId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 47
+    },
+    {
+      "name": "crm_delete_product",
+      "description": "Soft-delete a CRM product (sets deletedAt timestamp)",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 6
+    },
+    {
+      "name": "crm_list_price_lists",
+      "description": "List price lists (active by default)",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "includeArchived": {
+            "type": "boolean"
+          },
+          "source": {
+            "type": "string",
+            "enum": [
+              "CRM",
+              "EXTERNAL"
+            ]
+          },
+          "limit": {
+            "default": 20,
+            "type": "number",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "offset": {
+            "default": 0,
+            "type": "number",
+            "minimum": 0
+          }
+        }
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 50
+    },
+    {
+      "name": "crm_get_price_list",
+      "description": "Get a price list with its rules",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 51
+    },
+    {
+      "name": "crm_get_price",
+      "description": "Compute a product's price from a price list, or from the account's list (account list → default list → product price)",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "productId": {
+            "type": "string"
+          },
+          "quantity": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "date": {
+            "type": "string"
+          },
+          "priceListId": {
+            "type": "string"
+          },
+          "accountId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "productId",
+          "quantity"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 53
+    },
+    {
+      "name": "crm_create_price_list",
+      "description": "Create a price list (manager or admin)",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "currency": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 3
+          }
+        },
+        "required": [
+          "name",
+          "currency"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 54
+    },
+    {
+      "name": "crm_update_price_list",
+      "description": "Rename a price list, change its currency or (de)activate it (manager or admin; not external lists)",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "currency": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 3
+          },
+          "isActive": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 55
+    },
+    {
+      "name": "crm_archive_price_list",
+      "description": "Archive a price list (manager or admin; not external lists)",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 51
+    },
+    {
+      "name": "crm_upsert_price_list_rule",
+      "description": "Create or update a price list rule (Odoo-compatible fields; manager or admin; not external lists)",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "priceListId": {
+            "type": "string"
+          },
+          "ruleId": {
+            "type": "string"
+          },
+          "appliesTo": {
+            "type": "string",
+            "enum": [
+              "ALL",
+              "CATEGORY",
+              "PRODUCT"
+            ]
+          },
+          "categoryId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "productId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "minQuantity": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "dateStart": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "dateEnd": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "computePrice": {
+            "type": "string",
+            "enum": [
+              "FIXED",
+              "PERCENTAGE",
+              "FORMULA"
+            ]
+          },
+          "fixedPrice": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "percentPrice": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "base": {
+            "type": "string",
+            "enum": [
+              "LIST_PRICE",
+              "COST",
+              "PRICE_LIST"
+            ]
+          },
+          "basePriceListId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "priceDiscount": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "priceSurcharge": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "priceRound": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "priceMinMargin": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "priceMaxMargin": {
+            "type": [
+              "number",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "priceListId",
+          "appliesTo",
+          "computePrice"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 65
+    },
+    {
+      "name": "crm_delete_price_list_rule",
+      "description": "Delete a price list rule (manager or admin; not external lists)",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 51
+    },
+    {
+      "name": "crm_list_orders",
+      "description": "List orders you can see, newest first",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "DRAFT",
+              "PENDING_APPROVAL",
+              "READY",
+              "SENT",
+              "CONFIRMED",
+              "DELIVERED",
+              "INVOICED",
+              "PAID",
+              "CANCELLED",
+              "SYNC_FAILED"
+            ]
+          },
+          "accountId": {
+            "type": "string"
+          },
+          "ownerId": {
+            "type": "string"
+          },
+          "limit": {
+            "default": 20,
+            "type": "number",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "offset": {
+            "default": 0,
+            "type": "number",
+            "minimum": 0
+          }
+        }
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 68
+    },
+    {
+      "name": "crm_get_order",
+      "description": "Get an order with its lines and the actions you may take",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 51
+    },
+    {
+      "name": "crm_create_order",
+      "description": "Create a draft order for an account; lines are priced from the customer's price list unless unitPrice is given",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "accountId": {
+            "type": "string"
+          },
+          "lines": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "productId": {
+                  "type": "string"
+                },
+                "quantity": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                },
+                "unitPrice": {
+                  "anyOf": [
+                    {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "productId",
+                "quantity"
+              ]
+            }
+          },
+          "contactId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "shipping_street": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "shipping_city": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "shipping_state": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "shipping_postal_code": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "shipping_country": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "requestedDeliveryDate": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "note": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "accountId",
+          "lines"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 73
+    },
+    {
+      "name": "crm_update_order",
+      "description": "Replace a draft order's header fields and full line list",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "lines": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "productId": {
+                  "type": "string"
+                },
+                "quantity": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                },
+                "unitPrice": {
+                  "anyOf": [
+                    {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "productId",
+                "quantity"
+              ]
+            }
+          },
+          "contactId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "shipping_street": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "shipping_city": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "shipping_state": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "shipping_postal_code": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "shipping_country": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "requestedDeliveryDate": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "note": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "lines"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 74
+    },
+    {
+      "name": "crm_submit_order",
+      "description": "Submit a draft: READY, or PENDING_APPROVAL when a sales rep priced a line below the list",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 51
+    },
+    {
+      "name": "crm_decide_order_approval",
+      "description": "Approve or reject an order waiting for approval (manager or admin; a note is required to reject). Pass the order's updatedAt from crm_get_order to approve exactly the version you reviewed.",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "decision": {
+            "type": "string",
+            "enum": [
+              "APPROVED",
+              "REJECTED"
+            ]
+          },
+          "note": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "updatedAt": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "decision"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 76
+    },
+    {
+      "name": "crm_set_order_status",
+      "description": "Withdraw, reopen, retry, or advance an order to a later status (advance needs `to`)",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "action": {
+            "type": "string",
+            "enum": [
+              "withdraw",
+              "reopen",
+              "retry",
+              "advance"
+            ]
+          },
+          "to": {
+            "type": "string",
+            "enum": [
+              "DRAFT",
+              "PENDING_APPROVAL",
+              "READY",
+              "SENT",
+              "CONFIRMED",
+              "DELIVERED",
+              "INVOICED",
+              "PAID",
+              "CANCELLED",
+              "SYNC_FAILED"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "action"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 78
+    },
+    {
+      "name": "crm_cancel_order",
+      "description": "Cancel an order",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 51
+    },
+    {
+      "name": "crm_list_users",
+      "description": "List NextCRM users, to resolve a person to the user ID needed by assigned_to. Returns active users by default. Managers and admins additionally see email, role, status and last login.",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "INACTIVE",
+              "PENDING",
+              "ALL"
+            ]
+          },
+          "limit": {
+            "default": 20,
+            "type": "number",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "offset": {
+            "default": 0,
+            "type": "number",
+            "minimum": 0
+          }
+        }
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 81
+    },
+    {
+      "name": "crm_list_contracts",
+      "description": "List CRM contracts visible to the authenticated user",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "NOTSTARTED",
+              "INPROGRESS",
+              "SIGNED"
+            ]
+          },
+          "account": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "limit": {
+            "default": 20,
+            "type": "number",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "offset": {
+            "default": 0,
+            "type": "number",
+            "minimum": 0
+          }
+        }
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 84
+    },
+    {
+      "name": "crm_get_contract",
+      "description": "Get a single CRM contract by ID with line items",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 6
+    },
+    {
+      "name": "crm_create_contract",
+      "description": "Create a new CRM contract with optional line items",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "value": {
+            "type": "number",
+            "minimum": 0
+          },
+          "description": {
+            "type": "string"
+          },
+          "account": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "assigned_to": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+          },
+          "type": {
+            "type": "string"
+          },
+          "currency": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 3
+          },
+          "lineItems": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "productId": {
+                  "type": "string",
+                  "format": "uuid",
+                  "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                },
+                "name": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "sku": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "quantity": {
+                  "default": 1,
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 9007199254740991
+                },
+                "unit_price": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "discount_type": {
+                  "default": "PERCENTAGE",
+                  "type": "string",
+                  "enum": [
+                    "PERCENTAGE",
+                    "FIXED"
+                  ]
+                },
+                "discount_value": {
+                  "default": 0,
+                  "type": "number",
+                  "minimum": 0
+                },
+                "line_total": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "currency": {
+                  "type": "string",
+                  "minLength": 3,
+                  "maxLength": 3
+                },
+                "sort_order": {
+                  "default": 0,
+                  "type": "integer",
+                  "minimum": -9007199254740991,
+                  "maximum": 9007199254740991
+                }
+              },
+              "required": [
+                "name",
+                "unit_price",
+                "line_total",
+                "currency"
+              ]
+            }
+          }
+        },
+        "required": [
+          "title",
+          "value"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 94
+    },
+    {
+      "name": "crm_update_contract",
+      "description": "Update an existing CRM contract by ID (does not modify line items — use separate operations)",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "value": {
+            "type": "number",
+            "minimum": 0
+          },
+          "description": {
+            "type": "string"
+          },
+          "account": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "assigned_to": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "NOTSTARTED",
+              "INPROGRESS",
+              "SIGNED"
+            ]
+          },
+          "type": {
+            "type": "string"
+          },
+          "currency": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 3
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 95
+    },
+    {
+      "name": "crm_delete_contract",
+      "description": "Soft-delete a CRM contract (sets deletedAt timestamp)",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 6
+    },
+    {
+      "name": "crm_list_activities",
+      "description": "List CRM activities created by the authenticated user, or all activities on a linked entity the user can read",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "call",
+              "meeting",
+              "note",
+              "email",
+              "visit"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "scheduled",
+              "completed",
+              "cancelled"
+            ]
+          },
+          "entityType": {
+            "type": "string"
+          },
+          "entityId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "limit": {
+            "default": 20,
+            "type": "number",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "offset": {
+            "default": 0,
+            "type": "number",
+            "minimum": 0
+          }
+        }
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 100
+    },
+    {
+      "name": "crm_get_activity",
+      "description": "Get a single CRM activity by ID with entity links",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 6
+    },
+    {
+      "name": "crm_create_activity",
+      "description": "Create a CRM activity (call/meeting/note/email/visit) and link to entities",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "call",
+              "meeting",
+              "note",
+              "email",
+              "visit"
+            ]
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+          },
+          "duration": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "outcome": {
+            "type": "string"
+          },
+          "status": {
+            "default": "scheduled",
+            "type": "string",
+            "enum": [
+              "scheduled",
+              "completed",
+              "cancelled"
+            ]
+          },
+          "links": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "entityType": {
+                  "type": "string",
+                  "enum": [
+                    "account",
+                    "contact",
+                    "lead",
+                    "opportunity",
+                    "contract"
+                  ]
+                },
+                "entityId": {
+                  "type": "string",
+                  "format": "uuid",
+                  "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                }
+              },
+              "required": [
+                "entityType",
+                "entityId"
+              ]
+            }
+          }
+        },
+        "required": [
+          "type",
+          "title",
+          "date"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 106
+    },
+    {
+      "name": "crm_update_activity",
+      "description": "Update an existing CRM activity by ID",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+          },
+          "duration": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "outcome": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "scheduled",
+              "completed",
+              "cancelled"
+            ]
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 107
+    },
+    {
+      "name": "crm_delete_activity",
+      "description": "Soft-delete a CRM activity by ID (sets deletedAt timestamp)",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 6
+    },
+    {
+      "name": "crm_list_documents",
+      "description": "List documents, optionally filtered by linked entity type and ID",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "entityType": {
+            "type": "string",
+            "enum": [
+              "account",
+              "contact",
+              "lead",
+              "opportunity",
+              "task"
+            ]
+          },
+          "entityId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "limit": {
+            "default": 20,
+            "type": "number",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "offset": {
+            "default": 0,
+            "type": "number",
+            "minimum": 0
+          }
+        }
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 110
+    },
+    {
+      "name": "crm_get_document",
+      "description": "Get a single document by ID",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 6
+    },
+    {
+      "name": "crm_create_document",
+      "description": "Create a document record and get a presigned upload URL",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "document_name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "contentType": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": {
+            "type": "string"
+          },
+          "visibility": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "document_name",
+          "contentType"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 111
+    },
+    {
+      "name": "crm_get_upload_url",
+      "description": "Get a presigned upload URL for an existing document",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 6
+    },
+    {
+      "name": "crm_get_download_url",
+      "description": "Get a presigned download URL for a document",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 6
+    },
+    {
+      "name": "crm_link_document",
+      "description": "Link a document to an entity (account, contact, lead, opportunity, or task)",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "document_id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "entityType": {
+            "type": "string",
+            "enum": [
+              "account",
+              "contact",
+              "lead",
+              "opportunity",
+              "task"
+            ]
+          },
+          "entityId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          }
+        },
+        "required": [
+          "document_id",
+          "entityType",
+          "entityId"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 112
+    },
+    {
+      "name": "crm_unlink_document",
+      "description": "Remove a document link from an entity",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "document_id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "entityType": {
+            "type": "string",
+            "enum": [
+              "account",
+              "contact",
+              "lead",
+              "opportunity",
+              "task"
+            ]
+          },
+          "entityId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          }
+        },
+        "required": [
+          "document_id",
+          "entityType",
+          "entityId"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 112
+    },
+    {
+      "name": "crm_delete_document",
+      "description": "Soft-delete a document (sets status to DELETED)",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 6
+    },
+    {
+      "name": "crm_list_target_lists",
+      "description": "List target lists the caller is allowed to see",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "limit": {
+            "default": 20,
+            "type": "number",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "offset": {
+            "default": 0,
+            "type": "number",
+            "minimum": 0
+          }
+        }
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 4
+    },
+    {
+      "name": "crm_get_target_list",
+      "description": "Get a target list by ID with its members",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "limit": {
+            "default": 20,
+            "type": "number",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "offset": {
+            "default": 0,
+            "type": "number",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 113
+    },
+    {
+      "name": "crm_create_target_list",
+      "description": "Create a new target list",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 114
+    },
+    {
+      "name": "crm_update_target_list",
+      "description": "Update a target list by ID",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 115
+    },
+    {
+      "name": "crm_delete_target_list",
+      "description": "Soft-delete a target list (sets deletedAt timestamp)",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 6
+    },
+    {
+      "name": "crm_add_to_target_list",
+      "description": "Add one or more targets to a target list",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "target_list_id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "target_ids": {
+            "minItems": 1,
+            "maxItems": 100,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+            }
+          }
+        },
+        "required": [
+          "target_list_id",
+          "target_ids"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 117
+    },
+    {
+      "name": "crm_remove_from_target_list",
+      "description": "Remove one or more targets from a target list",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "target_list_id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "target_ids": {
+            "minItems": 1,
+            "maxItems": 100,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+            }
+          }
+        },
+        "required": [
+          "target_list_id",
+          "target_ids"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 117
+    },
+    {
+      "name": "crm_enrich_contact",
+      "description": "Enrich a single contact using Firecrawl + AI. Requires FIRECRAWL and OPENAI API keys configured. Returns enrichment record ID for tracking.",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "contactId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "fields": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name"
+              ]
+            }
+          }
+        },
+        "required": [
+          "contactId",
+          "fields"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 120
+    },
+    {
+      "name": "crm_enrich_contact_bulk",
+      "description": "Enrich multiple contacts in bulk (max 100). Dispatches async jobs.",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "contactIds": {
+            "minItems": 1,
+            "maxItems": 100,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+            }
+          },
+          "fields": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name"
+              ]
+            }
+          }
+        },
+        "required": [
+          "contactIds",
+          "fields"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 121
+    },
+    {
+      "name": "crm_enrich_target",
+      "description": "Enrich a single target with the E2B sandbox agent (async). Requires an ANTHROPIC key and E2B_API_KEY on the server.",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "targetId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "fields": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name"
+              ]
+            }
+          }
+        },
+        "required": [
+          "targetId",
+          "fields"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 122
+    },
+    {
+      "name": "crm_enrich_target_bulk",
+      "description": "Enrich multiple targets in bulk (max 100) with the E2B sandbox agent. Dispatches async jobs. Requires an ANTHROPIC key and E2B_API_KEY on the server.",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "targetIds": {
+            "minItems": 1,
+            "maxItems": 100,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+            }
+          },
+          "fields": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name"
+              ]
+            }
+          }
+        },
+        "required": [
+          "targetIds",
+          "fields"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 123
+    },
+    {
+      "name": "crm_list_email_accounts",
+      "description": "List the authenticated user's connected email accounts",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "limit": {
+            "default": 20,
+            "type": "number",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "offset": {
+            "default": 0,
+            "type": "number",
+            "minimum": 0
+          }
+        }
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 4
+    },
+    {
+      "name": "campaigns_list",
+      "description": "List campaigns the caller is allowed to see",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "draft",
+              "scheduled",
+              "sending",
+              "sent",
+              "paused"
+            ]
+          },
+          "limit": {
+            "default": 20,
+            "type": "number",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "offset": {
+            "default": 0,
+            "type": "number",
+            "minimum": 0
+          }
+        }
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 126
+    },
+    {
+      "name": "campaigns_get",
+      "description": "Get a campaign by ID with steps and stats summary",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 6
+    },
+    {
+      "name": "campaigns_create",
+      "description": "Create a new campaign",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": {
+            "type": "string"
+          },
+          "from_name": {
+            "type": "string"
+          },
+          "reply_to": {
+            "type": "string",
+            "format": "email",
+            "pattern": "^(?:[A-Za-z0-9_'+\\-]+\\.)*[A-Za-z0-9_'+\\-]*[A-Za-z0-9_+-]@(?:[A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
+          },
+          "template_id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 127
+    },
+    {
+      "name": "campaigns_update",
+      "description": "Update a campaign by ID",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": {
+            "type": "string"
+          },
+          "from_name": {
+            "type": "string"
+          },
+          "reply_to": {
+            "type": "string",
+            "format": "email",
+            "pattern": "^(?:[A-Za-z0-9_'+\\-]+\\.)*[A-Za-z0-9_'+\\-]*[A-Za-z0-9_+-]@(?:[A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
+          },
+          "template_id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 128
+    },
+    {
+      "name": "campaigns_delete",
+      "description": "Soft-delete a campaign (sets deletedAt timestamp)",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 6
+    },
+    {
+      "name": "campaigns_send",
+      "description": "Trigger sending a campaign (manager or admin). Campaign must be in draft or scheduled status.",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 6
+    },
+    {
+      "name": "campaigns_pause",
+      "description": "Pause an active/sending campaign",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 6
+    },
+    {
+      "name": "campaigns_resume",
+      "description": "Resume a paused campaign (manager or admin)",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 6
+    },
+    {
+      "name": "campaigns_list_templates",
+      "description": "List campaign email templates the caller is allowed to see",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "limit": {
+            "default": 20,
+            "type": "number",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "offset": {
+            "default": 0,
+            "type": "number",
+            "minimum": 0
+          }
+        }
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 4
+    },
+    {
+      "name": "campaigns_get_template",
+      "description": "Get a campaign template by ID",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 6
+    },
+    {
+      "name": "campaigns_create_template",
+      "description": "Create a campaign email template",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": {
+            "type": "string"
+          },
+          "subject_default": {
+            "type": "string"
+          },
+          "content_html": {
+            "type": "string",
+            "minLength": 1
+          },
+          "content_json": {}
+        },
+        "required": [
+          "name",
+          "content_html",
+          "content_json"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 130
+    },
+    {
+      "name": "campaigns_update_template",
+      "description": "Update a campaign template by ID",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": {
+            "type": "string"
+          },
+          "subject_default": {
+            "type": "string"
+          },
+          "content_html": {
+            "type": "string"
+          },
+          "content_json": {}
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 132
+    },
+    {
+      "name": "campaigns_delete_template",
+      "description": "Soft-delete a campaign template (sets deletedAt timestamp)",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 6
+    },
+    {
+      "name": "campaigns_create_step",
+      "description": "Add a step to a campaign sequence",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "campaign_id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "order": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "template_id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "subject": {
+            "type": "string",
+            "minLength": 1
+          },
+          "delay_days": {
+            "default": 0,
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "send_to": {
+            "default": "all",
+            "type": "string",
+            "enum": [
+              "all",
+              "non_openers"
+            ]
+          }
+        },
+        "required": [
+          "campaign_id",
+          "order",
+          "template_id",
+          "subject"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 136
+    },
+    {
+      "name": "campaigns_update_step",
+      "description": "Update a campaign step by ID",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "order": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "template_id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "subject": {
+            "type": "string",
+            "minLength": 1
+          },
+          "delay_days": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "send_to": {
+            "type": "string",
+            "enum": [
+              "all",
+              "non_openers"
+            ]
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 139
+    },
+    {
+      "name": "campaigns_delete_step",
+      "description": "Delete a campaign step by ID (hard delete — step has no status field)",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 6
+    },
+    {
+      "name": "campaigns_assign_target_list",
+      "description": "Assign a target list to a campaign",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "campaign_id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "target_list_id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          }
+        },
+        "required": [
+          "campaign_id",
+          "target_list_id"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 140
+    },
+    {
+      "name": "campaigns_remove_target_list",
+      "description": "Remove a target list from a campaign",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "campaign_id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "target_list_id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          }
+        },
+        "required": [
+          "campaign_id",
+          "target_list_id"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 140
+    },
+    {
+      "name": "campaigns_get_stats",
+      "description": "Get send/open/click/unsubscribe stats for a campaign",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 6
+    },
+    {
+      "name": "projects_list_boards",
+      "description": "List project boards the user owns or is shared with",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "limit": {
+            "default": 20,
+            "type": "number",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "offset": {
+            "default": 0,
+            "type": "number",
+            "minimum": 0
+          }
+        }
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 4
+    },
+    {
+      "name": "projects_get_board",
+      "description": "Get a project board with its sections and tasks",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 6
+    },
+    {
+      "name": "projects_create_board",
+      "description": "Create a new project board",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1
+          },
+          "icon": {
+            "type": "string"
+          },
+          "visibility": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "title",
+          "description"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 141
+    },
+    {
+      "name": "projects_update_board",
+      "description": "Update a project board by ID",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": {
+            "type": "string"
+          },
+          "icon": {
+            "type": "string"
+          },
+          "visibility": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 142
+    },
+    {
+      "name": "projects_delete_board",
+      "description": "Soft-delete a project board (sets deletedAt timestamp)",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 6
+    },
+    {
+      "name": "projects_create_section",
+      "description": "Add a section (column) to a board",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "board": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "board",
+          "title"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 143
+    },
+    {
+      "name": "projects_update_section",
+      "description": "Update a section title or position",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "position": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 145
+    },
+    {
+      "name": "projects_delete_section",
+      "description": "Delete a section (must be empty — no tasks)",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 6
+    },
+    {
+      "name": "projects_list_tasks",
+      "description": "List tasks, optionally filtered by board, section, user, or status",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "board": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "section": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "user": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "PENDING",
+              "COMPLETE"
+            ]
+          },
+          "limit": {
+            "default": 20,
+            "type": "number",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "offset": {
+            "default": 0,
+            "type": "number",
+            "minimum": 0
+          }
+        }
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 148
+    },
+    {
+      "name": "projects_get_task",
+      "description": "Get a task by ID with comments and documents",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 6
+    },
+    {
+      "name": "projects_create_task",
+      "description": "Create a task in a board section",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "content": {
+            "type": "string"
+          },
+          "section": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "priority": {
+            "default": "Normal",
+            "type": "string"
+          },
+          "dueDateAt": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+          }
+        },
+        "required": [
+          "title",
+          "section"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 150
+    },
+    {
+      "name": "projects_update_task",
+      "description": "Update a task by ID",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "content": {
+            "type": "string"
+          },
+          "priority": {
+            "type": "string"
+          },
+          "dueDateAt": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+          },
+          "taskStatus": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "PENDING",
+              "COMPLETE"
+            ]
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 151
+    },
+    {
+      "name": "projects_move_task",
+      "description": "Move a task to a different section and/or position",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "section": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "position": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "id",
+          "section"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 152
+    },
+    {
+      "name": "projects_delete_task",
+      "description": "Delete a task and its comments (needs write access to its board, like the UI)",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 6
+    },
+    {
+      "name": "projects_add_comment",
+      "description": "Add a comment to a task",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "task": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "comment": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "task",
+          "comment"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 153
+    },
+    {
+      "name": "projects_list_comments",
+      "description": "List comments on a task",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "task": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "limit": {
+            "default": 20,
+            "type": "number",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "offset": {
+            "default": 0,
+            "type": "number",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "task"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 154
+    },
+    {
+      "name": "projects_assign_document",
+      "description": "Link a document to a task",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "task_id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "document_id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          }
+        },
+        "required": [
+          "task_id",
+          "document_id"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 155
+    },
+    {
+      "name": "projects_watch_board",
+      "description": "Watch or unwatch a project board",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "board_id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "watch": {
+            "default": true,
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "board_id"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 157
+    },
+    {
+      "name": "reports_list",
+      "description": "List available report configurations",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "category": {
+            "type": "string",
+            "enum": [
+              "sales",
+              "leads",
+              "accounts",
+              "activity",
+              "campaigns",
+              "users"
+            ]
+          },
+          "limit": {
+            "default": 20,
+            "type": "number",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "offset": {
+            "default": 0,
+            "type": "number",
+            "minimum": 0
+          }
+        }
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 160
+    },
+    {
+      "name": "reports_run",
+      "description": "Run a report by category and get the data. Returns raw report data (use format param for CSV/PDF via the /api/reports/export endpoint).",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "category": {
+            "type": "string",
+            "enum": [
+              "sales",
+              "leads",
+              "accounts",
+              "activity",
+              "campaigns",
+              "users"
+            ]
+          },
+          "dateFrom": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+          },
+          "dateTo": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+          }
+        },
+        "required": [
+          "category"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "schema": 161
+    }
+  ],
+  "nodes": [
+    {
+      "type": "number",
+      "checks": [
+        {
+          "kind": "greater_than",
+          "value": 1,
+          "inclusive": true
+        },
+        {
+          "kind": "less_than",
+          "value": 100,
+          "inclusive": true
+        }
+      ]
+    },
+    {
+      "type": "default",
+      "value": 20,
+      "inner": 0
+    },
+    {
+      "type": "number",
+      "checks": [
+        {
+          "kind": "greater_than",
+          "value": 0,
+          "inclusive": true
+        }
+      ]
+    },
+    {
+      "type": "default",
+      "value": 0,
+      "inner": 2
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "limit",
+          "node": 1,
+          "optional": false
+        },
+        {
+          "name": "offset",
+          "node": 3,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "type": "string",
+      "checks": [
+        {
+          "kind": "string_format",
+          "format": "uuid",
+          "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+        }
+      ]
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "id",
+          "node": 5,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "type": "string",
+      "checks": [
+        {
+          "kind": "min_length",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "query",
+          "node": 7,
+          "optional": false
+        },
+        {
+          "name": "limit",
+          "node": 1,
+          "optional": false
+        },
+        {
+          "name": "offset",
+          "node": 3,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "type": "string",
+      "checks": [
+        {
+          "kind": "string_format",
+          "format": "email",
+          "pattern": "^(?:[A-Za-z0-9_'+\\-]+\\.)*[A-Za-z0-9_'+\\-]*[A-Za-z0-9_+-]@(?:[A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
+        }
+      ]
+    },
+    {
+      "type": "optional",
+      "inner": 9
+    },
+    {
+      "type": "string"
+    },
+    {
+      "type": "optional",
+      "inner": 11
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "name",
+          "node": 7,
+          "optional": false
+        },
+        {
+          "name": "email",
+          "node": 10,
+          "optional": true
+        },
+        {
+          "name": "description",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "office_phone",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "website",
+          "node": 12,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "type": "optional",
+      "inner": 7
+    },
+    {
+      "type": "nullable",
+      "inner": 5
+    },
+    {
+      "type": "optional",
+      "inner": 15
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "id",
+          "node": 5,
+          "optional": false
+        },
+        {
+          "name": "name",
+          "node": 14,
+          "optional": true
+        },
+        {
+          "name": "email",
+          "node": 10,
+          "optional": true
+        },
+        {
+          "name": "description",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "office_phone",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "website",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "assigned_to",
+          "node": 16,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "first_name",
+          "node": 14,
+          "optional": true
+        },
+        {
+          "name": "last_name",
+          "node": 7,
+          "optional": false
+        },
+        {
+          "name": "email",
+          "node": 10,
+          "optional": true
+        },
+        {
+          "name": "office_phone",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "mobile_phone",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "position",
+          "node": 12,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "id",
+          "node": 5,
+          "optional": false
+        },
+        {
+          "name": "first_name",
+          "node": 14,
+          "optional": true
+        },
+        {
+          "name": "last_name",
+          "node": 14,
+          "optional": true
+        },
+        {
+          "name": "email",
+          "node": 10,
+          "optional": true
+        },
+        {
+          "name": "office_phone",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "mobile_phone",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "position",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "account",
+          "node": 16,
+          "optional": true
+        },
+        {
+          "name": "assigned_to",
+          "node": 16,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "type": "object",
+      "properties": []
+    },
+    {
+      "type": "optional",
+      "inner": 5
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "firstName",
+          "node": 14,
+          "optional": true
+        },
+        {
+          "name": "lastName",
+          "node": 7,
+          "optional": false
+        },
+        {
+          "name": "email",
+          "node": 10,
+          "optional": true
+        },
+        {
+          "name": "company",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "phone",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "jobTitle",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "description",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "campaign",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "refered_by",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "lead_status_id",
+          "node": 21,
+          "optional": true
+        },
+        {
+          "name": "lead_source_id",
+          "node": 21,
+          "optional": true
+        },
+        {
+          "name": "lead_type_id",
+          "node": 21,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "id",
+          "node": 5,
+          "optional": false
+        },
+        {
+          "name": "firstName",
+          "node": 14,
+          "optional": true
+        },
+        {
+          "name": "lastName",
+          "node": 14,
+          "optional": true
+        },
+        {
+          "name": "email",
+          "node": 10,
+          "optional": true
+        },
+        {
+          "name": "company",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "phone",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "jobTitle",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "assigned_to",
+          "node": 16,
+          "optional": true
+        },
+        {
+          "name": "description",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "campaign",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "refered_by",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "lead_status_id",
+          "node": 16,
+          "optional": true
+        },
+        {
+          "name": "lead_source_id",
+          "node": 16,
+          "optional": true
+        },
+        {
+          "name": "lead_type_id",
+          "node": 16,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "type": "string",
+      "checks": [
+        {
+          "kind": "string_format",
+          "format": "datetime",
+          "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+        }
+      ]
+    },
+    {
+      "type": "optional",
+      "inner": 24
+    },
+    {
+      "type": "number",
+      "checks": [
+        {
+          "kind": "number_format",
+          "format": "safeint"
+        },
+        {
+          "kind": "greater_than",
+          "value": 0,
+          "inclusive": true
+        }
+      ]
+    },
+    {
+      "type": "optional",
+      "inner": 26
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "name",
+          "node": 7,
+          "optional": false
+        },
+        {
+          "name": "description",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "close_date",
+          "node": 25,
+          "optional": true
+        },
+        {
+          "name": "budget",
+          "node": 27,
+          "optional": true
+        },
+        {
+          "name": "expected_revenue",
+          "node": 27,
+          "optional": true
+        },
+        {
+          "name": "currency",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "next_step",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "sales_stage_id",
+          "node": 21,
+          "optional": true
+        },
+        {
+          "name": "type_id",
+          "node": 21,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "id",
+          "node": 5,
+          "optional": false
+        },
+        {
+          "name": "name",
+          "node": 14,
+          "optional": true
+        },
+        {
+          "name": "description",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "close_date",
+          "node": 25,
+          "optional": true
+        },
+        {
+          "name": "budget",
+          "node": 27,
+          "optional": true
+        },
+        {
+          "name": "expected_revenue",
+          "node": 27,
+          "optional": true
+        },
+        {
+          "name": "currency",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "next_step",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "account",
+          "node": 16,
+          "optional": true
+        },
+        {
+          "name": "contact",
+          "node": 16,
+          "optional": true
+        },
+        {
+          "name": "assigned_to",
+          "node": 16,
+          "optional": true
+        },
+        {
+          "name": "sales_stage_id",
+          "node": 16,
+          "optional": true
+        },
+        {
+          "name": "type_id",
+          "node": 16,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "first_name",
+          "node": 14,
+          "optional": true
+        },
+        {
+          "name": "last_name",
+          "node": 7,
+          "optional": false
+        },
+        {
+          "name": "email",
+          "node": 10,
+          "optional": true
+        },
+        {
+          "name": "mobile_phone",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "office_phone",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "company",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "position",
+          "node": 12,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "id",
+          "node": 5,
+          "optional": false
+        },
+        {
+          "name": "first_name",
+          "node": 14,
+          "optional": true
+        },
+        {
+          "name": "last_name",
+          "node": 14,
+          "optional": true
+        },
+        {
+          "name": "email",
+          "node": 10,
+          "optional": true
+        },
+        {
+          "name": "mobile_phone",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "office_phone",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "company",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "position",
+          "node": 12,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "type": "enum",
+      "values": [
+        "DRAFT",
+        "ACTIVE",
+        "ARCHIVED"
+      ]
+    },
+    {
+      "type": "optional",
+      "inner": 32
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "status",
+          "node": 33,
+          "optional": true
+        },
+        {
+          "name": "limit",
+          "node": 1,
+          "optional": false
+        },
+        {
+          "name": "offset",
+          "node": 3,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "type": "enum",
+      "values": [
+        "PRODUCT",
+        "SERVICE"
+      ]
+    },
+    {
+      "type": "optional",
+      "inner": 2
+    },
+    {
+      "type": "string",
+      "checks": [
+        {
+          "kind": "length_equals",
+          "value": 3
+        }
+      ]
+    },
+    {
+      "type": "number",
+      "checks": [
+        {
+          "kind": "greater_than",
+          "value": 0,
+          "inclusive": true
+        },
+        {
+          "kind": "less_than",
+          "value": 100,
+          "inclusive": true
+        }
+      ]
+    },
+    {
+      "type": "optional",
+      "inner": 38
+    },
+    {
+      "type": "boolean"
+    },
+    {
+      "type": "optional",
+      "inner": 40
+    },
+    {
+      "type": "enum",
+      "values": [
+        "MONTHLY",
+        "QUARTERLY",
+        "SEMIANNUALLY",
+        "ANNUALLY"
+      ]
+    },
+    {
+      "type": "optional",
+      "inner": 42
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "name",
+          "node": 7,
+          "optional": false
+        },
+        {
+          "name": "description",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "sku",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "type",
+          "node": 35,
+          "optional": false
+        },
+        {
+          "name": "unit_price",
+          "node": 2,
+          "optional": false
+        },
+        {
+          "name": "unit_cost",
+          "node": 36,
+          "optional": true
+        },
+        {
+          "name": "currency",
+          "node": 37,
+          "optional": false
+        },
+        {
+          "name": "tax_rate",
+          "node": 39,
+          "optional": true
+        },
+        {
+          "name": "unit",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "is_recurring",
+          "node": 41,
+          "optional": true
+        },
+        {
+          "name": "billing_period",
+          "node": 43,
+          "optional": true
+        },
+        {
+          "name": "categoryId",
+          "node": 21,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "type": "optional",
+      "inner": 35
+    },
+    {
+      "type": "optional",
+      "inner": 37
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "id",
+          "node": 5,
+          "optional": false
+        },
+        {
+          "name": "name",
+          "node": 14,
+          "optional": true
+        },
+        {
+          "name": "description",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "sku",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "type",
+          "node": 45,
+          "optional": true
+        },
+        {
+          "name": "status",
+          "node": 33,
+          "optional": true
+        },
+        {
+          "name": "unit_price",
+          "node": 36,
+          "optional": true
+        },
+        {
+          "name": "unit_cost",
+          "node": 36,
+          "optional": true
+        },
+        {
+          "name": "currency",
+          "node": 46,
+          "optional": true
+        },
+        {
+          "name": "tax_rate",
+          "node": 39,
+          "optional": true
+        },
+        {
+          "name": "unit",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "is_recurring",
+          "node": 41,
+          "optional": true
+        },
+        {
+          "name": "billing_period",
+          "node": 43,
+          "optional": true
+        },
+        {
+          "name": "categoryId",
+          "node": 21,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "type": "enum",
+      "values": [
+        "CRM",
+        "EXTERNAL"
+      ]
+    },
+    {
+      "type": "optional",
+      "inner": 48
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "includeArchived",
+          "node": 41,
+          "optional": true
+        },
+        {
+          "name": "source",
+          "node": 49,
+          "optional": true
+        },
+        {
+          "name": "limit",
+          "node": 1,
+          "optional": false
+        },
+        {
+          "name": "offset",
+          "node": 3,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "id",
+          "node": 11,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "type": "number",
+      "checks": [
+        {
+          "kind": "greater_than",
+          "value": 0,
+          "inclusive": false
+        }
+      ]
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "productId",
+          "node": 11,
+          "optional": false
+        },
+        {
+          "name": "quantity",
+          "node": 52,
+          "optional": false
+        },
+        {
+          "name": "date",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "priceListId",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "accountId",
+          "node": 12,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "name",
+          "node": 7,
+          "optional": false
+        },
+        {
+          "name": "currency",
+          "node": 37,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "id",
+          "node": 11,
+          "optional": false
+        },
+        {
+          "name": "name",
+          "node": 14,
+          "optional": true
+        },
+        {
+          "name": "currency",
+          "node": 46,
+          "optional": true
+        },
+        {
+          "name": "isActive",
+          "node": 41,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "type": "enum",
+      "values": [
+        "ALL",
+        "CATEGORY",
+        "PRODUCT"
+      ]
+    },
+    {
+      "type": "nullable",
+      "inner": 11
+    },
+    {
+      "type": "optional",
+      "inner": 57
+    },
+    {
+      "type": "number"
+    },
+    {
+      "type": "nullable",
+      "inner": 59
+    },
+    {
+      "type": "optional",
+      "inner": 60
+    },
+    {
+      "type": "enum",
+      "values": [
+        "FIXED",
+        "PERCENTAGE",
+        "FORMULA"
+      ]
+    },
+    {
+      "type": "enum",
+      "values": [
+        "LIST_PRICE",
+        "COST",
+        "PRICE_LIST"
+      ]
+    },
+    {
+      "type": "optional",
+      "inner": 63
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "priceListId",
+          "node": 11,
+          "optional": false
+        },
+        {
+          "name": "ruleId",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "appliesTo",
+          "node": 56,
+          "optional": false
+        },
+        {
+          "name": "categoryId",
+          "node": 58,
+          "optional": true
+        },
+        {
+          "name": "productId",
+          "node": 58,
+          "optional": true
+        },
+        {
+          "name": "minQuantity",
+          "node": 61,
+          "optional": true
+        },
+        {
+          "name": "dateStart",
+          "node": 58,
+          "optional": true
+        },
+        {
+          "name": "dateEnd",
+          "node": 58,
+          "optional": true
+        },
+        {
+          "name": "computePrice",
+          "node": 62,
+          "optional": false
+        },
+        {
+          "name": "fixedPrice",
+          "node": 61,
+          "optional": true
+        },
+        {
+          "name": "percentPrice",
+          "node": 61,
+          "optional": true
+        },
+        {
+          "name": "base",
+          "node": 64,
+          "optional": true
+        },
+        {
+          "name": "basePriceListId",
+          "node": 58,
+          "optional": true
+        },
+        {
+          "name": "priceDiscount",
+          "node": 61,
+          "optional": true
+        },
+        {
+          "name": "priceSurcharge",
+          "node": 61,
+          "optional": true
+        },
+        {
+          "name": "priceRound",
+          "node": 61,
+          "optional": true
+        },
+        {
+          "name": "priceMinMargin",
+          "node": 61,
+          "optional": true
+        },
+        {
+          "name": "priceMaxMargin",
+          "node": 61,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "type": "enum",
+      "values": [
+        "DRAFT",
+        "PENDING_APPROVAL",
+        "READY",
+        "SENT",
+        "CONFIRMED",
+        "DELIVERED",
+        "INVOICED",
+        "PAID",
+        "CANCELLED",
+        "SYNC_FAILED"
+      ]
+    },
+    {
+      "type": "optional",
+      "inner": 66
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "status",
+          "node": 67,
+          "optional": true
+        },
+        {
+          "name": "accountId",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "ownerId",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "limit",
+          "node": 1,
+          "optional": false
+        },
+        {
+          "name": "offset",
+          "node": 3,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "type": "nullable",
+      "inner": 2
+    },
+    {
+      "type": "optional",
+      "inner": 69
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "productId",
+          "node": 11,
+          "optional": false
+        },
+        {
+          "name": "quantity",
+          "node": 52,
+          "optional": false
+        },
+        {
+          "name": "unitPrice",
+          "node": 70,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "type": "array",
+      "inner": 71
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "accountId",
+          "node": 11,
+          "optional": false
+        },
+        {
+          "name": "lines",
+          "node": 72,
+          "optional": false
+        },
+        {
+          "name": "contactId",
+          "node": 58,
+          "optional": true
+        },
+        {
+          "name": "shipping_street",
+          "node": 58,
+          "optional": true
+        },
+        {
+          "name": "shipping_city",
+          "node": 58,
+          "optional": true
+        },
+        {
+          "name": "shipping_state",
+          "node": 58,
+          "optional": true
+        },
+        {
+          "name": "shipping_postal_code",
+          "node": 58,
+          "optional": true
+        },
+        {
+          "name": "shipping_country",
+          "node": 58,
+          "optional": true
+        },
+        {
+          "name": "requestedDeliveryDate",
+          "node": 58,
+          "optional": true
+        },
+        {
+          "name": "note",
+          "node": 58,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "id",
+          "node": 11,
+          "optional": false
+        },
+        {
+          "name": "lines",
+          "node": 72,
+          "optional": false
+        },
+        {
+          "name": "contactId",
+          "node": 58,
+          "optional": true
+        },
+        {
+          "name": "shipping_street",
+          "node": 58,
+          "optional": true
+        },
+        {
+          "name": "shipping_city",
+          "node": 58,
+          "optional": true
+        },
+        {
+          "name": "shipping_state",
+          "node": 58,
+          "optional": true
+        },
+        {
+          "name": "shipping_postal_code",
+          "node": 58,
+          "optional": true
+        },
+        {
+          "name": "shipping_country",
+          "node": 58,
+          "optional": true
+        },
+        {
+          "name": "requestedDeliveryDate",
+          "node": 58,
+          "optional": true
+        },
+        {
+          "name": "note",
+          "node": 58,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "type": "enum",
+      "values": [
+        "APPROVED",
+        "REJECTED"
+      ]
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "id",
+          "node": 11,
+          "optional": false
+        },
+        {
+          "name": "decision",
+          "node": 75,
+          "optional": false
+        },
+        {
+          "name": "note",
+          "node": 58,
+          "optional": true
+        },
+        {
+          "name": "updatedAt",
+          "node": 12,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "type": "enum",
+      "values": [
+        "withdraw",
+        "reopen",
+        "retry",
+        "advance"
+      ]
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "id",
+          "node": 11,
+          "optional": false
+        },
+        {
+          "name": "action",
+          "node": 77,
+          "optional": false
+        },
+        {
+          "name": "to",
+          "node": 67,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "type": "enum",
+      "values": [
+        "ACTIVE",
+        "INACTIVE",
+        "PENDING",
+        "ALL"
+      ]
+    },
+    {
+      "type": "optional",
+      "inner": 79
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "query",
+          "node": 14,
+          "optional": true
+        },
+        {
+          "name": "status",
+          "node": 80,
+          "optional": true
+        },
+        {
+          "name": "limit",
+          "node": 1,
+          "optional": false
+        },
+        {
+          "name": "offset",
+          "node": 3,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "type": "enum",
+      "values": [
+        "NOTSTARTED",
+        "INPROGRESS",
+        "SIGNED"
+      ]
+    },
+    {
+      "type": "optional",
+      "inner": 82
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "status",
+          "node": 83,
+          "optional": true
+        },
+        {
+          "name": "account",
+          "node": 21,
+          "optional": true
+        },
+        {
+          "name": "limit",
+          "node": 1,
+          "optional": false
+        },
+        {
+          "name": "offset",
+          "node": 3,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "type": "number",
+      "checks": [
+        {
+          "kind": "number_format",
+          "format": "safeint"
+        },
+        {
+          "kind": "greater_than",
+          "value": 1,
+          "inclusive": true
+        }
+      ]
+    },
+    {
+      "type": "default",
+      "value": 1,
+      "inner": 85
+    },
+    {
+      "type": "enum",
+      "values": [
+        "PERCENTAGE",
+        "FIXED"
+      ]
+    },
+    {
+      "type": "default",
+      "value": "PERCENTAGE",
+      "inner": 87
+    },
+    {
+      "type": "number",
+      "checks": [
+        {
+          "kind": "number_format",
+          "format": "safeint"
+        }
+      ]
+    },
+    {
+      "type": "default",
+      "value": 0,
+      "inner": 89
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "productId",
+          "node": 21,
+          "optional": true
+        },
+        {
+          "name": "name",
+          "node": 7,
+          "optional": false
+        },
+        {
+          "name": "sku",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "description",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "quantity",
+          "node": 86,
+          "optional": false
+        },
+        {
+          "name": "unit_price",
+          "node": 2,
+          "optional": false
+        },
+        {
+          "name": "discount_type",
+          "node": 88,
+          "optional": false
+        },
+        {
+          "name": "discount_value",
+          "node": 3,
+          "optional": false
+        },
+        {
+          "name": "line_total",
+          "node": 2,
+          "optional": false
+        },
+        {
+          "name": "currency",
+          "node": 37,
+          "optional": false
+        },
+        {
+          "name": "sort_order",
+          "node": 90,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "type": "array",
+      "inner": 91
+    },
+    {
+      "type": "optional",
+      "inner": 92
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "title",
+          "node": 7,
+          "optional": false
+        },
+        {
+          "name": "value",
+          "node": 2,
+          "optional": false
+        },
+        {
+          "name": "description",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "account",
+          "node": 21,
+          "optional": true
+        },
+        {
+          "name": "assigned_to",
+          "node": 21,
+          "optional": true
+        },
+        {
+          "name": "startDate",
+          "node": 25,
+          "optional": true
+        },
+        {
+          "name": "endDate",
+          "node": 25,
+          "optional": true
+        },
+        {
+          "name": "type",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "currency",
+          "node": 46,
+          "optional": true
+        },
+        {
+          "name": "lineItems",
+          "node": 93,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "id",
+          "node": 5,
+          "optional": false
+        },
+        {
+          "name": "title",
+          "node": 14,
+          "optional": true
+        },
+        {
+          "name": "value",
+          "node": 36,
+          "optional": true
+        },
+        {
+          "name": "description",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "account",
+          "node": 21,
+          "optional": true
+        },
+        {
+          "name": "assigned_to",
+          "node": 21,
+          "optional": true
+        },
+        {
+          "name": "startDate",
+          "node": 25,
+          "optional": true
+        },
+        {
+          "name": "endDate",
+          "node": 25,
+          "optional": true
+        },
+        {
+          "name": "status",
+          "node": 83,
+          "optional": true
+        },
+        {
+          "name": "type",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "currency",
+          "node": 46,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "type": "enum",
+      "values": [
+        "call",
+        "meeting",
+        "note",
+        "email",
+        "visit"
+      ]
+    },
+    {
+      "type": "optional",
+      "inner": 96
+    },
+    {
+      "type": "enum",
+      "values": [
+        "scheduled",
+        "completed",
+        "cancelled"
+      ]
+    },
+    {
+      "type": "optional",
+      "inner": 98
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "type",
+          "node": 97,
+          "optional": true
+        },
+        {
+          "name": "status",
+          "node": 99,
+          "optional": true
+        },
+        {
+          "name": "entityType",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "entityId",
+          "node": 21,
+          "optional": true
+        },
+        {
+          "name": "limit",
+          "node": 1,
+          "optional": false
+        },
+        {
+          "name": "offset",
+          "node": 3,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "type": "default",
+      "value": "scheduled",
+      "inner": 98
+    },
+    {
+      "type": "enum",
+      "values": [
+        "account",
+        "contact",
+        "lead",
+        "opportunity",
+        "contract"
+      ]
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "entityType",
+          "node": 102,
+          "optional": false
+        },
+        {
+          "name": "entityId",
+          "node": 5,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "type": "array",
+      "inner": 103
+    },
+    {
+      "type": "optional",
+      "inner": 104
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "type",
+          "node": 96,
+          "optional": false
+        },
+        {
+          "name": "title",
+          "node": 7,
+          "optional": false
+        },
+        {
+          "name": "description",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "date",
+          "node": 24,
+          "optional": false
+        },
+        {
+          "name": "duration",
+          "node": 27,
+          "optional": true
+        },
+        {
+          "name": "outcome",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "status",
+          "node": 101,
+          "optional": false
+        },
+        {
+          "name": "links",
+          "node": 105,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "id",
+          "node": 5,
+          "optional": false
+        },
+        {
+          "name": "title",
+          "node": 14,
+          "optional": true
+        },
+        {
+          "name": "description",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "date",
+          "node": 25,
+          "optional": true
+        },
+        {
+          "name": "duration",
+          "node": 27,
+          "optional": true
+        },
+        {
+          "name": "outcome",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "status",
+          "node": 99,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "type": "enum",
+      "values": [
+        "account",
+        "contact",
+        "lead",
+        "opportunity",
+        "task"
+      ]
+    },
+    {
+      "type": "optional",
+      "inner": 108
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "entityType",
+          "node": 109,
+          "optional": true
+        },
+        {
+          "name": "entityId",
+          "node": 21,
+          "optional": true
+        },
+        {
+          "name": "limit",
+          "node": 1,
+          "optional": false
+        },
+        {
+          "name": "offset",
+          "node": 3,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "document_name",
+          "node": 7,
+          "optional": false
+        },
+        {
+          "name": "contentType",
+          "node": 7,
+          "optional": false
+        },
+        {
+          "name": "description",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "visibility",
+          "node": 12,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "document_id",
+          "node": 5,
+          "optional": false
+        },
+        {
+          "name": "entityType",
+          "node": 108,
+          "optional": false
+        },
+        {
+          "name": "entityId",
+          "node": 5,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "id",
+          "node": 5,
+          "optional": false
+        },
+        {
+          "name": "limit",
+          "node": 1,
+          "optional": false
+        },
+        {
+          "name": "offset",
+          "node": 3,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "name",
+          "node": 7,
+          "optional": false
+        },
+        {
+          "name": "description",
+          "node": 12,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "id",
+          "node": 5,
+          "optional": false
+        },
+        {
+          "name": "name",
+          "node": 14,
+          "optional": true
+        },
+        {
+          "name": "description",
+          "node": 12,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "type": "array",
+      "inner": 5,
+      "checks": [
+        {
+          "kind": "min_length",
+          "value": 1
+        },
+        {
+          "kind": "max_length",
+          "value": 100
+        }
+      ]
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "target_list_id",
+          "node": 5,
+          "optional": false
+        },
+        {
+          "name": "target_ids",
+          "node": 116,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "name",
+          "node": 11,
+          "optional": false
+        },
+        {
+          "name": "description",
+          "node": 12,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "type": "array",
+      "inner": 118,
+      "checks": [
+        {
+          "kind": "min_length",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "contactId",
+          "node": 5,
+          "optional": false
+        },
+        {
+          "name": "fields",
+          "node": 119,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "contactIds",
+          "node": 116,
+          "optional": false
+        },
+        {
+          "name": "fields",
+          "node": 119,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "targetId",
+          "node": 5,
+          "optional": false
+        },
+        {
+          "name": "fields",
+          "node": 119,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "targetIds",
+          "node": 116,
+          "optional": false
+        },
+        {
+          "name": "fields",
+          "node": 119,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "type": "enum",
+      "values": [
+        "draft",
+        "scheduled",
+        "sending",
+        "sent",
+        "paused"
+      ]
+    },
+    {
+      "type": "optional",
+      "inner": 124
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "status",
+          "node": 125,
+          "optional": true
+        },
+        {
+          "name": "limit",
+          "node": 1,
+          "optional": false
+        },
+        {
+          "name": "offset",
+          "node": 3,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "name",
+          "node": 7,
+          "optional": false
+        },
+        {
+          "name": "description",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "from_name",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "reply_to",
+          "node": 10,
+          "optional": true
+        },
+        {
+          "name": "template_id",
+          "node": 21,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "id",
+          "node": 5,
+          "optional": false
+        },
+        {
+          "name": "name",
+          "node": 14,
+          "optional": true
+        },
+        {
+          "name": "description",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "from_name",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "reply_to",
+          "node": 10,
+          "optional": true
+        },
+        {
+          "name": "template_id",
+          "node": 21,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "type": "any"
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "name",
+          "node": 7,
+          "optional": false
+        },
+        {
+          "name": "description",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "subject_default",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "content_html",
+          "node": 7,
+          "optional": false
+        },
+        {
+          "name": "content_json",
+          "node": 129,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "type": "optional",
+      "inner": 129
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "id",
+          "node": 5,
+          "optional": false
+        },
+        {
+          "name": "name",
+          "node": 14,
+          "optional": true
+        },
+        {
+          "name": "description",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "subject_default",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "content_html",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "content_json",
+          "node": 131,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "type": "default",
+      "value": 0,
+      "inner": 26
+    },
+    {
+      "type": "enum",
+      "values": [
+        "all",
+        "non_openers"
+      ]
+    },
+    {
+      "type": "default",
+      "value": "all",
+      "inner": 134
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "campaign_id",
+          "node": 5,
+          "optional": false
+        },
+        {
+          "name": "order",
+          "node": 85,
+          "optional": false
+        },
+        {
+          "name": "template_id",
+          "node": 5,
+          "optional": false
+        },
+        {
+          "name": "subject",
+          "node": 7,
+          "optional": false
+        },
+        {
+          "name": "delay_days",
+          "node": 133,
+          "optional": false
+        },
+        {
+          "name": "send_to",
+          "node": 135,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "type": "optional",
+      "inner": 85
+    },
+    {
+      "type": "optional",
+      "inner": 134
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "id",
+          "node": 5,
+          "optional": false
+        },
+        {
+          "name": "order",
+          "node": 137,
+          "optional": true
+        },
+        {
+          "name": "template_id",
+          "node": 21,
+          "optional": true
+        },
+        {
+          "name": "subject",
+          "node": 14,
+          "optional": true
+        },
+        {
+          "name": "delay_days",
+          "node": 27,
+          "optional": true
+        },
+        {
+          "name": "send_to",
+          "node": 138,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "campaign_id",
+          "node": 5,
+          "optional": false
+        },
+        {
+          "name": "target_list_id",
+          "node": 5,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "title",
+          "node": 7,
+          "optional": false
+        },
+        {
+          "name": "description",
+          "node": 7,
+          "optional": false
+        },
+        {
+          "name": "icon",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "visibility",
+          "node": 12,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "id",
+          "node": 5,
+          "optional": false
+        },
+        {
+          "name": "title",
+          "node": 14,
+          "optional": true
+        },
+        {
+          "name": "description",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "icon",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "visibility",
+          "node": 12,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "board",
+          "node": 5,
+          "optional": false
+        },
+        {
+          "name": "title",
+          "node": 7,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "type": "optional",
+      "inner": 89
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "id",
+          "node": 5,
+          "optional": false
+        },
+        {
+          "name": "title",
+          "node": 14,
+          "optional": true
+        },
+        {
+          "name": "position",
+          "node": 144,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "type": "enum",
+      "values": [
+        "ACTIVE",
+        "PENDING",
+        "COMPLETE"
+      ]
+    },
+    {
+      "type": "optional",
+      "inner": 146
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "board",
+          "node": 21,
+          "optional": true
+        },
+        {
+          "name": "section",
+          "node": 21,
+          "optional": true
+        },
+        {
+          "name": "user",
+          "node": 21,
+          "optional": true
+        },
+        {
+          "name": "status",
+          "node": 147,
+          "optional": true
+        },
+        {
+          "name": "limit",
+          "node": 1,
+          "optional": false
+        },
+        {
+          "name": "offset",
+          "node": 3,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "type": "default",
+      "value": "Normal",
+      "inner": 11
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "title",
+          "node": 7,
+          "optional": false
+        },
+        {
+          "name": "content",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "section",
+          "node": 5,
+          "optional": false
+        },
+        {
+          "name": "priority",
+          "node": 149,
+          "optional": false
+        },
+        {
+          "name": "dueDateAt",
+          "node": 25,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "id",
+          "node": 5,
+          "optional": false
+        },
+        {
+          "name": "title",
+          "node": 14,
+          "optional": true
+        },
+        {
+          "name": "content",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "priority",
+          "node": 12,
+          "optional": true
+        },
+        {
+          "name": "dueDateAt",
+          "node": 25,
+          "optional": true
+        },
+        {
+          "name": "taskStatus",
+          "node": 147,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "id",
+          "node": 5,
+          "optional": false
+        },
+        {
+          "name": "section",
+          "node": 5,
+          "optional": false
+        },
+        {
+          "name": "position",
+          "node": 144,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "task",
+          "node": 5,
+          "optional": false
+        },
+        {
+          "name": "comment",
+          "node": 7,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "task",
+          "node": 5,
+          "optional": false
+        },
+        {
+          "name": "limit",
+          "node": 1,
+          "optional": false
+        },
+        {
+          "name": "offset",
+          "node": 3,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "task_id",
+          "node": 5,
+          "optional": false
+        },
+        {
+          "name": "document_id",
+          "node": 5,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "type": "default",
+      "value": true,
+      "inner": 40
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "board_id",
+          "node": 5,
+          "optional": false
+        },
+        {
+          "name": "watch",
+          "node": 156,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "type": "enum",
+      "values": [
+        "sales",
+        "leads",
+        "accounts",
+        "activity",
+        "campaigns",
+        "users"
+      ]
+    },
+    {
+      "type": "optional",
+      "inner": 158
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "category",
+          "node": 159,
+          "optional": true
+        },
+        {
+          "name": "limit",
+          "node": 1,
+          "optional": false
+        },
+        {
+          "name": "offset",
+          "node": 3,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "type": "object",
+      "properties": [
+        {
+          "name": "category",
+          "node": 158,
+          "optional": false
+        },
+        {
+          "name": "dateFrom",
+          "node": 25,
+          "optional": true
+        },
+        {
+          "name": "dateTo",
+          "node": 25,
+          "optional": true
+        }
+      ]
+    }
+  ],
+  "sourceSHA256": {
+    "lib/mcp/tools/index.ts": "778f71f5a5f8132810a819d00a600543ac8fe1f48e5c942f84b033768d0e2951",
+    "lib/mcp/tools/crm-accounts.ts": "8d4d2833bca3db66d3d7010a5dd55bb401574611e73a3f39356c1ddda9fc9b96",
+    "lib/mcp/helpers.ts": "653ad6c80622909f2fe681aaa5ec22bc4a71f16e23db0e8b8a9d74fc1e5e9633",
+    "lib/mcp/tools/crm-contacts.ts": "97e94cf16ee86af47eefc2cba0aa6236f3dbdedc49632d7a30a4fc0f7ff40d7e",
+    "lib/mcp/tools/crm-leads.ts": "877470a9982eca5097c8260deaeb072c560a4c19f418b22063a5fa2aa5de0ab7",
+    "lib/mcp/tools/crm-opportunities.ts": "6e304ea9bdd72a50838a58a19ef68d5bd7cac81fdeb4be18b13201d6ddd43cc1",
+    "lib/mcp/tools/crm-targets.ts": "2b77e1833d34cb54f1ea4107027f07ba4724e65fec811bb2ce535f06df16fb19",
+    "lib/mcp/tools/crm-products.ts": "4e7a1fea05fdb7d22cae9cc7c02185ac8c89bc72b35848d9012561b6288b28a6",
+    "lib/mcp/tools/crm-users.ts": "166449d26ada240207f3771710ffb1ea72570854dfd84dbacbe82ed6eac74ff4",
+    "lib/mcp/tools/crm-contracts.ts": "42da1c2180a6592660c3afa8c4edf68257e0335cd53543d2abaa3ae94082ac53",
+    "lib/mcp/tools/crm-activities.ts": "62714c492324d2efbc72374076703bad70cac5f2bc48b3c162b67ce01ce8e866",
+    "lib/mcp/tools/crm-price-lists.ts": "22f5ae3d1b6722fcf4ad7817b8b3f9be63c509185b3aa9ec044546cdb0c60897",
+    "lib/mcp/tools/crm-orders.ts": "269c74f719865f4a92b0f7966177769dbeae5732cb18849e7eb881e42443356e",
+    "lib/mcp/tools/crm-documents.ts": "db554864a170bd64758d32383cbdb33c478caebba3ce764c80e627686bf51918",
+    "lib/mcp/tools/crm-target-lists.ts": "c4e765eed49f3e35a9aedf7919b03842aa80e8bd4c0fc19cc5bf7b24a4cdfb4d",
+    "lib/mcp/tools/crm-enrichment.ts": "a306290942dddaff64ced13451f13b1f314ae742b07e0b79eebcbc92d27173f9",
+    "lib/mcp/tools/crm-email-accounts.ts": "e0564b788e223c549d5887bb59c9749a1293de0339cd7daad5b27d00309f45f1",
+    "lib/mcp/tools/campaigns.ts": "928f9245f6e873b68d3884c26f491dd47880ed4d3b7dc5e1f7045b64e7fbedb7",
+    "lib/mcp/tools/projects.ts": "932a4435f53da5b4a9427684b479e1da4c0b6053befe5f5e73712f63dfdca793",
+    "lib/mcp/tools/reports.ts": "fb72f5a7dd936cbc86bb9eac496630fac4a999bd3b60429229cc78faf7770c54"
+  },
+  "runtimeSHA256": {
+    "node_modules/zod/v4/core/checks.cjs": "9a2a428602fe9e380ea2a08495a47101a56710d814fe18fb0e6e30f65686a703",
+    "node_modules/zod/v4/core/schemas.cjs": "7e35563b275bcc457a6d8ae0f5e1354b3c499ddd38401439f16bed1b8f357e41",
+    "node_modules/zod/v4/core/util.cjs": "c7fd0ee0303e7344463692d0936d59c982ed28bb1b73dbd97d2b887ae15d80f1",
+    "node_modules/zod/v4/core/regexes.cjs": "0f597e9323d68371224cf7080d31e87e8f420dae4629e044a88b921470cb03d2",
+    "node_modules/zod/v4/locales/en.cjs": "14a0588e528ab1797db17fcb3913a5804089e17208330a4e442d21be67d47682",
+    "node_modules/@modelcontextprotocol/sdk/dist/cjs/server/zod-compat.js": "083cdae912fcc72bfaf7f072f10471d7a07fb8b9d5388b9f5389394802c874da"
+  }
+}

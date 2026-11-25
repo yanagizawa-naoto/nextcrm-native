@@ -1,0 +1,12 @@
+const fs=require('fs'),path=require('path');const d=process.argv[2]||__dirname;const mail=path.dirname(require.resolve('mailparser')),html=path.dirname(require.resolve('html-to-text',{paths:[mail]}));const {parseDocument}=require(require.resolve('htmlparser2',{paths:[html]}));
+const original=JSON.parse(fs.readFileSync(path.join(d,'reference.json'))).cases,native=JSON.parse(fs.readFileSync(path.join(d,'native.json')));
+function canonical(value){if(value==null)return null;const visit=n=>n.type==='text'?['text',n.data]:n.type==='comment'?['comment',n.data]:[n.name||n.type,Object.entries(n.attribs||{}).sort((a,b)=>a[0].localeCompare(b[0])),(n.children||[]).map(visit)];return (parseDocument(value,{decodeEntities:true}).children||[]).map(visit)}
+const exact=[],semantic=[],intentional=[],failures=[];
+if(original.length!==native.length)throw Error('case count');
+for(let i=0;i<original.length;i++){const a=original[i],b=native[i];if(a.name!==b.name)throw Error('case order');
+ if(/^parts-(1000|1001)$/.test(a.name)){const count=Number(a.name.split('-')[1]),expected=Array.from({length:count},(_,i)=>'part'+i).join('\n');if(b.text!==expected||a.text?.split('\n').length!==666)throw Error('node preservation');intentional.push({name:a.name,sourceParts:666,nativeParts:count,reason:'Installed splitter stops after its1000-node limit and simpleParser resolves partial text. Native retains all ordered parts.'});continue}
+ if(a.name==='source-header-bound-1048577'){if(a.text!=null||a.subject!=null||!b.error)throw Error('header failure');intentional.push({name:a.name,reason:'Installed splitter maximum header includes separator; source resolves an empty message after limit failure. Native returns an explicit failure before DB publication.'});continue}
+ const diff=['text','subject','error'].filter(k=>(a[k]??null)!==(b[k]??null));if(diff.length||JSON.stringify(canonical(a.html))!==JSON.stringify(canonical(b.html))){failures.push({name:a.name,fields:diff,sourceHTML:a.html,nativeHTML:b.html});continue}
+ if(a.html!==b.html)semantic.push({name:a.name,reason:'Equivalent HTML entity spelling only; DOM text/tags/attributes identical.'});else exact.push(a.name);
+}
+const proof={cases:original.length,exact:exact.length,semantic,intentional,failures};fs.writeFileSync(path.join(d,'comparison.json'),JSON.stringify(proof,null,2));console.log(JSON.stringify({cases:proof.cases,exact:proof.exact,semantic:semantic.length,intentional:intentional.length,failures:failures.length}));if(failures.length)process.exitCode=1;

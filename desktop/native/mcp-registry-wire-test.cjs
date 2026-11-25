@@ -1,0 +1,196 @@
+const assert = require('node:assert/strict');
+const { spawn } = require('node:child_process');
+const readline = require('node:readline');
+const { Client } = require('@modelcontextprotocol/sdk/client/index.js');
+const { StreamableHTTPClientTransport } = require('@modelcontextprotocol/sdk/client/streamableHttp.js');
+const child = spawn(process.argv[2], [process.argv[3]], { stdio: ['pipe', 'pipe', 'pipe'] });
+const lines = [], pending = [], clients = [], successful = new Set();
+let stderr = '', ended = false, checks = 0;
+const id = n => `00000000-0000-4000-8000-${String(n).padStart(12, '0')}`;
+child.stderr.on('data', data => { stderr += data; });
+readline.createInterface({ input: child.stdout }).on('line', line => {
+  const value = JSON.parse(line); if (pending.length) pending.shift().resolve(value); else lines.push(value);
+});
+const exited = new Promise(resolve => child.on('exit', (code, signal) => {
+  ended = true; for (const reader of pending.splice(0)) reader.reject(new Error(`fixture exited ${code}/${signal}: ${stderr}`));
+  resolve({ code, signal });
+}));
+function next() { return lines.length ? Promise.resolve(lines.shift()) : new Promise((resolve, reject) => pending.push({ resolve, reject })); }
+async function command(command, fields = {}) { child.stdin.write(JSON.stringify({ command, ...fields }) + '\n'); return next(); }
+async function waitForPeers(maximum) {
+  const deadline = Date.now() + 3000;
+  do {
+    if ((await command('stats')).retained <= maximum) { checks++; return; }
+    await new Promise(resolve => setTimeout(resolve, 20));
+  } while (Date.now() < deadline);
+  throw new Error('Closed SDK client retained its admission slot');
+}
+function equal(actual, expected, label) { assert.deepEqual(actual, expected, label); checks++; }
+async function connect(url, raw) {
+  const client = new Client({ name: 'Isolated native account integration', version: '1' }); clients.push(client);
+  await client.connect(new StreamableHTTPClientTransport(new URL(url), raw ? { requestInit: { headers: { Authorization: 'Bearer ' + raw } } } : {}));
+  return client;
+}
+async function call(client, name, arguments = {}) {
+  const result = await client.callTool({ name, arguments });
+  if (result.isError !== true) successful.add(name);
+  return { body: JSON.parse(result.content[0].text), failed: result.isError === true };
+}
+async function run() {
+  const ready = await next(); assert.ok(ready.ready, 'fixture startup');
+  const anonymous = await connect(ready.ready);
+  equal((await anonymous.listTools()).tools.map(x => x.name).sort(), ready.tools, 'only composed real operations advertised');
+  equal(ready.tools.length, 123, '123 implemented operations'); equal(ready.partialRegistryRejected, true, 'a missing operation still fails the full catalog gate'); equal(ready.fullRegistryAccepted, true, 'complete registry passes the catalog gate');
+  equal((await call(anonymous, 'crm_list_accounts')).body.code, 'UNAUTHORIZED', 'anonymous discovery grants no data authority');
+  await anonymous.close(); await waitForPeers(0);
+  const alice = await connect(ready.ready, ready.credentials[id(1)]), bob = await connect(ready.ready, ready.credentials[id(2)]);
+  const list = await call(alice, 'crm_list_accounts', { limit: 2, offset: 1 });
+  equal(list.failed, false, 'authenticated list succeeds'); equal(list.body.total, 9, 'scoped total');
+  equal(list.body.data.map(x => x.id), [id(110), id(109)], 'stable paged order'); equal(list.body.offset, 1, 'offset preserved');
+  const searched = await call(alice, 'crm_search_accounts', { query: 'éclair' });
+  equal(searched.body.data.map(x => x.id), [id(106)], 'Unicode case insensitive search');
+  const [denied, allowed] = await Promise.all([call(alice, 'crm_get_account', { id: id(102) }), call(bob, 'crm_get_account', { id: id(102) })]);
+  equal(denied.body.code, 'NOT_FOUND', 'simultaneous Alice request remains scoped'); equal(allowed.body.data.id, id(102), 'simultaneous Bob request retains own authority');
+  const name = '  日本語企業' + '長'.repeat(600) + '  ';
+  const created = await call(alice, 'crm_create_account', { name, email: 'wire@example.invalid', assigned_to: id(2) });
+  equal(created.failed, false, 'real create'); equal(created.body.data.name, name, 'original whitespace and long Unicode name retained');
+  equal(created.body.data.assigned_to, id(1), 'unknown create owner field stripped');
+  const accountID = created.body.data.id;
+  const stored = await command('stored', { id: accountID });
+  equal(stored.row, created.body.data, 'API response matches independent reopened SQLite connection'); equal(stored.actor, id(1), 'audit actor follows token');
+  const updated = await call(alice, 'crm_update_account', { id: accountID, description: '通信経由の更新', assigned_to: id(2) });
+  equal(updated.body.data.description, '通信経由の更新', 'real update'); equal(updated.body.data.assigned_to, id(2), 'real reassign');
+  equal((await call(bob, 'crm_get_account', { id: accountID })).body.data.id, accountID, 'new owner immediately sees account');
+  const removed = await call(bob, 'crm_delete_account', { id: accountID });
+  equal(removed.failed, false, 'real soft deletion'); equal(Object.keys(removed.body.data).sort(), ['deletedAt', 'id'], 'delete response projection');
+  equal((await call(alice, 'crm_get_account', { id: accountID })).body.code, 'NOT_FOUND', 'deleted hidden from creator');
+  equal((await command('stored', { id: accountID })).actor, id(2), 'deletion attributed to new owner');
+  const invalid = await alice.callTool({ name: 'crm_create_account', arguments: { name: '' } });
+  equal(invalid.isError, true, 'invalid input rejected over SDK');
+  equal((await call(alice, 'crm_list_accounts')).body.total, 9, 'invalid and deleted operations leave expected rows');
+  const people = await call(alice, 'crm_list_users', { status: 'ALL' });
+  equal(people.failed, false, 'real assignee list');
+  equal(people.body.data.every(row => Object.keys(row).sort().join(',') === 'avatar,id,name'), true, 'members receive only public user fields');
+  equal(people.body.data.some(row => row.id === id(5)), false, 'members cannot request inactive users');
+  const contact = await call(alice, 'crm_create_contact', { last_name: ' 通信用の連絡先 ', first_name: '花子', mobile_phone: '090-0000' });
+  equal(contact.failed, false, 'real contact creation'); equal(contact.body.data.last_name, ' 通信用の連絡先 ', 'contact name whitespace retained');
+  const contactID = contact.body.data.id;
+  equal((await call(alice, 'crm_list_contacts')).body.data.map(x => x.id), [contactID], 'real contact list');
+  equal((await call(alice, 'crm_search_contacts', { query: '090-0000' })).body.data.map(x => x.id), [contactID], 'contact phone search');
+  equal((await call(alice, 'crm_update_contact', { id: contactID, account: id(102) })).body.code, 'NOT_FOUND', 'forbidden parent relink');
+  const linked = await call(alice, 'crm_update_contact', { id: contactID, account: id(101), assigned_to: id(2) });
+  equal(linked.body.data.accountsIDs, id(101), 'writes actual relation FK'); equal(linked.body.data.account, null, 'legacy account field unchanged');
+  equal((await call(bob, 'crm_get_contact', { id: contactID })).body.data.id, contactID, 'contact reassignment visible immediately');
+  equal((await call(bob, 'crm_delete_contact', { id: contactID })).failed, false, 'real contact soft deletion');
+  equal((await call(alice, 'crm_get_contact', { id: contactID })).body.code, 'NOT_FOUND', 'deleted contact hidden');
+  async function good(client, name, input = {}) { const result = await call(client, name, input); equal(result.failed, false, name + ': ' + JSON.stringify(result.body)); return result.body.data ?? result.body; }
+  const emailAccounts = await good(alice, 'crm_list_email_accounts');
+  equal(emailAccounts.length, 1, 'own email account visible'); equal('passwordEncrypted' in emailAccounts[0], false, 'mail credential not exposed');
+  equal((await good(bob, 'crm_list_email_accounts')).length, 0, 'other email account hidden');
+  await good(alice, 'crm_list_lead_options');
+  const lead = await good(alice, 'crm_create_lead', {lastName:'通信リード',company:'日本語'});
+  equal((await good(alice, 'crm_list_leads')).some(x=>x.id===lead.id), true, 'created lead listed');
+  equal((await good(alice, 'crm_search_leads',{query:'通信リード'}))[0].id,lead.id,'lead searched');
+  await good(alice, 'crm_get_lead',{id:lead.id});
+  await good(alice, 'crm_update_lead',{id:lead.id,assigned_to:id(2),firstName:'花子'});
+  equal((await good(bob, 'crm_get_lead',{id:lead.id})).firstName,'花子','reassigned lead visible');
+  await good(alice, 'crm_delete_lead',{id:lead.id});
+  await good(alice, 'crm_list_opportunity_options');
+  const opportunity=await good(alice,'crm_create_opportunity',{name:'通信商談',currency:'JPY'});
+  await good(alice,'crm_list_opportunities');await good(alice,'crm_search_opportunities',{query:'通信商談'});
+  await good(alice,'crm_get_opportunity',{id:opportunity.id});
+  await good(alice,'crm_update_opportunity',{id:opportunity.id,name:'通信商談更新'});
+  await good(alice,'crm_delete_opportunity',{id:opportunity.id});
+  const contract=await good(alice,'crm_create_contract',{title:'通信契約',value:1234.5,currency:'JPY'});
+  await good(alice,'crm_list_contracts');await good(alice,'crm_get_contract',{id:contract.id});
+  equal((await good(alice,'crm_update_contract',{id:contract.id,value:2000.005})).value,'2000.01','Decimal crosses real transport as exact string');
+  await good(alice,'crm_delete_contract',{id:contract.id});
+  const target=await good(alice,'crm_create_target',{last_name:'通信対象'}), targetList=await good(alice,'crm_create_target_list',{name:'通信リスト'});
+  await good(alice,'crm_list_targets');await good(alice,'crm_search_targets',{query:'通信対象'});await good(alice,'crm_get_target',{id:target.id});
+  await good(alice,'crm_update_target',{id:target.id,company:'対象企業'});await good(alice,'crm_list_target_lists');await good(alice,'crm_get_target_list',{id:targetList.id});
+  await good(alice,'crm_update_target_list',{id:targetList.id,name:'更新リスト'});
+  await good(alice,'crm_add_to_target_list',{target_list_id:targetList.id,target_ids:[target.id]});
+  await good(alice,'crm_remove_from_target_list',{target_list_id:targetList.id,target_ids:[target.id]});
+  await good(alice,'crm_delete_target',{id:target.id});await good(alice,'crm_delete_target_list',{id:targetList.id});
+  const activity=await good(alice,'crm_create_activity',{type:'meeting',title:'通信会議',date:'2026-11-01T03:04:05.123Z',links:[{entityType:'account',entityId:id(101)}]});
+  await good(alice,'crm_list_activities',{entityType:'account',entityId:id(101)});await good(alice,'crm_get_activity',{id:activity.id});
+  equal((await call(bob,'crm_update_activity',{id:activity.id,title:'権限なし'})).body.code,'NOT_FOUND','activity remains creator-only over TCP');
+  await good(alice,'crm_update_activity',{id:activity.id,status:'cancelled'});await good(alice,'crm_delete_activity',{id:activity.id});
+  const board=await good(alice,'projects_create_board',{title:'通信ボード',description:'日本語の説明'});
+  await good(alice,'projects_list_boards');await good(alice,'projects_get_board',{id:board.id});await good(alice,'projects_update_board',{id:board.id,title:'更新ボード'});
+  const first=await good(alice,'projects_create_section',{board:board.id,title:'作業中'}), second=await good(alice,'projects_create_section',{board:board.id,title:'完了'});
+  await good(alice,'projects_update_section',{id:first.id,title:'進行中',position:1000});
+  const task=await good(alice,'projects_create_task',{section:first.id,title:'通信タスク',content:'内容'});
+  await good(alice,'projects_list_tasks',{board:board.id});await good(alice,'projects_get_task',{id:task.id});await good(alice,'projects_update_task',{id:task.id,taskStatus:'COMPLETE'});
+  await good(alice,'projects_move_task',{id:task.id,section:second.id,position:1000});
+  await good(alice,'projects_add_comment',{task:task.id,comment:'通信コメント'});equal((await good(alice,'projects_list_comments',{task:task.id})).length,1,'project comment retained');
+  await good(alice,'projects_assign_document',{task_id:task.id,document_id:id(8801)});await good(alice,'projects_watch_board',{board_id:board.id,watch:true});
+  await good(alice,'projects_delete_task',{id:task.id});await good(alice,'projects_delete_section',{id:first.id});await good(alice,'projects_delete_section',{id:second.id});await good(alice,'projects_delete_board',{id:board.id});
+  const document=await good(alice,'crm_create_document',{document_name:'統合文書',contentType:'text/plain'});
+  await good(alice,'crm_list_documents');await good(alice,'crm_get_document',{id:document.id});
+  const uploadURL=await good(alice,'crm_get_upload_url',{id:document.id}), downloadURL=await good(alice,'crm_get_download_url',{id:document.id});
+  equal((await fetch(uploadURL.url,{method:'PUT',headers:{'content-type':'text/plain'},body:'統合テストの本文'})).status,200,'document upload on shared listener');
+  equal(await (await fetch(downloadURL.url)).text(),'統合テストの本文','document download on shared listener');
+  await good(alice,'crm_link_document',{document_id:document.id,entityType:'account',entityId:id(101)});
+  equal((await good(alice,'crm_get_document',{id:document.id})).accounts.length,1,'document association persists');
+  await good(alice,'crm_unlink_document',{document_id:document.id,entityType:'account',entityId:id(101)});await good(alice,'crm_delete_document',{id:document.id});
+  const enrichedContact=await good(alice,'crm_create_contact',{last_name:'補完連絡先',email:'contact@example.invalid'});
+  const enrichedTarget=await good(alice,'crm_create_target',{last_name:'補完対象',email:'target@example.invalid'});
+  const fields=[{name:'company',description:'勤務先'}];
+  equal((await good(alice,'crm_enrich_contact',{contactId:enrichedContact.id,fields})).status,'RUNNING','single contact history queued');
+  equal((await good(alice,'crm_enrich_contact_bulk',{contactIds:[enrichedContact.id],fields})).status,'DISPATCHED','contact batch queued');
+  equal((await good(alice,'crm_enrich_target',{targetId:enrichedTarget.id,fields})).status,'RUNNING','single target history queued');
+  equal((await good(alice,'crm_enrich_target_bulk',{targetIds:[enrichedTarget.id],fields})).count,1,'target batch queued');
+  await good(alice,'reports_list');await good(alice,'reports_run',{category:'sales',dateFrom:'2020-01-01T00:00:00.000Z',dateTo:'2030-01-01T00:00:00.000Z'});
+  const jobs=await command('jobs');equal(jobs.events.includes('crm.lead_assigned'),true,'reassignment queues native lead mail');equal(jobs.events.includes('calendar/outbound'),true,'meeting queues native calendar work');
+  await bob.close(); await waitForPeers(1);
+  const manager = await connect(ready.ready, ready.credentials[id(3)]);
+  const privilegedUsers = await call(manager, 'crm_list_users', { status: 'ALL' });
+  equal(privilegedUsers.body.data.some(row => row.id === id(5) && row.userStatus === 'INACTIVE'), true, 'manager sees requested inactive users');
+  equal(privilegedUsers.body.data.every(row => 'email' in row && 'role' in row && !('password' in row)), true, 'manager projection excludes secrets');
+  equal((await call(manager, 'crm_get_account', { id: id(102) })).body.data.id, id(102), 'manager read');
+  const product=await good(manager,'crm_create_product',{name:'通信商品',type:'PRODUCT',unit_price:1234.5,currency:'JPY'});
+  await good(manager,'crm_list_products');await good(manager,'crm_get_product',{id:product.id});await good(manager,'crm_update_product',{id:product.id,status:'ACTIVE'});
+  const prices=await good(manager,'crm_create_price_list',{name:'通信価格表',currency:'JPY'});
+  await good(manager,'crm_list_price_lists');await good(manager,'crm_get_price_list',{id:prices.id});await good(manager,'crm_update_price_list',{id:prices.id,name:'更新価格表'});
+  const rule=await good(manager,'crm_upsert_price_list_rule',{priceListId:prices.id,appliesTo:'PRODUCT',productId:product.id,computePrice:'FIXED',fixedPrice:1000});
+  await good(manager,'crm_get_price',{productId:product.id,quantity:2,priceListId:prices.id});
+  const order=await good(alice,'crm_create_order',{accountId:id(101),lines:[{productId:product.id,quantity:2,unitPrice:10}]});
+  await good(alice,'crm_list_orders');await good(alice,'crm_get_order',{id:order.id});
+  await good(alice,'crm_update_order',{id:order.id,lines:[{productId:product.id,quantity:3,unitPrice:10}],note:'通信更新'});
+  equal((await good(alice,'crm_submit_order',{id:order.id})).status,'PENDING_APPROVAL','discounted user order requires approval');
+  equal((await good(manager,'crm_decide_order_approval',{id:order.id,decision:'APPROVED'})).status,'READY','manager approves order');
+  equal((await good(manager,'crm_set_order_status',{id:order.id,action:'advance',to:'SENT'})).status,'SENT','order workflow advances');
+  equal((await call(alice,'crm_cancel_order',{id:order.id})).body.code,'FORBIDDEN','sent order cancellation requires manager');await good(manager,'crm_cancel_order',{id:order.id});
+  const template=await good(manager,'campaigns_create_template',{name:'通信テンプレート',subject_default:'通信件名',content_html:'<p>本文</p>',content_json:{type:'doc',content:[]}});
+  await good(manager,'campaigns_list_templates');await good(manager,'campaigns_get_template',{id:template.id});await good(manager,'campaigns_update_template',{id:template.id,name:'更新テンプレート'});
+  const campaign=await good(manager,'campaigns_create',{name:'通信キャンペーン',template_id:template.id});
+  await good(manager,'campaigns_list');await good(manager,'campaigns_get',{id:campaign.id});await good(manager,'campaigns_update',{id:campaign.id,description:'日本語の説明'});
+  const step=await good(manager,'campaigns_create_step',{campaign_id:campaign.id,order:1,template_id:template.id,subject:'後続件名'});
+  await good(manager,'campaigns_update_step',{id:step.id,delay_days:2});await good(manager,'campaigns_delete_step',{id:step.id});
+  const campaignList=await good(manager,'crm_create_target_list',{name:'配信対象'});
+  await good(manager,'campaigns_assign_target_list',{campaign_id:campaign.id,target_list_id:campaignList.id});await good(manager,'campaigns_remove_target_list',{campaign_id:campaign.id,target_list_id:campaignList.id});
+  equal((await call(manager,'campaigns_send',{id:campaign.id})).body.code,'INVALID_REQUEST','source requires initial step prepared by editor');
+  equal((await command('uiFirstStep',{id:campaign.id,template:template.id})).created,true,'actual native campaign editor prepares initial step');
+  equal((await good(manager,'campaigns_send',{id:campaign.id})).status,'sending','native campaign dispatch queued');
+  await good(manager,'campaigns_pause',{id:campaign.id});await good(manager,'campaigns_resume',{id:campaign.id});await good(manager,'campaigns_get_stats',{id:campaign.id});
+  equal((await call(manager,'campaigns_delete',{id:campaign.id})).body.code,'INVALID_REQUEST','sending campaign cannot be deleted');await good(manager,'campaigns_pause',{id:campaign.id});
+  await good(manager,'campaigns_delete',{id:campaign.id});await good(manager,'campaigns_delete_template',{id:template.id});
+  equal((await call(manager,'reports_run',{category:'users'})).body,{error:'Unauthenticated',code:'INTERNAL_ERROR'},'bearer does not replace the original independent cookie-session gate');
+  const queued=await command('jobs');for(const event of ['enrich/contact.run','enrich/contacts.bulk','enrich/target.run','enrich/targets.bulk','campaigns/send-now','orders.approval_requested']) equal(queued.events.includes(event),true,'durable effect '+event);
+  await good(manager,'crm_delete_price_list_rule',{id:rule.id});await good(manager,'crm_archive_price_list',{id:prices.id});await good(manager,'crm_delete_product',{id:product.id});
+  equal([...successful].sort(),ready.tools,'every advertised operation succeeded over actual SDK/TCP');
+  equal((await command('role', { id: id(3), role: 'user' })).changed, true, 'role changed');
+  equal((await call(manager, 'crm_get_account', { id: id(102) })).body.code, 'NOT_FOUND', 'same connected client uses fresh downgraded role');
+  equal((await command('revoke', { id: id(1) })).revoked, true, 'token revoked');
+  equal((await call(alice, 'crm_create_account', { name: 'revoked-must-not-write' })).body.code, 'UNAUTHORIZED', 'connected client cannot mutate after revocation');
+  await Promise.all(clients.map(client => client.close()));
+  await waitForPeers(0);
+  equal((await command('quit')).stopped, true, 'server shut down'); equal(await exited, { code: 0, signal: null }, 'fixture exits cleanly'); equal(stderr, '', 'no fixture errors');
+  console.log(JSON.stringify({ checks, realTools: successful.size, scope: 'Installed MCP SDK over native TCP with all123 composed real operations, current-token/role SQLite effects, persisted-state reads and native outbox events. Provider workers, cookie-session integration, app/plugins/live providers remain separate gates.' }));
+}
+const timeout = setTimeout(() => child.kill('SIGTERM'), 60000);
+run().catch(async error => { console.error(`After ${checks} checks: ${error.stack}`); console.error(JSON.stringify({ cause: error.cause?.code, detail: error.cause?.message, server: ended ? null : await command('stats') })); process.exitCode = 1; }).finally(async () => {
+  clearTimeout(timeout); await Promise.all(clients.map(client => client.close().catch(() => {})));
+  if (!ended) { child.stdin.end(); const kill = setTimeout(() => child.kill('SIGTERM'), 1000); await exited; clearTimeout(kill); }
+});

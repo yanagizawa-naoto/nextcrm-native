@@ -1,0 +1,8 @@
+import Foundation
+
+extension CRMModule {
+    static let orders = CRMModule(model:"crm_Orders",title:"受注",singular:"受注",entity:"order",nameFields:["number"],
+        columns:[CRMColumn("受注番号","number",0.21),CRMColumn("取引先","accountId",0.25,relation:"crm_Accounts"),CRMColumn("担当者","ownerId",0.15,relation:"Users"),CRMColumn("状態","status",0.13),CRMColumn("合計","grandTotal+currency",0.17),CRMColumn("受注日","orderDate",0.09)],
+        fields:[EditorField("number","受注番号"),EditorField("status","状態",.choice(OrderWorkflow.statuses.map { ($0,OrderWorkflow.labels[$0]!) })),EditorField("accountId","取引先",.relation("crm_Accounts")),EditorField("ownerId","担当者",.relation("Users")),EditorField("contactId","連絡先",.relation("crm_Contacts")),EditorField("priceListId","価格表",.relation("crm_PriceLists")),EditorField("currency","通貨"),EditorField("shipping_street","送付先 番地・建物"),EditorField("shipping_city","送付先 市区町村"),EditorField("shipping_state","送付先 都道府県"),EditorField("shipping_postal_code","送付先 郵便番号"),EditorField("shipping_country","送付先 国・地域"),EditorField("requestedDeliveryDate","納品希望日",.date),EditorField("note","メモ"),EditorField("subtotal","小計"),EditorField("vatTotal","税額"),EditorField("grandTotal","合計"),EditorField("approvalRequestedAt","承認申請日時",.dateTime),EditorField("approvedAt","承認日時",.dateTime),EditorField("approvedBy","承認者",.relation("Users")),EditorField("approvalNote","承認・却下のメモ")])
+    static let orderSettings = CRMModule(model:"NumberSeries",title:"受注の採番設定",singular:"採番設定",entity:"number_series",nameFields:["name"],columns:[],fields:[EditorField("name","名称"),EditorField("template","採番書式"),EditorField("resetPolicy","番号のリセット",.choice([("YEARLY","毎年"),("NEVER","リセットしない")])),EditorField("active","有効",.toggle),EditorField("counter","使用済み番号")])
+}

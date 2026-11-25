@@ -1,0 +1,56 @@
+[
+  {
+    "v": 0,
+    "name": "新規",
+    "order": 0,
+    "probability": 10
+  },
+  {
+    "v": 0,
+    "name": "要件確認",
+    "order": 0,
+    "probability": 25
+  },
+  {
+    "v": 0,
+    "name": "契約締結",
+    "probability": 95,
+    "order": null
+  },
+  {
+    "v": 0,
+    "name": "提案済み",
+    "probability": 30,
+    "order": null
+  },
+  {
+    "v": 0,
+    "name": "提案合意",
+    "probability": 45,
+    "order": null
+  },
+  {
+    "v": 0,
+    "name": "契約案作成",
+    "probability": 65,
+    "order": null
+  },
+  {
+    "v": 0,
+    "name": "契約条件調整",
+    "probability": 75,
+    "order": null
+  },
+  {
+    "v": 0,
+    "name": "署名依頼済み",
+    "probability": 80,
+    "order": null
+  },
+  {
+    "v": 0,
+    "name": "案件実施",
+    "probability": 100,
+    "order": null
+  }
+]

@@ -1,0 +1,17 @@
+#!/usr/bin/env python3
+from pathlib import Path
+import json,hashlib,subprocess
+n=Path(__file__).resolve().parent
+names=['NativeDatabase', 'CRMModules', 'InvoiceModules', 'CatalogModules', 'LineItemModules', 'LineItemMath', 'CRMLineItems', 'CRMCatalog', 'ProductCSV', 'PricingEngine', 'CRMService', 'OrderModules', 'OrderWorkflow', 'OrderDraftStore', 'CRMOrders', 'InvoiceMath', 'NativeAPITokens', 'NativeMCPProtocol', 'NativeMCPInputCatalog', 'NativeMCPRequestRouter', 'NativeMCPAccounts', 'NativeMCPAccountsFixture', 'NativeMCPHTTPParser', 'NativeMCPHTTPServer', 'NativeMCPContacts', 'NativeMCPUsers', 'NativeMCPEmailAccounts', 'NativeMCPLeads', 'NativeMCPOpportunities', 'NativeMCPContracts', 'NativeMCPTargets', 'NativeMCPTargetLists', 'NativeMCPDocumentAccess', 'NativeMCPProjects', 'NativeMCPActivities', 'NativeMCPProducts', 'NativeMCPPriceLists', 'NativeMCPRegistry', 'NativeEmbeddingVector', 'NativeEmbeddingClient', 'NativeDocumentAIText', 'NativeOpenAIChatClient', 'NativeDocumentAIWorker', 'NativeEmbeddingIndex', 'NativeAICredentials', 'NativeUserCredentialCleanup', 'NativeE2BSettings', 'NativeE2BConfiguration', 'NativeAIQAServices', 'NativeEmbeddingJobs', 'NativeEmbeddingWorker', 'NativeEnrichmentPolicy', 'NativeContactEnrichment', 'NativeContactEnrichmentWorker', 'NativeTargetEnrichment', 'NativeTargetEnrichmentWorker', 'NativeEnrichmentWeb', 'NativeEnrichmentText', 'NativeEnrichmentPrompts', 'NativeEnrichmentOpenAI', 'NativeMCPEnrichment', 'CampaignWorkflow', 'NativeMCPCampaigns', 'NativeMCPOrders', 'NativeReports', 'NativeMCPReports', 'NativeDocumentFiles', 'NativeMCPDocumentStorage', 'NativeMCPDocuments', 'NativeMCPDocumentObjectStore', 'NativeMCPDocumentHTTP', 'NativeMCPSettings', 'NativeMCPCredentials', 'NativeMCPRuntime', 'NativeMCPRuntimeTests', 'NativeMigrationManifest', 'NativeMigrationJSON', 'NativeDataMaintenanceRecoveryTypes', 'NativeDataMaintenanceRecoveryFiles', 'NativeDataMaintenanceRecovery', 'NativeExportStaging', 'NativeOperationalAssets', 'NativeOperationalDocumentAssets', 'MailReview']
+sources=[n/(x+'.swift') for x in names]
+watched=sources+[n/'schema.json',n/'schema.sql',n/'MCPToolCatalog.json',n/'mcp-accounts-reference.cjs',Path(__file__).resolve()]
+before={p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in watched}
+subprocess.run(['node',str(n/'mcp-accounts-reference.cjs'),str(n/'build/mcp-accounts-reference.json')],check=True)
+binary=n/'build/NativeMCPRuntimeTests'
+command=['swiftc','-swift-version','5','-parse-as-library','-O','-whole-module-optimization','-target','arm64-apple-macos13.0','-framework','Security','-framework','LocalAuthentication','-lsqlite3',*map(str,sources),'-o',str(binary)]
+subprocess.run(command,check=True)
+assert before=={p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in watched},'source changed during compile'
+result=subprocess.run([str(binary),str(n)],capture_output=True,text=True,timeout=120)
+print(result.stdout,end='');print(result.stderr,end='');result.check_returncode()
+assert before=={p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in watched}
+(n/'build/mcp-runtime-verification.json').write_text(json.dumps({'sources':before,'stdout':result.stdout,'exit':result.returncode,'binaryBytes':binary.stat().st_size,'scope':'Native lifecycle/settings contract (not original TS server configuration), real loopback TCP with original 123-operation registry; fake Keychain only, no app data or external providers.'},ensure_ascii=False,indent=2)+'\n')

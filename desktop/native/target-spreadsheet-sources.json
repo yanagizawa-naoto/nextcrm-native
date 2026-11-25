@@ -1,0 +1,51 @@
+{
+  "shared": [
+    "NativeDatabase",
+    "CRMModules",
+    "InvoiceModules",
+    "CatalogModules",
+    "LineItemModules",
+    "LineItemMath",
+    "CRMLineItems",
+    "CRMCatalog",
+    "ProductCSV",
+    "PricingEngine",
+    "CRMService",
+    "OrderModules",
+    "OrderWorkflow",
+    "OrderDraftStore",
+    "CRMOrders",
+    "InvoiceMath",
+    "NativeEmbeddingVector",
+    "NativeAICredentials",
+    "NativeUserCredentialCleanup",
+    "NativeEmbeddingClient",
+    "NativePluginsTypes",
+    "NativeDataMaintenanceRecoveryTypes",
+    "NativeDataMaintenanceRecoveryFiles",
+    "NativeDataMaintenanceRecovery",
+    "NativeMigrationManifest",
+    "NativeMigrationJSON",
+    "NativeExportStaging",
+    "NativeTargetSpreadsheetExport"
+  ],
+  "production": [
+    "NativeTargetSpreadsheetFields",
+    "NativeTargetSpreadsheetMapping",
+    "NativeTargetSpreadsheetDraft",
+    "NativeTargetSpreadsheetCSVReader",
+    "NativeTargetSpreadsheetXLSXReader",
+    "NativeTargetSpreadsheetService",
+    "NativeTargetSpreadsheetAI",
+    "NativeTargetSpreadsheetController",
+    "NativeTargetSpreadsheetWindow",
+    "NativeTargetSpreadsheetSelection"
+  ],
+  "tests": [
+    "NativeTargetSpreadsheetParserTests",
+    "NativeTargetSpreadsheetServiceTests",
+    "NativeTargetSpreadsheetControllerTests",
+    "NativeTargetSpreadsheetUITests",
+    "NativeTargetSpreadsheetTests"
+  ]
+}

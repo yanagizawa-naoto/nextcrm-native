@@ -1,0 +1,16 @@
+const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto'),{createSourceLoader}=require('./plugins-source-loader.cjs');
+let active=true,local=true,mime='image/png',destroyed=false;const captured=[];
+const mocks={
+ 'next/server':{NextResponse:{json:(json,options={})=>({status:options.status??200,json})}},
+ '@/lib/auth-server':{getSession:async()=>active?{user:{id:'fixture'}}:null},
+ '@/lib/minio':{MINIO_BUCKET:'fixture',MINIO_PUBLIC_URL:'https://fixture.invalid',presignPut:async(key,type)=>{captured.push({key,type});return 'https://fixture.invalid/signed';}},
+ '@/lib/local-storage':{usesLocalStorage:()=>local,getLocalObject:async key=>({ContentType:mime,ContentLength:4,Body:{destroy:()=>{destroyed=true},transformToWebStream:()=>new ReadableStream({start(c){c.enqueue(new Uint8Array([1,2,3,4]));c.close();}})}})},
+};
+(async()=>{const l=createSourceLoader(mocks),upload=l.load('app/api/upload/presigned-url/route.ts'),read=l.load('app/api/profile/avatar/[filename]/route.ts'),types=l.load('lib/upload-content-types.ts'),cases=[];
+for(const type of ['image/png','image/jpeg','image/gif','image/webp','image/svg+xml','image/heic','application/pdf','IMAGE/PNG','__proto__']){const r=await upload.POST({json:async()=>({filename:'../untrusted.jpg',contentType:type,folder:'avatars'})});cases.push({type,status:r.status,extension:r.status===200?r.json.key.split('.').pop():null});}
+active=false;cases.push({name:'upload unauthenticated',status:(await upload.POST({json:async()=>({filename:'a.png',contentType:'image/png',folder:'avatars'})})).status});active=true;
+for(const filename of ['12345678-1234-1234-1234-123456789abc.png','../secret.png','12345678-1234-1234-1234-123456789abc.svg']){const r=await read.GET({}, {params:Promise.resolve({filename})});cases.push({name:filename,status:r.status,bytes:(await r.arrayBuffer()).byteLength});}
+active=false;cases.push({name:'GET unauthenticated',status:(await read.GET({}, {params:Promise.resolve({filename:'12345678-1234-1234-1234-123456789abc.png'})})).status});active=true;local=false;cases.push({name:'nonlocal GET',status:(await read.GET({}, {params:Promise.resolve({filename:'12345678-1234-1234-1234-123456789abc.png'})})).status});local=true;
+mime='text/html';const r=await read.GET({}, {params:Promise.resolve({filename:'12345678-1234-1234-1234-123456789abc.png'})});cases.push({name:'stored MIME mismatch',status:r.status,destroyed});
+const root=path.resolve(__dirname,'../..');for(const p of ['components/ui/file-uploader-dropzone.tsx','components/ui/minio-uploader.tsx','app/[locale]/(routes)/profile/components/ProfilePhotoForm.tsx','app/[locale]/(routes)/profile/components/ProfileHeroAvatar.tsx','prisma/schema.prisma'])l.hashes[p]=crypto.createHash('sha256').update(fs.readFileSync(path.join(root,p))).digest('hex');
+fs.writeFileSync(process.argv[2],JSON.stringify({cases,allowed:cases.filter(c=>c.extension).map(c=>c.type),sourceSHA256:l.hashes,scope:'Actual presign/avatar GET/content type functions with synthetic session/storage boundaries; source UI declares 4 MiB and separate preview/save/cancel; ImageUpload model currently id-only and unused.'}));console.log(JSON.stringify({sourceCases:cases.length,allowed:cases.filter(c=>c.extension).map(c=>c.type)}));})().catch(e=>{console.error(e);process.exitCode=1});

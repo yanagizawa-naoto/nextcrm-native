@@ -1,0 +1,19 @@
+// Execute the actual configuration actions against isolated in-memory records.
+const fs=require('node:fs'),path=require('node:path'),vm=require('node:vm'),ts=require('typescript'),crypto=require('node:crypto');
+const root=path.resolve(__dirname,'../..'),cache=new Map(),hashes={};let active,rows=[],sequence=0;
+const id=n=>`71000000-0000-4000-8000-${String(n).padStart(12,'0')}`;
+const users=['admin','manager','alice','bob','partner'].map((name,i)=>({id:id(i+1),name,role:i===2||i===3?'user':name}));
+const configs=['alice','bob'].flatMap(owner=>[false,true].map(shared=>({id:`config-${owner}-${shared}`,name:`${owner}の条件`,category:'sales',filters:{from:'2026-09-01',to:'2026-11-01',assigneeId:'original-assignee',industryType:'元の業種'},isShared:shared,createdBy:users.find(u=>u.name===owner).id,createdAt:'2026-11-01T00:00:00.000Z'})));
+configs.push({...configs[0],id:'config-other-category',category:'users',isShared:true});
+function matches(row,where={}) {return Object.entries(where).every(([k,v])=>k==='OR'?v.some(x=>matches(row,x)):row[k]===v)}
+const prisma={crm_Report_Config:{findUnique:async({where})=>rows.find(r=>r.id===where.id)??null,findMany:async({where})=>rows.filter(r=>matches(r,where)),create:async({data})=>{const row={id:'new-'+(++sequence),...data};rows.push(row);return row},update:async({where,data})=>Object.assign(rows.find(r=>r.id===where.id),data),delete:async({where})=>{const index=rows.findIndex(r=>r.id===where.id);return rows.splice(index,1)[0]}}};
+function load(relative){const file=path.resolve(root,relative);if(cache.has(file))return cache.get(file);const source=fs.readFileSync(file,'utf8');hashes[relative]=crypto.createHash('sha256').update(source).digest('hex');const module={exports:{}};cache.set(file,module.exports);
+ const requireStub=name=>{if(name==='@/lib/prisma')return{prismadb:prisma};if(name==='@/lib/authz')return{...load('lib/authz/roles.ts'),...load('lib/authz/errors.ts'),requireAuthenticated:async()=>{if(!active)throw new (load('lib/authz/errors.ts').AuthenticationError)();return active;}};throw Error(name)};
+ vm.runInNewContext(ts.transpileModule(source,{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022}}).outputText,{module,exports:module.exports,require:requireStub},{filename:file,timeout:2000});return module.exports;}
+(async()=>{const api=load('actions/reports/config.ts'),scopes=[],lists=[];
+ for(const user of users){active=user;rows=structuredClone(configs);lists.push({user:user.id,ids:(await api.loadConfigs('sales')).map(x=>x.id)});
+  for(const cfg of configs){const outcome={user:user.id,config:cfg.id};for(const [name,run] of Object.entries({duplicate:()=>api.duplicateConfig(cfg.id,'複製'),share:()=>api.toggleShare(cfg.id,false),delete:()=>api.deleteConfig(cfg.id)})){rows=structuredClone(configs);try{const result=await run();outcome[name]=true;if(name==='duplicate'&&(result.createdBy!==user.id||result.isShared!==false||JSON.stringify(result.filters)!==JSON.stringify(cfg.filters)))throw Error('duplicate protocol')}catch(error){if(error.message==='duplicate protocol')throw error;outcome[name]=false;}}outcome.read=user.role==='admin'||user.role==='manager'||cfg.createdBy===user.id||cfg.isShared;scopes.push(outcome);}
+ }
+ active=users[2];rows=[];const input={name:'日本語の条件',category:'accounts',filters:{from:'2026-09-01',to:'2026-11-01',accountId:'元の取引先'},isShared:true};const created=await api.saveConfig(input);if(created.createdBy!==active.id)throw Error('owner');active=null;let denied=false;try{await api.saveConfig(input)}catch{denied=true}if(!denied)throw Error('authentication');
+ const output={users,configs,scopes,lists,create:{input,result:created},hashes};fs.writeFileSync(path.join(__dirname,'build/report-configs-reference.json'),JSON.stringify(output));console.log(JSON.stringify({suite:'actual TypeScript report configuration actions',cases:scopes.length,lists:lists.length}));
+})().catch(e=>{console.error(e);process.exit(1)});

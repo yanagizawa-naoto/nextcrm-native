@@ -1,0 +1,41 @@
+{
+  "measurementDate": "2026-11-25",
+  "units": {
+    "MB": 1000000,
+    "MiB": 1048576
+  },
+  "metric": "macOS physical footprint",
+  "environment": "Apple Silicon optimized isolated QA build with same native Swift business sources; synthetic data; no real providers",
+  "measurements": [
+    {
+      "revision": "final",
+      "swiftSourceCount": 453,
+      "scenario": "10000 saved targets, cold launch and list selection",
+      "bytes": 49497072,
+      "MB": 49.497072,
+      "processes": 1
+    },
+    {
+      "revision": "preceding",
+      "swiftSourceCount": 449,
+      "scenario": "10000-row CSV import in progress",
+      "bytes": 139232264,
+      "MB": 139.232264,
+      "processes": 1
+    },
+    {
+      "revision": "preceding",
+      "swiftSourceCount": 449,
+      "scenario": "HTML preview, app plus viewer and three WebKit processes",
+      "bytes": 121802856,
+      "MB": 121.802856,
+      "processes": 5
+    }
+  ],
+  "limits": [
+    "Point-in-time observations, not constant use or lifetime peak.",
+    "Shared OS and WindowServer excluded.",
+    "Preceding-revision import and HTML values were not remeasured on final revision.",
+    "HTML total is one multi-PID footprint invocation, not a sum of individual snapshots."
+  ]
+}

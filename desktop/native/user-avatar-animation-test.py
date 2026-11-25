@@ -1,0 +1,33 @@
+#!/usr/bin/env python3
+"""Isolated generated images + installed headless browser + real AppKit window.
+No downloads, network requests, production database or installed app operations.
+"""
+from pathlib import Path
+import hashlib,json,subprocess,time,re,platform,sys
+n=Path(__file__).resolve().parent
+files=[n/(name+'.swift') for name in ['NativeUserAvatarAnimation','NativeUserAvatarWebPAnimation','NativeUserAvatarAPNGAnimation','NativeUserAvatarWorkerProtocol','NativeUserAvatarWorkerClient','NativeUserAvatarView','NativeUserAvatarAnimationTests']]
+watched=files+[n/'user-avatar-animation-reference.cjs',Path(__file__).resolve()]
+sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+before={p.name:sha(p) for p in watched}
+subprocess.run(['node',str(n/'user-avatar-animation-reference.cjs')],check=True,cwd=n.parent.parent)
+reference=json.loads((n/'build/user-avatar-animation-reference.json').read_text())
+binary=n/'build/NativeUserAvatarAnimationTests'
+with (n/'build/user-avatar-animation-build.log').open('w') as log:
+    subprocess.run(['swiftc','-swift-version','5','-parse-as-library','-O','-whole-module-optimization','-target','arm64-apple-macos13.0','-framework','AppKit','-framework','ImageIO',*map(str,files),'-o',str(binary)],check=True,stdout=log,stderr=log)
+decoder_only='--decoder-only' in sys.argv
+suffix='-decoder' if decoder_only else ''
+result_path=n/('build/user-avatar-animation-native'+suffix+'.json')
+result_path.unlink(missing_ok=True)
+started=time.monotonic()
+r=subprocess.run(['/usr/bin/time','-l',str(binary),str(n)]+(['--decoder-only'] if decoder_only else []),capture_output=True,text=True,timeout=120)
+(n/'build/user-avatar-animation-test.log').write_text(r.stdout+r.stderr)
+native=json.loads(result_path.read_text()) if result_path.exists() else None
+stable=before=={p.name:sha(p) for p in watched} and all(sha(n.parent.parent/p)==h for p,h in reference['sourceSHA256'].items())
+peak=re.search(r'(\d+)\s+maximum resident set size',r.stderr)
+artifact_paths=[binary,*list((n/'build/avatar-animation').iterdir()),*[p for p in (n/'build').glob('user-avatar-animation-*') if p.is_file()]]
+proof={'exit':r.returncode,'completed':native is not None and 'checks passed' in r.stdout,'inputsSHA256':before,'inputsUnchanged':stable,'sourceSHA256':reference['sourceSHA256'],'sourceBrowserCases':len(reference['browserCases']),'generatedImageCases':len(reference['fixtures']),'native':native,'decoderOnly':decoder_only,'stdout':r.stdout,'stderr':r.stderr[:3000],'runSeconds':time.monotonic()-started,'binaryBytes':binary.stat().st_size,'macOS':platform.mac_ver()[0],'testProcessPeakResidentBytes':int(peak[1]) if peak else None,'limits':{'inputBytes':4194304,'canvasPixels':1048576,'canvasSide':1024,'largeWorkerCanvasPixels':16777216,'largeWorkerCanvasSide':16384,'frameCountCap':None,'frameOutputSide':256,'independentFrameBytes':262144,'gifCompositionBytes':4194304,'webPCompositionBytes':4194304,'webPDecodedSubframePixels':1048576},'intentionalNativeDifferences':['Original GIF/WebP bytes remain in the existing immutable avatar bundle; this task changes display only.','Inline decoding remains limited to 1024 pixels per side and 1,048,576 canvas pixels. The production View delegates larger authorized images up to 16,777,216 pixels/16,384 side/4 MiB to the bundled decoder worker, one large Playback at a time. This standalone regression has no app bundle/helper and checks its explicit unavailable fallback. Worker and FIFO behavior have separate verification.','Animated WebP EXIF is ignored like the source Chromium img; single-frame animated WebP still displays its decoded first frame. The dedicated orientation oracle verifies reflection/90-degree tags and the Store retains the pre-existing orientation transform for JPEG/still WebP.','Offscreen playback drops compressed source/decoder/animated frame; visibility restoration rereads and revalidates source and restarts from frame zero after a cancellable 20ms settling delay.','GIF uses sequential descriptor/GCE parsing and single-frame PNG-style compositing of individually decoded GIF payloads. WebP uses bounded RIFF/ANMF parsing and a single RGBA canvas plus one decoded static WebP subframe; replace/blend/dispose and transparent/half-alpha VP8L/VP8+ALPH cases are validated against locked sharp and browser samples. ImageIO animated WebP disposal alone produced opaque black on this OS, which is why the native compositor is needed.','No all-frame pixel array. A WebP canvas, subframe and transient canvas snapshot can each reach 4 MiB; current/fallback/transition small bitmaps and opaque ImageIO work buffers also exist, so a whole-process memory ceiling is not promised.','An inline synchronous decode already in flight completes before cancellation; generation fencing prevents stale publication. Large worker decoding is stopped and reaped on cancellation. Queued large images wait FIFO and reauthorize their source at admission.','Browser timing is approximated using encoded delays with sub-11ms ->100ms clamping. Decode time and scheduling may slow playback; frames are not predecoded or skipped to catch up.'],'integration':{'api':'set(image:name:) then setAnimationSource { try store.original(forUserID:id)?.data }; read animationStatus.message / onAnimationStatusChange for Japanese status','readRequirement':'Supply fresh authorized, bounded reads; do not capture preloaded original Data. Stop/replace source at identity changes.','remaining':'16MP worker packaging/signature/app QA is root-owned and separate from this inline regression; animated WebP orientation compatibility has a separate source oracle. Dedicated worker suites cover decoder, permit and large View behavior.'},'scope':'Installed ImageIO and generated GIF/WebP files; original source components/GET source hashes; isolated installed headless Chrome data-URL rendering with HTTP blocked; real AppKit visibility/occlusion/minimize/remove/deallocation. Peak memory is this entire isolated test process, not CRM or a promised production ceiling. No external HTTP, ordinary app, or ordinary database.' ,'artifacts':{'files':len(artifact_paths),'totalBytes':sum(p.stat().st_size for p in artifact_paths)}}
+(n/('build/user-avatar-animation-verification'+suffix+'.json')).write_text(json.dumps(proof,ensure_ascii=False,indent=2)+'\n')
+print(json.dumps({k:proof[k] for k in ['exit','completed','inputsUnchanged','sourceBrowserCases','generatedImageCases','binaryBytes','artifacts']},ensure_ascii=False))
+if r.stdout:print(r.stdout.strip())
+if r.returncode and r.stderr:print(r.stderr[:3000])
+assert r.returncode==0 and proof['completed'] and stable

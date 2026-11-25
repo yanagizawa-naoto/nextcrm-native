@@ -1,0 +1,59 @@
+import {
+  Body,
+  Container,
+  Head,
+  Heading,
+  Hr,
+  Html,
+  Preview,
+  Tailwind,
+  Text,
+} from "@react-email/components";
+import { Markdown } from "@react-email/markdown";
+import * as React from "react";
+
+interface VercelInviteUserEmailProps {
+  username: string;
+  title: string;
+  message: string;
+}
+
+const baseUrl = process.env.NEXT_PUBLIC_APP_URL;
+
+export const MessageToAllUsers = ({
+  title,
+  message,
+  username,
+}: VercelInviteUserEmailProps) => {
+  const previewText = "全ユーザーへのお知らせ：" + baseUrl;
+
+  return (
+    <Html>
+      <Head />
+      <Preview>{previewText}</Preview>
+      <Tailwind>
+        <Body className="bg-white my-auto mx-auto font-sans">
+          <Container className="border border-solid border-slate-300 rounded-md my-[40px] mx-auto p-[20px] w-[465px]">
+            <Heading className="text-black text-2xl font-normal text-center p-0 my-[30px] mx-0">
+              {title}
+            </Heading>
+            <Text className="text-black text-sm leading-[24px]">
+              <strong>{"メッセージの送信元："}{baseUrl} {"管理者"}</strong>
+            </Text>
+            <Text className="text-black text-sm leading-[24px]">
+              {"Hello " + username + ","}
+            </Text>
+            <Markdown>{message}</Markdown>
+            <Hr className="border border-solid border-[#eaeaea] my-[26px] mx-0 w-full" />
+            <Text className="text-black text-xs text-muted-foreground">
+              {"このメールは次のアプリをご利用の方にお送りしています："}{" "}
+              {process.env.NEXT_PUBLIC_APP_NAME} {"アプリ："}{" "}
+              {process.env.NEXT_PUBLIC_APP_URL}{"。心当たりがない場合は、ご利用のCRMの管理者にお問い合わせください。"}</Text>
+          </Container>
+        </Body>
+      </Tailwind>
+    </Html>
+  );
+};
+
+export default MessageToAllUsers;

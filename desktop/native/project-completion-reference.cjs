@@ -1,0 +1,32 @@
+const fs=require('node:fs'),path=require('node:path');
+const native=__dirname,root=path.resolve(native,'../..');
+const output=process.argv[2];if(!output)throw Error('output directory required');
+const {createSourceLoader}=require(path.join(native,'plugins-source-loader.cjs'));
+const cases=[],hashes={};
+const uid=n=>`10000000-0000-4000-8000-${String(n).padStart(12,'0')}`;
+function matches(row,w){if(row==null)return false;return Object.entries(w).every(([k,v])=>{
+ if(k==='OR')return v.some(x=>matches(row,x));if(k==='AND')return [].concat(v).every(x=>matches(row,x));if(k==='NOT')return !matches(row,v);
+ if(v&&typeof v==='object'){if('some'in v)return(row[k]??[]).some(x=>matches(x,v.some));if('has'in v)return(row[k]??[]).includes(v.has);if('in'in v)return v.in.includes(row[k]);return matches(row[k],v)}return(row[k]??null)===v;
+});}
+async function scenario(name,{role='user',owner=true,assigned=false,publicDoc=true,ownDoc=false,boardDeleted=false,privateBoard=false,docDeleted=false,linked=false,unlink=false,missingTask=false,missingSection=false,session=true,quick=false,list=false}={}){
+ const user={id:uid(1),role,name:'actor',email:'actor@example.invalid',userStatus:'ACTIVE'},other={id:uid(2),role:'user',name:'other',email:'other@example.invalid',userStatus:'ACTIVE'};
+ const board={id:uid(3),v:0,title:'A old',description:'project',user:owner?user.id:other.id,sharedWith:[],visibility:privateBoard?'private':'public',deletedAt:boardDeleted?'2026-01-01T00:00:00Z':null,updatedAt:'2026-01-01T00:00:00Z'};
+ const section={id:uid(4),v:0,title:'section',board:board.id,position:0};
+ const task={id:uid(5),v:0,title:'task',section:missingSection?null:section.id,user:assigned?user.id:other.id,priority:'normal',position:0,taskStatus:'ACTIVE',createdBy:other.id,updatedBy:other.id};
+ const document={id:uid(6),document_name:'doc',document_file_mimeType:'text/plain',document_file_url:'unmigrated:fixture',size:1,visibility:publicDoc?'public':'private',createdBy:ownDoc?user.id:other.id,assigned_user:other.id,deletedAt:docDeleted?'2026-01-01T00:00:00Z':null};
+ const rows={Users:[user,other],Boards:[board],Sections:missingSection?[]:[section],Tasks:missingTask?[]:[task],Documents:[document],DocumentsToTasks:linked?[{document_id:document.id,task_id:task.id}]:[]};
+ if(list)rows.Boards.push({...board,id:uid(7),title:'Z recent',updatedAt:'2026-02-01T00:00:00Z'},{...board,id:uid(8),title:'hidden',user:other.id,visibility:'private',updatedAt:'2026-03-01T00:00:00Z'});
+ const initial=structuredClone(rows);let mail=0,revalidated=0;
+ const prisma={users:{findUnique:async({where})=>rows.Users.find(x=>x.id===where.id)},boards:{findFirst:async({where})=>rows.Boards.find(x=>matches(x,where)),findMany:async({where,orderBy})=>{if(orderBy?.updatedAt!=='desc')throw Error('source order changed');return rows.Boards.filter(x=>matches(x,where)).sort((a,b)=>b.updatedAt.localeCompare(a.updatedAt))},update:async({where,data})=>Object.assign(rows.Boards.find(x=>x.id===where.id),data)},
+ tasks:{findUnique:async({where})=>{let t=rows.Tasks.find(x=>x.id===where.id);return t?{...t,assigned_section:rows.Sections.find(s=>s.id===t.section)?{board_relation:{id:board.id}}:null}:null},update:async({where,data})=>Object.assign(rows.Tasks.find(x=>x.id===where.id),data),count:async({where})=>rows.Tasks.filter(x=>matches(x,where)).length,create:async({data})=>{const x={id:uid(9),...data};rows.Tasks.push(x);return x}},
+ documents:{findFirst:async({where})=>rows.Documents.find(x=>matches(x,where))},documentsToTasks:{create:async({data})=>{if(rows.DocumentsToTasks.length)throw Error('duplicate');rows.DocumentsToTasks.push(data);return data},delete:async()=>{if(!rows.DocumentsToTasks.length)throw Error('missing');return rows.DocumentsToTasks.pop()}}};
+ const mocks={'@/lib/prisma':{prismadb:prisma},'@/lib/auth-server':{getSession:async()=>session?{user}:null},'next/cache':{revalidatePath:()=>revalidated++},'@/emails/NewTaskFromProject':()=>()=>null,'@/lib/resend':{default:async()=>({emails:{send:async()=>mail++}})},'@/lib/junction-helpers':{junctionTableHelpers:{includeWatchersWithUsers:()=>({})}}};
+ const loader=createSourceLoader(mocks,{root});mocks['@/lib/authz']={...loader.load('lib/authz/session.ts'),...loader.load('lib/authz/scopes/crm.ts'),...loader.load('lib/authz/errors.ts')};
+ const old=console.log;console.log=()=>{};let result;
+ try{result=list?await loader.load('actions/projects/get-boards.ts').getBoards():quick?await loader.load('actions/projects/create-task-in-board.ts').createTaskInBoard({boardId:board.id,section:section.id}):await loader.load('actions/projects/assign-document-to-task.ts')[unlink?'disconnectDocumentFromTask':'assignDocumentToTask']({documentId:document.id,taskId:task.id});}finally{console.log=old;}
+ Object.assign(hashes,loader.hashes);cases.push({name,role,session,quick,list,rows:initial,nativeDeny:boardDeleted&&assigned&&!quick,sourceSuccess:list?true:!result.error,links:rows.DocumentsToTasks.length,updatedBy:rows.Tasks[0]?.updatedBy,mail,revalidated,created:quick?rows.Tasks.slice(initial.Tasks.length):[],order:list?result.map(x=>x.id):[]});
+}
+(async()=>{
+ for(const [name,x] of [['owner-public',{}],['assignee-public-board',{owner:false,assigned:true}],['assignee-private-board',{owner:false,assigned:true,privateBoard:true}],['private-readable-owner',{publicDoc:false,ownDoc:true}],['manager',{role:'manager',owner:false}],['admin',{role:'admin',owner:false}],['no-task-write',{owner:false}],['unreadable-document',{publicDoc:false}],['partner',{role:'partner'}],['unauthenticated',{session:false}],['missing-task',{missingTask:true}],['missing-section',{missingSection:true}],['deleted-document',{docDeleted:true}],['deleted-board',{boardDeleted:true}],['source-assignee-deleted-bypass',{boardDeleted:true,assigned:true}],['duplicate',{linked:true}],['unlink',{linked:true,unlink:true}],['missing-unlink',{unlink:true}],['assignee-unlink',{owner:false,assigned:true,linked:true,unlink:true}],['quick-owner',{quick:true}],['quick-manager',{quick:true,owner:false,role:'manager'}],['quick-denied',{quick:true,owner:false}],['quick-deleted',{quick:true,boardDeleted:true}],['quick-partner',{quick:true,role:'partner'}],['recent-first',{list:true}],['recent-admin',{list:true,role:'admin'}]])await scenario(name,x);
+ fs.writeFileSync(path.join(output,'reference.json'),JSON.stringify({cases,hashes},null,2)+'\n');console.log(JSON.stringify({cases:cases.length,sourceFiles:Object.keys(hashes).length}));
+})().catch(e=>{console.error(e);process.exit(1)});

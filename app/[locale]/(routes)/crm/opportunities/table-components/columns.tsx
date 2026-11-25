@@ -1,0 +1,180 @@
+"use client";
+
+import { ColumnDef } from "@tanstack/react-table";
+
+import { Badge } from "@/components/ui/badge";
+import { Checkbox } from "@/components/ui/checkbox";
+
+import { statuses } from "../table-data/data";
+import { Opportunity } from "../table-data/schema";
+import { DataTableColumnHeader } from "./data-table-column-header";
+import { DataTableRowActions } from "./data-table-row-actions";
+import moment from "moment";
+import Link from "next/link";
+import { formatCurrency, convertAmount, type Rate } from "@/lib/currency-format";
+import { Decimal } from "@prisma/client/runtime/client";
+
+type ConfigItem = { id: string; name: string };
+
+export type OpportunityConfig = {
+  saleTypes: ConfigItem[];
+  saleStages: ConfigItem[];
+  campaigns: ConfigItem[];
+  currencies: { code: string; name: string; symbol: string }[];
+  displayCurrency?: string;
+  exchangeRates?: Rate[];
+};
+
+export const createColumns = (config: OpportunityConfig): ColumnDef<Opportunity>[] => [
+  /* {
+    id: "select",
+    header: ({ table }) => (
+      <Checkbox
+        checked={table.getIsAllPageRowsSelected()}
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label="Select all"
+        className="translate-y-[2px]"
+      />
+    ), 
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label="Select row"
+        className="translate-y-[2px]"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
+  */
+  {
+    accessorKey: "close_date",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="受注予定日" />
+    ),
+    cell: ({ row }) => (
+      <div className="w-[80px]">
+        {row.getValue("close_date")
+          ? moment(row.getValue("close_date")).format("YY-MM-DD")
+          : "—"}
+      </div>
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
+  {
+    accessorKey: "assigned_to_user",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="担当者" />
+    ),
+
+    cell: ({ row }) => (
+      <div className="w-[150px]">
+        {
+          //@ts-ignore
+          //TODO: fix this
+          row.getValue("assigned_to_user")?.name ?? "未割り当て"
+        }
+      </div>
+    ),
+    enableSorting: true,
+    enableHiding: true,
+  },
+  {
+    accessorKey: "assigned_account",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="取引先" />
+    ),
+
+    cell: ({ row }) => (
+      <div className="w-[250px]">
+        {
+          //@ts-ignore
+          //TODO: fix this
+          row.getValue("assigned_account")?.name ?? "未割り当て"
+        }
+      </div>
+    ),
+    enableSorting: false,
+    enableHiding: true,
+  },
+  {
+    accessorKey: "name",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="名称" />
+    ),
+
+    cell: ({ row }) => (
+      <Link href={`/crm/opportunities/${row.original.id}`} data-testid="opportunity-row-name">
+        <div className="w-[250px] overflow-hidden">{row.getValue("name")}</div>
+      </Link>
+    ),
+    enableSorting: true,
+    enableHiding: true,
+  },
+  {
+    accessorKey: "budget",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="予算" />
+    ),
+
+    cell: ({ row }) => {
+      const budget = row.original.budget;
+      const fromCurrency = row.original.currency || "EUR";
+      if (!budget) return <div>—</div>;
+      const amount = new Decimal(budget.toString());
+      const targetCurrency = config.displayCurrency || fromCurrency;
+      if (targetCurrency !== fromCurrency && config.exchangeRates?.length) {
+        const converted = convertAmount(amount, fromCurrency, targetCurrency, config.exchangeRates);
+        if (converted) return <div>{formatCurrency(converted, targetCurrency)}</div>;
+      }
+      return <div>{formatCurrency(amount, fromCurrency)}</div>;
+    },
+    enableSorting: true,
+    enableHiding: true,
+  },
+  {
+    accessorKey: "next_step",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="次の対応" />
+    ),
+
+    cell: ({ row }) => (
+      <div className="w-[150px]">{row.getValue("next_step")}</div>
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
+  {
+    accessorKey: "status",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="状態" />
+    ),
+    cell: ({ row }) => {
+      const status = statuses.find(
+        (status) => status.value === row.getValue("status")
+      );
+
+      if (!status) {
+        return null;
+      }
+
+      return (
+        <div className="flex w-[100px] items-center">
+          {status.icon && (
+            <status.icon className="mr-2 h-4 w-4 text-muted-foreground" />
+          )}
+          <span>{status.label}</span>
+        </div>
+      );
+    },
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
+    },
+  },
+  {
+    id: "actions",
+    cell: ({ row }) => <DataTableRowActions row={row} config={config} />,
+  },
+];

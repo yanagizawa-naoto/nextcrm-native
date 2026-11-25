@@ -1,0 +1,1032 @@
+{
+  "objective": "Complete full original Japanese native Mac CRM scope including MCP, API tokens, all source tools and plugin contracts. No narrowed completion criterion.",
+  "sourceInventory": [
+    {
+      "file": "lib/mcp/tools/campaigns.ts",
+      "sha256": "928f9245f6e873b68d3884c26f491dd47880ed4d3b7dc5e1f7045b64e7fbedb7",
+      "groups": [
+        {
+          "export": "campaignTools",
+          "toolNames": [
+            "campaigns_list",
+            "campaigns_get",
+            "campaigns_create",
+            "campaigns_update",
+            "campaigns_delete",
+            "campaigns_send",
+            "campaigns_pause",
+            "campaigns_resume",
+            "campaigns_list_templates",
+            "campaigns_get_template",
+            "campaigns_create_template",
+            "campaigns_update_template",
+            "campaigns_delete_template",
+            "campaigns_create_step",
+            "campaigns_update_step",
+            "campaigns_delete_step",
+            "campaigns_assign_target_list",
+            "campaigns_remove_target_list",
+            "campaigns_get_stats"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "lib/mcp/tools/crm-accounts.ts",
+      "sha256": "8d4d2833bca3db66d3d7010a5dd55bb401574611e73a3f39356c1ddda9fc9b96",
+      "groups": [
+        {
+          "export": "crmAccountTools",
+          "toolNames": [
+            "crm_list_accounts",
+            "crm_get_account",
+            "crm_search_accounts",
+            "crm_create_account",
+            "crm_update_account",
+            "crm_delete_account"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "lib/mcp/tools/crm-activities.ts",
+      "sha256": "62714c492324d2efbc72374076703bad70cac5f2bc48b3c162b67ce01ce8e866",
+      "groups": [
+        {
+          "export": "crmActivityTools",
+          "toolNames": [
+            "crm_list_activities",
+            "crm_get_activity",
+            "crm_create_activity",
+            "crm_update_activity",
+            "crm_delete_activity"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "lib/mcp/tools/crm-contacts.ts",
+      "sha256": "97e94cf16ee86af47eefc2cba0aa6236f3dbdedc49632d7a30a4fc0f7ff40d7e",
+      "groups": [
+        {
+          "export": "crmContactTools",
+          "toolNames": [
+            "crm_list_contacts",
+            "crm_get_contact",
+            "crm_search_contacts",
+            "crm_create_contact",
+            "crm_update_contact",
+            "crm_delete_contact"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "lib/mcp/tools/crm-contracts.ts",
+      "sha256": "42da1c2180a6592660c3afa8c4edf68257e0335cd53543d2abaa3ae94082ac53",
+      "groups": [
+        {
+          "export": "crmContractTools",
+          "toolNames": [
+            "crm_list_contracts",
+            "crm_get_contract",
+            "crm_create_contract",
+            "crm_update_contract",
+            "crm_delete_contract"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "lib/mcp/tools/crm-documents.ts",
+      "sha256": "db554864a170bd64758d32383cbdb33c478caebba3ce764c80e627686bf51918",
+      "groups": [
+        {
+          "export": "crmDocumentTools",
+          "toolNames": [
+            "crm_list_documents",
+            "crm_get_document",
+            "crm_create_document",
+            "crm_get_upload_url",
+            "crm_get_download_url",
+            "crm_link_document",
+            "crm_unlink_document",
+            "crm_delete_document"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "lib/mcp/tools/crm-email-accounts.ts",
+      "sha256": "e0564b788e223c549d5887bb59c9749a1293de0339cd7daad5b27d00309f45f1",
+      "groups": [
+        {
+          "export": "crmEmailAccountTools",
+          "toolNames": [
+            "crm_list_email_accounts"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "lib/mcp/tools/crm-enrichment.ts",
+      "sha256": "a306290942dddaff64ced13451f13b1f314ae742b07e0b79eebcbc92d27173f9",
+      "groups": [
+        {
+          "export": "crmEnrichmentTools",
+          "toolNames": [
+            "crm_enrich_contact",
+            "crm_enrich_contact_bulk",
+            "crm_enrich_target",
+            "crm_enrich_target_bulk"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "lib/mcp/tools/crm-leads.ts",
+      "sha256": "877470a9982eca5097c8260deaeb072c560a4c19f418b22063a5fa2aa5de0ab7",
+      "groups": [
+        {
+          "export": "crmLeadTools",
+          "toolNames": [
+            "crm_list_lead_options",
+            "crm_list_leads",
+            "crm_get_lead",
+            "crm_search_leads",
+            "crm_create_lead",
+            "crm_update_lead",
+            "crm_delete_lead"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "lib/mcp/tools/crm-opportunities.ts",
+      "sha256": "6e304ea9bdd72a50838a58a19ef68d5bd7cac81fdeb4be18b13201d6ddd43cc1",
+      "groups": [
+        {
+          "export": "crmOpportunityTools",
+          "toolNames": [
+            "crm_list_opportunity_options",
+            "crm_list_opportunities",
+            "crm_get_opportunity",
+            "crm_search_opportunities",
+            "crm_create_opportunity",
+            "crm_update_opportunity",
+            "crm_delete_opportunity"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "lib/mcp/tools/crm-orders.ts",
+      "sha256": "269c74f719865f4a92b0f7966177769dbeae5732cb18849e7eb881e42443356e",
+      "groups": [
+        {
+          "export": "crmOrderTools",
+          "toolNames": [
+            "crm_list_orders",
+            "crm_get_order",
+            "crm_create_order",
+            "crm_update_order",
+            "crm_submit_order",
+            "crm_decide_order_approval",
+            "crm_set_order_status",
+            "crm_cancel_order"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "lib/mcp/tools/crm-price-lists.ts",
+      "sha256": "22f5ae3d1b6722fcf4ad7817b8b3f9be63c509185b3aa9ec044546cdb0c60897",
+      "groups": [
+        {
+          "export": "crmPriceListTools",
+          "toolNames": [
+            "crm_list_price_lists",
+            "crm_get_price_list",
+            "crm_get_price",
+            "crm_create_price_list",
+            "crm_update_price_list",
+            "crm_archive_price_list",
+            "crm_upsert_price_list_rule",
+            "crm_delete_price_list_rule"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "lib/mcp/tools/crm-products.ts",
+      "sha256": "4e7a1fea05fdb7d22cae9cc7c02185ac8c89bc72b35848d9012561b6288b28a6",
+      "groups": [
+        {
+          "export": "crmProductTools",
+          "toolNames": [
+            "crm_list_products",
+            "crm_get_product",
+            "crm_create_product",
+            "crm_update_product",
+            "crm_delete_product"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "lib/mcp/tools/crm-target-lists.ts",
+      "sha256": "c4e765eed49f3e35a9aedf7919b03842aa80e8bd4c0fc19cc5bf7b24a4cdfb4d",
+      "groups": [
+        {
+          "export": "crmTargetListTools",
+          "toolNames": [
+            "crm_list_target_lists",
+            "crm_get_target_list",
+            "crm_create_target_list",
+            "crm_update_target_list",
+            "crm_delete_target_list",
+            "crm_add_to_target_list",
+            "crm_remove_from_target_list"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "lib/mcp/tools/crm-targets.ts",
+      "sha256": "2b77e1833d34cb54f1ea4107027f07ba4724e65fec811bb2ce535f06df16fb19",
+      "groups": [
+        {
+          "export": "crmTargetTools",
+          "toolNames": [
+            "crm_list_targets",
+            "crm_get_target",
+            "crm_search_targets",
+            "crm_create_target",
+            "crm_update_target",
+            "crm_delete_target"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "lib/mcp/tools/crm-users.ts",
+      "sha256": "166449d26ada240207f3771710ffb1ea72570854dfd84dbacbe82ed6eac74ff4",
+      "groups": [
+        {
+          "export": "crmUserTools",
+          "toolNames": [
+            "crm_list_users"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "lib/mcp/tools/projects.ts",
+      "sha256": "932a4435f53da5b4a9427684b479e1da4c0b6053befe5f5e73712f63dfdca793",
+      "groups": [
+        {
+          "export": "projectTools",
+          "toolNames": [
+            "projects_list_boards",
+            "projects_get_board",
+            "projects_create_board",
+            "projects_update_board",
+            "projects_delete_board",
+            "projects_create_section",
+            "projects_update_section",
+            "projects_delete_section",
+            "projects_list_tasks",
+            "projects_get_task",
+            "projects_create_task",
+            "projects_update_task",
+            "projects_move_task",
+            "projects_delete_task",
+            "projects_add_comment",
+            "projects_list_comments",
+            "projects_assign_document",
+            "projects_watch_board"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "lib/mcp/tools/reports.ts",
+      "sha256": "fb72f5a7dd936cbc86bb9eac496630fac4a999bd3b60429229cc78faf7770c54",
+      "groups": [
+        {
+          "export": "reportTools",
+          "toolNames": [
+            "reports_list",
+            "reports_run"
+          ]
+        }
+      ]
+    }
+  ],
+  "registrationAuthority": "TypeScript AST: literal name property of each direct object in exported *Tools arrays, assembled by lib/mcp/tools/index.ts allTools. Executable schema/handler fidelity remains to be validated.",
+  "sourcePlugins": [
+    "plugins/oxo-erp-connector/plugin.ts",
+    "plugins/registry-ares/plugin.ts",
+    "plugins/odoo-connector/plugin.ts",
+    "plugins/account-protection/plugin.ts"
+  ],
+  "observedContracts": {
+    "tokens": "nxtc__ + 24 random bytes in hex; SHA256 only in ApiToken, 8-char prefix, max10 active per user, expiry/revocation/lastUsedAt, owner management",
+    "authorization": "Fresh active user role after token lookup, partner denied; native must also honor existing banned-user guard and actor-scoped services",
+    "transport": "Original mcp-handler at /api/mcp/mcp Streamable HTTP; legacy SSE routes501 without Redis. Native transport must interoperate without adding persistent Node/Redis servers.",
+    "results": "Text JSON envelope; BigInt strings, original error codes and plugin actor propagation",
+    "scope": "18 registered tool families; original admin and plugin APIs remain in full completion plan"
+  },
+  "nextAction": "Integrate remaining Japanese administration windows and actual mail/avatar, currency/ECB, complete migration/backup, then full workflow/memory/release checks; plugin presentation integration evidence in plugins-presentation-integration.json.",
+  "remaining": [
+    "API/token auth and management",
+    "All original MCP input/result schemas and handlers with current permissions",
+    "Native server lifecycle, loopback binding/configuration, protocol compatibility and cancellation",
+    "Plugin manifests/configuration/secrets, rule hooks, data APIs, logs and 4 built-in connectors",
+    "Full migration/provider/integration/memory/release checks"
+  ],
+  "status": "123_MCP_component_SDK_and_candidate_app_verified_plugins_in_progress",
+  "toolCount": 123,
+  "tokenAudit": {
+    "at": "2026-11-19T06:22:02.588161+00:00",
+    "status": "source_contracts_audited_executable_fixtures_pending",
+    "sourceSHA256": {
+      "lib/api-tokens.ts": "f0d96880945aed173daa4c6d9b1e6c7039f68a5bc485e55765f71f87ed2f7547",
+      "actions/api-tokens.ts": "59ca449e79bb535d859d97f637e161e2fd02b123fb6f99b1c91a04647df872d6",
+      "app/[locale]/(routes)/profile/components/ApiTokens.tsx": "4d73d8535a9fc9bf1986338c71367e98025100be301980c1c1d46f008e762e52",
+      "actions/admin/users/revoke-api-tokens.ts": "e2aa93773f8f39526790c04d8ec2d3733382ff1ae3c25bb91a2e178b72d75285",
+      "actions/admin/users/deactivate-user.ts": "3969fde6a010b5367eaf63492bbf70077986a61f16b6f0c64a2a92c45324e3e9",
+      "lib/mcp/auth.ts": "57c2acd4b79178640a9c26297ebdd51c1c445a7d6246edd1dc697b108860ae2a",
+      "prisma/schema.prisma": "7e94c342786275d33dc2ab55c219e44f8c2ccaf3990e5215ab401d2fff0e9775"
+    },
+    "profileUI": [
+      "Requires trimmed nonempty name; optional date expiry",
+      "Shows active nonexpired tokens only, Japanese dates and eight-character suffix prefix",
+      "Shows full raw token once, explicit copy action, confirmation before revocation"
+    ],
+    "admin": [
+      "Admin-only revoke-all returns count of unrevoked tokens, including expired tokens",
+      "Deactivation forbids self-deactivation, marks user INACTIVE, deletes sessions and revokes tokens",
+      "Native equivalent must preserve fresh role/state checks and make related local mutations atomic"
+    ],
+    "schema": [
+      "Unique SHA256 tokenHash; UUID token and user IDs; user deletion cascades; userId index",
+      "Stores name, eight-character prefix, expiry, revocation, last-use and creation timestamps; never raw token"
+    ],
+    "nativeDecisions": [
+      "Bound listing and transactional issue/revoke operations; max10 active tokens per user",
+      "Resolve current active/nonbanned identity for every authentication; partner denied",
+      "Preserve source token wire format and hash algorithm",
+      "Fixture the exact source expiry-equality behavior before deciding safe native boundary semantics"
+    ],
+    "knownTestDebt": [
+      "Existing original partner-token test expects English Forbidden while localized action returns Japanese; observed source mismatch only, test not executed in this status turn. Preserve authorization assertion and explicitly reconcile localized text in reference fixtures."
+    ]
+  },
+  "tokenFoundation": {
+    "status": "backend82_verified_japanese_core_GUI_restart_and_reload_failure_fix_verified",
+    "checks": 82,
+    "originalChecks": 42,
+    "sourceValidationCases": 7,
+    "sourceAuthorizationCases": 21,
+    "proof": "build/api-tokens-verification.json",
+    "files": [
+      "NativeAPITokens.swift",
+      "NativeAPITokensWindow.swift",
+      "NativeAPITokensTests.swift",
+      "api-tokens-reference.cjs",
+      "api-tokens-test.py"
+    ],
+    "verified": [
+      "SHA256-only persistence and one-time issuance",
+      "max10 active credentials under four concurrent SQLite connections",
+      "owner list/revoke, admin bulk revoke, atomic user deactivation plus session removal",
+      "current active/nonbanned identity and role on each operation; retained-session revocation check",
+      "bounded100-row history and205-row bulk revocation",
+      "rollback on injected revoke failure; token/session/user effects remain atomic",
+      "monotonic last use without per-request audit growth; optional metadata write failure nonfatal",
+      "database reopen, cross-connection revocation, user-delete cascade, audit/SQLite/WAL absence of raw token"
+    ],
+    "intentionalNativeDifferences": [
+      "Expiry equality is rejected, matching source active-count/list predicate; source validator alone allowed equality",
+      "Unknown and unnormalized legacy roles fail closed. Full legacy migration must explicitly normalize member→manager/viewer→user; no fallback granting unknown roles",
+      "New token names require1–256 trimmed characters; native date picker rejects already-expired issuance. Imported expired tokens remain visible/revocable",
+      "Repeated owner revocation retains the first revocation timestamp; usage timestamp never moves backwards"
+    ],
+    "limits": [
+      "Native HTTP listener is verified standalone; authenticated original tool dispatch/app lifecycle integration is pending",
+      "Copy button path not exercised; no user clipboard modification",
+      "Admin backend deactivation/revoke-all functions have no admin-users UI yet",
+      "No live provider/normal data writes/install/full-app memory measurement"
+    ],
+    "onscreenProof": "../artifacts/native-api-tokens-qa/onscreen-verification.json",
+    "candidateSHA256": "b5d70a9cdeef6aeb0816837327ff2af69abb37897dbb6de301e0807b5fe0af4b"
+  },
+  "transportAudit": {
+    "installedHandler": "mcp-handler1.1.0",
+    "installedSDK": "@modelcontextprotocol/sdk1.32.2",
+    "source": "node_modules/mcp-handler/dist/index.js:320",
+    "observed": "Creates WebStandardStreamableHTTPServerTransport for each request, passing optional sessionIdGenerator; source route supplies no generator, so validate stateless transport compatibility with installed SDK next. All123 tools remain in scope.",
+    "reference": "build/mcp-protocol-reference.json",
+    "protocolCases": 18
+  },
+  "updatedAt": "2026-11-19T16:10:12.877541+00:00",
+  "pendingSessions": [],
+  "sourceSchemaReference": {
+    "path": "build/mcp-tools-reference.json",
+    "registeredUniqueTools": 123,
+    "sourceModules": 20,
+    "validationSamples": 369,
+    "scope": "Actual original tool definitions and SDK registration. All runtime dependencies are blocked, except taking six permission-function references for a dispatch table; invoking them remains blocked. No original handler executed.",
+    "expandedValidationReference": {
+      "path": "build/mcp-input-reference.json",
+      "cases": 9148,
+      "runtimeFiles": 6
+    }
+  },
+  "uiReviewFollowup": [
+    "Resolved: reload failure now clears rows/count/offset and disables paging; actual isolated inactive-user failure/recovery verified on optimized b5d70a9 candidate",
+    "Selection after new issuance was cleared safely in actual UI; no wrong-token selection observed",
+    "One-time reveal/no-copy tested; copy button path remains for final UI validation"
+  ],
+  "nativeProtocol": {
+    "status": "streaming100_and_actual_listener_SDK44_verified_app_dispatch_pending",
+    "files": [
+      "NativeMCPProtocol.swift",
+      "NativeMCPProtocolTests.swift",
+      "mcp-protocol-test.py"
+    ],
+    "proof": "build/mcp-protocol-verification.json",
+    "scope": "18 installed SDK protocol cases plus native envelope/limits/error checks; fixture tool callback only, not real123 handlers",
+    "implemented": [
+      "stateless initialize/version negotiation/ping/tools/list/tools/call envelope",
+      "HTTP content/accept/version checks and JSON/SSE responses",
+      "notification/client-response acknowledgement, legacy SSE501, route404/method405",
+      "bounded8MiB body and100-message batch checks, invalid ID/params/envelope rejection",
+      "no unexpected exception content in tool failures",
+      "single-use lazy SSE producer; await each send before starting next batch effect",
+      "20 MiB response batch streams one event at a time; paused sink blocks next effect; disconnect and in-flight cancellation stop remaining effects"
+    ],
+    "remaining": [
+      "Native listener lifecycle/settings integration with real authenticated handlers in app; protocol-level notification cancellation routing/replay remains to assess against source",
+      "Actual current-token/role-scoped handlers for all123 tools with original data/result/error/plugin semantics",
+      "Token authentication/current permission fences around actual effects; source error/plugin actor mapping",
+      "All4 plugins plus ABI/admin/full migration/integration/memory/release remain"
+    ],
+    "checks": 100
+  },
+  "nativeHTTPParser": {
+    "status": "parser119_and_actual_listener_integration44_verified_app_dispatch_pending",
+    "checks": 119,
+    "proof": "build/mcp-http-parser-verification.json",
+    "files": [
+      "NativeMCPHTTPParser.swift",
+      "NativeMCPHTTPParserTests.swift",
+      "mcp-http-parser-test.py"
+    ],
+    "implemented": [
+      "incremental HTTP/1.1 Content-Length and chunked bodies, UTF-8 split across receives",
+      "16 KiB headers/8 MiB body/64 KiB chunk framing/16 KiB trailers limits; no unbounded body before admission",
+      "exact loopback Host and present Origin validation against configured port",
+      "reject duplicate headers/ambiguous framing/forbidden trailers/pipelining/truncation/overflow/compressed requests",
+      "all18 installed SDK fixture requests parsed; every two-packet split of Japanese fixed/chunked request verified"
+    ],
+    "limits": [
+      "Whole-app integration, auth/effects, all123 real source handlers remain",
+      "Single request per connection; duplicate headers, non-ASCII headers, Expect and nonidentity Content-Encoding deliberately rejected",
+      "No whole-app memory measurement; test verifies bounded parser storage, not total process footprint"
+    ]
+  },
+  "nativeHTTPServer": {
+    "status": "standalone44_socket_checks_and_full123_catalog367_SDK_calls_verified_real_auth_dispatch_app_pending",
+    "checks": 44,
+    "proof": "build/mcp-http-server-verification.json",
+    "files": [
+      "NativeMCPHTTPServer.swift",
+      "NativeMCPHTTPServerFixture.swift",
+      "mcp-http-server-test.cjs",
+      "mcp-http-server-test.py"
+    ],
+    "implemented": [
+      "Network.framework IPv4 loopback listener, actual lsof binding and LAN-interface refusal verified",
+      "installed SDK1.32.2 initialize/list/call Japanese text/error/ping over TCP",
+      "four default admitted connections; unfinished canceled tasks retain admission slots until real completion",
+      "bounded request/read/send deadlines, awaited segmented chunk writes without payload frame copy, at most2 pending writes including heartbeat",
+      "TCP half-close permits delayed response; full disconnect cancels handler;8 MiB result delivered completely",
+      "slow reader stalls20-response8 MiB/event batch, send timeout stops later effects and clears writes",
+      "startup cancellation/bind conflict/duplicate start, concurrent stop, restart and fixed-port reuse, standalone SSE prompt stop"
+    ],
+    "testLimits": {
+      "connections": 4,
+      "readTimeoutSeconds": 1.2,
+      "requestTimeoutSeconds": 3.5,
+      "sendTimeoutSeconds": 1.2,
+      "heartbeatSeconds": 0.08
+    },
+    "productionDefaults": {
+      "connections": 4,
+      "readTimeoutSeconds": 10,
+      "requestTimeoutSeconds": 600,
+      "sendTimeoutSeconds": 15,
+      "heartbeatSeconds": 10
+    },
+    "limits": [
+      "Fixture callbacks only; no auth or real123-tool dispatch and no app integration yet",
+      "Standalone SSE has bounded request lifetime and heartbeat; no resumable events/session replay or scoped notification cancellation routing implemented",
+      "No full native test.sh/full-app build/UI/provider/memory/install run this milestone",
+      "Stop waits for admitted handlers to finish cancellation; genuinely noncooperative handler keeps its slot and can delay stop, preventing unbounded orphan tasks"
+    ],
+    "testDebugging": "First real-socket run reached26 checks then test harness timed out because its allowHalfOpen socket did not end/consume server FIN; fixed test client lifecycle, then40 checks passed. Added8 MiB complete response and noncooperative cancellation admission tests; final44 checks pass."
+  },
+  "nativeInputCatalog": {
+    "status": "all123_normalization9148_source_cases_and367_actual_SDK_calls_verified_real_handlers_pending",
+    "files": [
+      "MCPToolCatalog.json",
+      "NativeMCPInputCatalog.swift",
+      "NativeMCPInputCatalogTests.swift",
+      "NativeMCPInputServerFixture.swift",
+      "mcp-input-reference.cjs",
+      "mcp-input-wire-test.cjs",
+      "mcp-input-test.py"
+    ],
+    "proof": "build/mcp-input-verification.json",
+    "tools": 123,
+    "sourceCases": 9148,
+    "checks": 24754,
+    "wireValidCalls": 246,
+    "wireInvalidCalls": 121,
+    "wireEffects": 246,
+    "sharedRuleNodes": 162,
+    "sharedRegexes": 3,
+    "catalogBytes": 184707,
+    "referenceBytes": 6354796,
+    "implemented": [
+      "closed-vocabulary rule graph extracted from original Zod schemas; source and6 installed runtime hashes recorded",
+      "defaults/optional/nullable/order/unknown-field stripping/nested object and array/any-field requiredness",
+      "safe integers, numeric/length bounds, enum, actual UUID/email/ISO datetime patterns, Unicode code-point length",
+      "ordered source issue messages and SDK dot/index paths; invalid input cannot reach callback",
+      "exact123-tool discovery metadata and normalized echoes through installed SDK over native TCP",
+      "at most128 diagnostics; malformed/cyclic/unknown catalog rules fail closed; cancellation before effect"
+    ],
+    "observedCorrections": [
+      "Original Zod length checks may add diagnostics even for wrongly typed length-bearing values; matched actual behavior",
+      "Installed Zod4.6.7 lengths count Unicode code points; corrected initial UTF16 assumption",
+      "Required any-valued object properties reject absence as nonoptional; exported optional metadata",
+      "Sparse JS test array holes normalized through JSON before reference parsing",
+      "Wire fixture initially blocked MainActor in readLine and timed out at initialization; moved control loop to nonisolated async run, then367 calls passed in about0.93s"
+    ],
+    "limits": [
+      "Synthetic echo effects only; real token-scoped123 handlers and app build integration remain",
+      "Diagnostic128 cap intentionally stops excess error accumulation; original source SDK has no default element cap",
+      "Rule graph covers every construct in current original123 schemas; new unsupported constructs fail generation instead of being silently ignored",
+      "No full app memory/build/install/UI/provider/full-suite verification this milestone"
+    ],
+    "rawNumericCompatibility": {
+      "cases": 21,
+      "totalNativeChecks": 24796,
+      "validWireCalls": 265,
+      "invalidWireCalls": 123,
+      "proof": "build/mcp-input-verification.json",
+      "reason": "Foundation NSDecimalNumber precision must normalize to JavaScript binary64 before handlers."
+    }
+  },
+  "nativeAccounts": {
+    "status": "six_real_handlers_source66_native2753_verified_not_app_enabled",
+    "proof": "build/mcp-accounts-verification.json",
+    "coreRegression": "build/mcp-accounts-core-regression.json",
+    "implementedTools": [
+      "crm_create_account",
+      "crm_delete_account",
+      "crm_get_account",
+      "crm_list_accounts",
+      "crm_search_accounts",
+      "crm_update_account"
+    ],
+    "remainingRealHandlers": 77,
+    "files": [
+      "NativeMCPRequestRouter.swift",
+      "NativeMCPAccounts.swift",
+      "NativeMCPAccountsFixture.swift",
+      "NativeMCPAccountsTests.swift",
+      "mcp-accounts-reference.cjs",
+      "mcp-accounts-test.py"
+    ],
+    "verified": [
+      "Original six handlers/auth scopes/run-tool executed with synthetic Prisma adapter; actual native SQLite returned values and all stored account scalars compared in66 cases",
+      "Current token/role authority inside effect transaction; public discovery without usage write; concurrent request identity separation",
+      "Revocation through second SQLite connection after await prevents write; cancellation before commit rolls back account and audit",
+      "Successful mutations audited under token owner; no raw bearer in database/WAL",
+      "Source name preservation, paginated scoped name/website search, wildcard behavior, soft deletion and reassignment; no silent fractional-pagination truncation",
+      "Reverified tokens82, protocol100, live transport44, input9148 cases/24754 assertions plus367 SDK calls, Database31 and CRMService90"
+    ],
+    "limits": [
+      "Authenticated account protocol uses actual SQLite but not yet SDK-over-socket; separate transport/input wire tests use synthetic callbacks",
+      "No live PostgreSQL/locale-dependent collation verification; search fixture adapter is not the Prisma engine",
+      "Plugin actor/rule hooks and all4 plugins remain; audit actor alone does not complete plugin propagation",
+      "Invalid/revoked/expired native token failures uniformly UNAUTHORIZED; original invalid-token generic error may map to INTERNAL_ERROR",
+      "Default runtime constructor rejects partial registration; tests opt in to six-only registration, no placeholders",
+      "No installed app/data changes or new full-app memory measurement"
+    ],
+    "sdkWire": {
+      "proof": "build/mcp-accounts-verification.json",
+      "checks": 49,
+      "realTools": 13,
+      "note": "Accounts/contacts/users only; emailAccount and other families await aggregate TCP registration. Proof snapshot predates later shared UTC/date/DB job changes."
+    }
+  },
+  "implementedComponentOperations": 123,
+  "remainingOriginalOperations": 0,
+  "componentEvidence": {
+    "accounts": {
+      "operations": 6,
+      "sourceCases": 66,
+      "proof": "build/mcp-accounts-verification.json",
+      "stdout": "Compared 66 original handler cases with real SQLite effects\nNative MCP accounts: 2753 checks passed\n"
+    },
+    "people": {
+      "operations": 8,
+      "sourceCases": 123,
+      "proof": "build/mcp-people-verification.json",
+      "stdout": "Compared 123 original contact/user cases with SQLite state and permission checks\nNative MCP people: 3887 checks passed\n"
+    },
+    "leads": {
+      "operations": 7,
+      "sourceCases": 98,
+      "proof": "build/mcp-leads-verification.json",
+      "stdout": "Compared 98 original lead/service cases, including audit, notifications and indexing events\nCompared 36 original lead UI actions for permissions and assignment notification decisions\nVerified Japanese lead notification delivery with isolated transport, retry/reopen, current recipient checks and ambiguous-outcome handling\nNative MCP leads: 3310 checks passed\n",
+      "scope": "Seven lead MCP operations compared against actual original source/service including audit, saved events and assignee notification decisions; Japanese mail worker isolated request tests. App/runtime/review/link behavior is verified separately by mcp-leads-ui-test.py. Actual external providers and plugin hooks are not exercised."
+    },
+    "opportunities": {
+      "operations": 7,
+      "sourceCases": 110,
+      "proof": "build/mcp-opportunities-verification.json",
+      "stdout": "Compared 110 original opportunity cases, including stage gate, return snapshot, stored state, business audit and outbox events\nNative MCP opportunities: 3074 checks passed\n"
+    },
+    "contracts": {
+      "operations": 5,
+      "sourceCases": 117,
+      "proof": "build/mcp-contracts-verification.json",
+      "stdout": "Compared 117 original contract cases, nested lines, Decimal/date/projection semantics and atomic SQLite effects\nNative MCP contracts: 5518 checks passed\n"
+    },
+    "targets": {
+      "operations": 13,
+      "sourceCases": 160,
+      "proof": "build/mcp-targets-verification.json",
+      "stdout": "Compared 160 original target/list cases including complete stored state, counts, memberships and token audit actors\nNative MCP targets/lists: 51017 checks passed\n"
+    },
+    "projects": {
+      "operations": 18,
+      "sourceCases": 518,
+      "proof": "build/mcp-projects-verification.json",
+      "stdout": "Compared 518 original project cases including complete SQLite state, cascades, board/task/document scopes, ordering and token audit actors\nNative MCP projects: 313751 checks passed\n"
+    },
+    "activities": {
+      "operations": 5,
+      "sourceCases": 331,
+      "proof": "build/mcp-activities-verification.json",
+      "stdout": "Compared 331 original activity cases, full scalar/link state, ownership, dates, native calendar events and cancellation rollback\nNative MCP activities: 8520 checks passed\n"
+    },
+    "catalog": {
+      "operations": 13,
+      "sourceCases": 393,
+      "proof": "build/mcp-catalog-verification.json",
+      "stdout": "Compared 393 original catalog cases / 13 tools, pricing, dates, rules, permissions, and SQLite state\nNative MCP catalog: 53429 checks passed\n"
+    },
+    "documents": {
+      "operations": 8,
+      "sourceCases": 763,
+      "proof": "build/mcp-documents-verification.json",
+      "stdout": "Compared 763 original document cases plus exact AWS/local signatures, all stored state, provider calls, owner/read gates, persistence and cancellation rollback\nNative MCP documents: 672575 checks passed\n",
+      "scope": "Eight original document operations, exact SQLite state/authority/actors and signing-failure persistence; cancellation rollback. Actual TS/AWS SDK/local HMAC signatures, bounded immutable files; synthetic Prisma, no external transfer, shared mapping/HTTP/app integration separate."
+    },
+    "campaigns": {
+      "operations": 19,
+      "sourceCases": 706,
+      "proof": "build/mcp-campaigns-verification.json",
+      "stdout": "Compared 706 original campaign cases / 19 tools, complete SQLite state and native queue/mail integration\nNative MCP campaigns: 63792 checks passed; fake transport only\n",
+      "scope": "Nineteen original campaign handlers/auth/first-step/run-tool with synthetic Prisma and fake Inngest; installed Prisma JSON query compiler probe with a network-free fake adapter. Native full SQLite effects, scopes, nested templates/lists, status/first-step constraints, bounded stats/claim release, durable queue/fences and existing dispatch/mail workers with fake transport. Inngest error leaves source partial commits; native queue failure intentionally rolls back atomically. Live PostgreSQL/provider/relay network, plugin hooks, app integration and UUID case normalization remain outside this proof."
+    },
+    "orders": {
+      "operations": 8,
+      "sourceCases": 257,
+      "proof": "build/mcp-orders-verification.json",
+      "stdout": "Compared 257 original order/service/workflow cases, including monetary snapshots, audit, notifications and 207-line pagination\nNative MCP orders: 22164 checks passed\n",
+      "scope": "Eight order MCP operations against actual original handlers/services/workflow/pricing; SQLite order/line/numbering, audit and notification decisions; no external email or plugin hooks."
+    },
+    "reports": {
+      "operations": 2,
+      "sourceCases": 194,
+      "proof": "build/mcp-reports-verification.json",
+      "stdout": null,
+      "results": [
+        {
+          "timezone": "Asia/Tokyo",
+          "stdout": "Compared 194 original token-only reports plus 18 simulated verified-session outcomes; timezone Asia/Tokyo\nNative MCP reports: 2411 checks passed\n",
+          "stderr": "",
+          "exit": 0,
+          "sourceCases": 194,
+          "cookieCases": 18,
+          "sourceReference": {
+            "lib/mcp/tools/reports.ts": "fb72f5a7dd936cbc86bb9eac496630fac4a999bd3b60429229cc78faf7770c54",
+            "lib/mcp/helpers.ts": "653ad6c80622909f2fe681aaa5ec22bc4a71f16e23db0e8b8a9d74fc1e5e9633",
+            "lib/authz/errors.ts": "b6f7df211958536610548d29ccbe08579ff0586ec9a7d6ef86b1bde11b3ebaef",
+            "lib/authz/scopes/report-scope.ts": "3a25b14cefae93fb9b67e3a157b757e0218bc8d325e2c4cf3d22fe885ba2f4dc",
+            "lib/authz/roles.ts": "770cc50d45cd3d6e4d90c9c2610b78b4b34ccf4dc0b369de69a94ba9301e024a",
+            "lib/authz/scopes/unhandled-role.ts": "03b2248a3f8e68088c5c9f375a6d626f095cb08d3090d9fdf5673bc5f70f93b7",
+            "lib/authz/scopes/partner.ts": "d445b72a27b66e5592f7e990ef7f94c7a5f354e19e96e1875873b405fb686302",
+            "lib/mcp/run-tool.ts": "c2298062ff06d13f6807667652008d5902ee6a1d30b566429a281b53b38b84dd",
+            "lib/plugins/actor.ts": "27cd74061083984e303cdbe718bf423ab95d42b3f7a64c500f48281f5c74857d",
+            "lib/plugins/errors.ts": "561233c750c763e97ea06b9393632a170fd134aeb6918baf3b711f3ff3b5f081",
+            "actions/reports/sales.ts": "5e764aba471529be1618c39465a9a39ecacd693577e9f4f03a26ef6936bd80b1",
+            "actions/reports/types.ts": "3cba0e3ab59e107f6b52b1fc326f786f410609499dc5d56e405ca3885b87ea6b",
+            "lib/authz/scopes/campaign-not-deleted.ts": "321b3a58055b0b82ea64060d6f6c2da5bd5ad89745981a5f44c7b1570ba050ec",
+            "lib/currency.ts": "d05f59784f3067c47b0c164baed5c77800944d1b6a7cb48b8a34a493fb4f06af",
+            "lib/currency-format.ts": "c8efc14ad125355292d2f01fc08b73a0ce286d2896d3163f377bc30419d3bbd9",
+            "actions/reports/leads.ts": "b1247ea7082d0364cbacad5de6ef1afa4f5bc723a89aa266cd7348edc53d5143",
+            "actions/reports/accounts.ts": "8c2fd2364b64ad0dc324a3f7d699bb7a1d8f2cdc9a1f15fffbd444e41a2cc7b8",
+            "actions/reports/activity.ts": "12265d79b8dfd2edbbac6e440fc77ba81ab74e1204328603c84e815a9bfa2255",
+            "actions/reports/campaigns.ts": "53a0994bf03c6989130098665d7d83a21e602ed143d421c05a334ee970dc5d10",
+            "actions/reports/users.ts": "579993bfc1c387e67b405867ade02177a9991e52aaca6c56512144b8c8cddba0",
+            "lib/authz/index.ts": "5a4bd87450309b20834f94803f973922e541d12c6f83186ed01534fd951a51f9",
+            "lib/authz/route.ts": "2702a4c5d3b42f3304893d7a4d636cde06b4261fdf0b6f4ec5da9aea5f1332ce",
+            "lib/authz/session.ts": "9a882a6a38d2b7b51f6c2d6cb0ba08cea8d149e9d03ee98e392c35f5e2174f50",
+            "lib/auth-server.ts": "978afcb6ff02ce93d07cf693b7cc731e2fcceaff39bc211642eec3c63128ae5e",
+            "lib/authz/scopes/crm.ts": "14038d2615df7ef8bc5db24409afb1865f186e830f48ad93bdb9b3f71250df8f",
+            "lib/authz/assignable-user.ts": "c1c456388a71f5875d87a304e69431edace6a24594a981544b9e5321e9a42a3e",
+            "lib/authz/scopes/pricing.ts": "dda15558387d45f65fd9606f63884af5d08442f8b22a42e644b80a8ea48f9811",
+            "lib/authz/scopes/orders.ts": "ea0c53bd1840a4c45f24f3784950d7d654cb76bd60c2ffddf4ccf5f6793281f2",
+            "prisma/schema.prisma": "7e94c342786275d33dc2ab55c219e44f8c2ccaf3990e5215ab401d2fff0e9775",
+            "node_modules/@prisma/client/package.json": "236a224c2f1d68f19a00996e21c2c212ce0b319eaee1228c001b06c8dafd3d1d",
+            "node_modules/zod/package.json": "c2d190d9ee4e0bdb60332aaa2130a6a98d65ddb903fe1d29248b15de57832c45"
+          }
+        },
+        {
+          "timezone": "UTC",
+          "stdout": "Compared 194 original token-only reports plus 18 simulated verified-session outcomes; timezone UTC\nNative MCP reports: 2354 checks passed\n",
+          "stderr": "",
+          "exit": 0,
+          "sourceCases": 194,
+          "cookieCases": 18,
+          "sourceReference": {
+            "lib/mcp/tools/reports.ts": "fb72f5a7dd936cbc86bb9eac496630fac4a999bd3b60429229cc78faf7770c54",
+            "lib/mcp/helpers.ts": "653ad6c80622909f2fe681aaa5ec22bc4a71f16e23db0e8b8a9d74fc1e5e9633",
+            "lib/authz/errors.ts": "b6f7df211958536610548d29ccbe08579ff0586ec9a7d6ef86b1bde11b3ebaef",
+            "lib/authz/scopes/report-scope.ts": "3a25b14cefae93fb9b67e3a157b757e0218bc8d325e2c4cf3d22fe885ba2f4dc",
+            "lib/authz/roles.ts": "770cc50d45cd3d6e4d90c9c2610b78b4b34ccf4dc0b369de69a94ba9301e024a",
+            "lib/authz/scopes/unhandled-role.ts": "03b2248a3f8e68088c5c9f375a6d626f095cb08d3090d9fdf5673bc5f70f93b7",
+            "lib/authz/scopes/partner.ts": "d445b72a27b66e5592f7e990ef7f94c7a5f354e19e96e1875873b405fb686302",
+            "lib/mcp/run-tool.ts": "c2298062ff06d13f6807667652008d5902ee6a1d30b566429a281b53b38b84dd",
+            "lib/plugins/actor.ts": "27cd74061083984e303cdbe718bf423ab95d42b3f7a64c500f48281f5c74857d",
+            "lib/plugins/errors.ts": "561233c750c763e97ea06b9393632a170fd134aeb6918baf3b711f3ff3b5f081",
+            "actions/reports/sales.ts": "5e764aba471529be1618c39465a9a39ecacd693577e9f4f03a26ef6936bd80b1",
+            "actions/reports/types.ts": "3cba0e3ab59e107f6b52b1fc326f786f410609499dc5d56e405ca3885b87ea6b",
+            "lib/authz/scopes/campaign-not-deleted.ts": "321b3a58055b0b82ea64060d6f6c2da5bd5ad89745981a5f44c7b1570ba050ec",
+            "lib/currency.ts": "d05f59784f3067c47b0c164baed5c77800944d1b6a7cb48b8a34a493fb4f06af",
+            "lib/currency-format.ts": "c8efc14ad125355292d2f01fc08b73a0ce286d2896d3163f377bc30419d3bbd9",
+            "actions/reports/leads.ts": "b1247ea7082d0364cbacad5de6ef1afa4f5bc723a89aa266cd7348edc53d5143",
+            "actions/reports/accounts.ts": "8c2fd2364b64ad0dc324a3f7d699bb7a1d8f2cdc9a1f15fffbd444e41a2cc7b8",
+            "actions/reports/activity.ts": "12265d79b8dfd2edbbac6e440fc77ba81ab74e1204328603c84e815a9bfa2255",
+            "actions/reports/campaigns.ts": "53a0994bf03c6989130098665d7d83a21e602ed143d421c05a334ee970dc5d10",
+            "actions/reports/users.ts": "579993bfc1c387e67b405867ade02177a9991e52aaca6c56512144b8c8cddba0",
+            "lib/authz/index.ts": "5a4bd87450309b20834f94803f973922e541d12c6f83186ed01534fd951a51f9",
+            "lib/authz/route.ts": "2702a4c5d3b42f3304893d7a4d636cde06b4261fdf0b6f4ec5da9aea5f1332ce",
+            "lib/authz/session.ts": "9a882a6a38d2b7b51f6c2d6cb0ba08cea8d149e9d03ee98e392c35f5e2174f50",
+            "lib/auth-server.ts": "978afcb6ff02ce93d07cf693b7cc731e2fcceaff39bc211642eec3c63128ae5e",
+            "lib/authz/scopes/crm.ts": "14038d2615df7ef8bc5db24409afb1865f186e830f48ad93bdb9b3f71250df8f",
+            "lib/authz/assignable-user.ts": "c1c456388a71f5875d87a304e69431edace6a24594a981544b9e5321e9a42a3e",
+            "lib/authz/scopes/pricing.ts": "dda15558387d45f65fd9606f63884af5d08442f8b22a42e644b80a8ea48f9811",
+            "lib/authz/scopes/orders.ts": "ea0c53bd1840a4c45f24f3784950d7d654cb76bd60c2ffddf4ccf5f6793281f2",
+            "prisma/schema.prisma": "7e94c342786275d33dc2ab55c219e44f8c2ccaf3990e5215ab401d2fff0e9775",
+            "node_modules/@prisma/client/package.json": "236a224c2f1d68f19a00996e21c2c212ce0b319eaee1228c001b06c8dafd3d1d",
+            "node_modules/zod/package.json": "c2d190d9ee4e0bdb60332aaa2130a6a98d65ddb903fe1d29248b15de57832c45"
+          }
+        },
+        {
+          "timezone": "America/New_York",
+          "stdout": "Compared 194 original token-only reports plus 18 simulated verified-session outcomes; timezone America/New_York\nNative MCP reports: 2366 checks passed\n",
+          "stderr": "",
+          "exit": 0,
+          "sourceCases": 194,
+          "cookieCases": 18,
+          "sourceReference": {
+            "lib/mcp/tools/reports.ts": "fb72f5a7dd936cbc86bb9eac496630fac4a999bd3b60429229cc78faf7770c54",
+            "lib/mcp/helpers.ts": "653ad6c80622909f2fe681aaa5ec22bc4a71f16e23db0e8b8a9d74fc1e5e9633",
+            "lib/authz/errors.ts": "b6f7df211958536610548d29ccbe08579ff0586ec9a7d6ef86b1bde11b3ebaef",
+            "lib/authz/scopes/report-scope.ts": "3a25b14cefae93fb9b67e3a157b757e0218bc8d325e2c4cf3d22fe885ba2f4dc",
+            "lib/authz/roles.ts": "770cc50d45cd3d6e4d90c9c2610b78b4b34ccf4dc0b369de69a94ba9301e024a",
+            "lib/authz/scopes/unhandled-role.ts": "03b2248a3f8e68088c5c9f375a6d626f095cb08d3090d9fdf5673bc5f70f93b7",
+            "lib/authz/scopes/partner.ts": "d445b72a27b66e5592f7e990ef7f94c7a5f354e19e96e1875873b405fb686302",
+            "lib/mcp/run-tool.ts": "c2298062ff06d13f6807667652008d5902ee6a1d30b566429a281b53b38b84dd",
+            "lib/plugins/actor.ts": "27cd74061083984e303cdbe718bf423ab95d42b3f7a64c500f48281f5c74857d",
+            "lib/plugins/errors.ts": "561233c750c763e97ea06b9393632a170fd134aeb6918baf3b711f3ff3b5f081",
+            "actions/reports/sales.ts": "5e764aba471529be1618c39465a9a39ecacd693577e9f4f03a26ef6936bd80b1",
+            "actions/reports/types.ts": "3cba0e3ab59e107f6b52b1fc326f786f410609499dc5d56e405ca3885b87ea6b",
+            "lib/authz/scopes/campaign-not-deleted.ts": "321b3a58055b0b82ea64060d6f6c2da5bd5ad89745981a5f44c7b1570ba050ec",
+            "lib/currency.ts": "d05f59784f3067c47b0c164baed5c77800944d1b6a7cb48b8a34a493fb4f06af",
+            "lib/currency-format.ts": "c8efc14ad125355292d2f01fc08b73a0ce286d2896d3163f377bc30419d3bbd9",
+            "actions/reports/leads.ts": "b1247ea7082d0364cbacad5de6ef1afa4f5bc723a89aa266cd7348edc53d5143",
+            "actions/reports/accounts.ts": "8c2fd2364b64ad0dc324a3f7d699bb7a1d8f2cdc9a1f15fffbd444e41a2cc7b8",
+            "actions/reports/activity.ts": "12265d79b8dfd2edbbac6e440fc77ba81ab74e1204328603c84e815a9bfa2255",
+            "actions/reports/campaigns.ts": "53a0994bf03c6989130098665d7d83a21e602ed143d421c05a334ee970dc5d10",
+            "actions/reports/users.ts": "579993bfc1c387e67b405867ade02177a9991e52aaca6c56512144b8c8cddba0",
+            "lib/authz/index.ts": "5a4bd87450309b20834f94803f973922e541d12c6f83186ed01534fd951a51f9",
+            "lib/authz/route.ts": "2702a4c5d3b42f3304893d7a4d636cde06b4261fdf0b6f4ec5da9aea5f1332ce",
+            "lib/authz/session.ts": "9a882a6a38d2b7b51f6c2d6cb0ba08cea8d149e9d03ee98e392c35f5e2174f50",
+            "lib/auth-server.ts": "978afcb6ff02ce93d07cf693b7cc731e2fcceaff39bc211642eec3c63128ae5e",
+            "lib/authz/scopes/crm.ts": "14038d2615df7ef8bc5db24409afb1865f186e830f48ad93bdb9b3f71250df8f",
+            "lib/authz/assignable-user.ts": "c1c456388a71f5875d87a304e69431edace6a24594a981544b9e5321e9a42a3e",
+            "lib/authz/scopes/pricing.ts": "dda15558387d45f65fd9606f63884af5d08442f8b22a42e644b80a8ea48f9811",
+            "lib/authz/scopes/orders.ts": "ea0c53bd1840a4c45f24f3784950d7d654cb76bd60c2ffddf4ccf5f6793281f2",
+            "prisma/schema.prisma": "7e94c342786275d33dc2ab55c219e44f8c2ccaf3990e5215ab401d2fff0e9775",
+            "node_modules/@prisma/client/package.json": "236a224c2f1d68f19a00996e21c2c212ce0b319eaee1228c001b06c8dafd3d1d",
+            "node_modules/zod/package.json": "c2d190d9ee4e0bdb60332aaa2130a6a98d65ddb903fe1d29248b15de57832c45"
+          }
+        }
+      ],
+      "scope": "Two report MCP handlers; actual original category/auth source versus SQLite aggregates. Cookie cases validate injected trusted resolver outcomes only: real native signed cookie/session integration remains a completion gate. Original activity query has no ORDER BY; fixture insertion/first-assignee order is preserved, not a PostgreSQL guaranteed order. Inherited JS object keys retained."
+    },
+    "enrichment": {
+      "operations": 4,
+      "sourceCases": 355,
+      "proof": "build/mcp-enrichment-verification.json",
+      "stdout": "Compared 355 source API/worker cases, 18 key precedence cases\nNative MCP enrichment: 38365 checks passed; fake transport only\n",
+      "results": null,
+      "scope": "Four actual source handlers/auth/key resolution, actual bulk/contact/target workers with synthetic Prisma and provider boundaries. Native full SQLite state, durable outbox, existing workers, fake providers, current authority/edit/key/cancellation fences. Native outbox failures roll back atomically unlike source Inngest partial commits. Mac Keychain shared E2B configuration replaces server env. Live PostgreSQL/providers/E2B/network, UUID case normalization, plugin hooks and app UI integration remain outside this proof."
+    }
+  },
+  "sharedFidelityFollowups": [
+    {
+      "id": "uuid_case",
+      "status": "open",
+      "detail": "PostgreSQL UUID accepts uppercase and canonicalizes storage/output; native text UUID comparison/storage needs typed normalization with migration of existing uppercase values. Do not silently lowercase all Zod output because original handlers can compare raw strings."
+    },
+    {
+      "id": "legacy_offset_datetime",
+      "status": "open",
+      "detail": "UTC four-digit years now canonicalize without NSDate and match0000/1582/9999 plus millisecond truncation. Legacy offset/expanded-year parsing and UI/provider date paths still need full migration fidelity audit."
+    },
+    {
+      "id": "price_depth_error",
+      "status": "callback_implemented_original243_regression_passed",
+      "detail": "Optional depthFailure callback propagates recursively; default UI behavior passes original243cases/297steps. Catalog agent tests API-specific error."
+    }
+  ],
+  "parallelWork": {
+    "mcp_contracts": "Global Japanese audit service/detail pagination/restore UI final source and AppKit tests",
+    "mcp_leads": "Avatar GIF/WebP bounded decoder/view final visibility tests; root profile UI hookup pending",
+    "mcp_opportunities": "Restore staging and credential/job activation plan after verified online backup"
+  },
+  "leadMailIntegrationDependencies": {
+    "newSources": [
+      "NativeMCPProtocol.swift",
+      "NativeMCPInputCatalog.swift",
+      "NativeMCPRequestRouter.swift",
+      "NativeMCPLeads.swift",
+      "NativeMCPLeadsMail.swift",
+      "NativeAPITokens.swift"
+    ],
+    "affectedConsumers": [
+      "InvoiceMailRuntime.swift",
+      "CRMJobReview.swift",
+      "CRMJobReviewWindow.swift",
+      "CRMInvoiceMailWindows.swift"
+    ],
+    "status": "build.sh updated by lead agent; only additional handwritten consumer invoice-mail-test.sh found and six sources added by root; full mail regression running83861"
+  },
+  "aggregateRegistry": {
+    "operations": 123,
+    "SDKChecks": 205,
+    "proof": "build/mcp-registry-verification.json",
+    "stdout": "{\"checks\":205,\"realTools\":123,\"scope\":\"Installed MCP SDK over native TCP with all123 composed real operations, current-token/role SQLite effects, persisted-state reads and native outbox events. Provider workers, cookie-session integration, app/plugins/live providers remain separate gates.\"}\n",
+    "exit": 0,
+    "scope": "Composed123 real operations via installed SDK/native TCP, full-catalog gate, signed document transfer, current-token permissions and durable native effects. Cookie-session/app/plugin/live-provider integration remains pending.",
+    "requiredSetup": "Original MCP cannot create initial campaign step0; native editor service sets it in fixture before campaign send."
+  },
+  "streamedDocumentHTTP": {
+    "proof": "build/mcp-document-http-verification.json",
+    "checks": 42,
+    "transportProof": "build/mcp-http-body-verification.json",
+    "unitChecks": 24,
+    "TCPChecks": 43,
+    "verified": [
+      "streamed >10MiB PUT/GET with exact hashes and bounded chunks",
+      "immutable object mapping; PUT leaves CRM scalars/revision unchanged",
+      "incomplete replacement preserves previous bytes and removes staging",
+      "Unicode keys/MIME/HEAD/expiry and original signed capability lifetime",
+      "blocked disk append does not stop other connections; cancellation retains admission until work ends"
+    ],
+    "remaining": [
+      "app runtime/Keychain storage setup",
+      "document UI/cleanup final agent regression",
+      "full migration/general backup/provider integration"
+    ]
+  },
+  "documentStore": {
+    "proof": "build/mcp-document-store-verification.json",
+    "checks": 54,
+    "documentRegressionChecks": 268,
+    "processingRegressionChecks": 107,
+    "scope": "Immutable mapping/shared UI preview/export/64MiB extraction boundary/two-stage cleanup/closed-app folder backup; online general backup and live S3 migration remain."
+  },
+  "runtime": {
+    "checks": 70,
+    "proof": "build/mcp-runtime-verification.json",
+    "settingsUIProof": "build/mcp-settings-ui-verification.json",
+    "settingsUIChecks": 113,
+    "actualKeychainChecks": 9,
+    "QAProcessPersistenceChecks": 3,
+    "SDKChecks": 20,
+    "minimumConnections": 2
+  },
+  "signedSessionAuth": {
+    "proof": "build/mcp-session-auth-verification.json",
+    "checks": 974,
+    "sourceCasesPerTransport": 67,
+    "transports": [
+      "HTTP",
+      "HTTPS"
+    ],
+    "intentionalNativeDifferences": [
+      "expiry equality rejects and cleans up, matching existing native API-token policy",
+      "banned cookie users rejected, matching native identity policy"
+    ],
+    "scope": "Actual installed BetterAuth source route comparison with isolated Prisma, real native SQLite/session effects and lazy SSE request-context concurrency/cancellation; original authentication secret migration and login provisioning remain integration scope."
+  },
+  "packagedApp": {
+    "proof": "build/mcp-app-qa-verification.json",
+    "buildProof": "build/mcp-app-build-verification.json",
+    "checks": 22
+  },
+  "companyRegistry": {
+    "status": "source639_1926_host27_AppKit32_editor14_existing_form25_verified_at_recorded_snapshots",
+    "proofs": [
+      "build/company-registry-verification.json",
+      "build/ares-plugin-verification.json",
+      "build/company-registry-ui-verification.json",
+      "build/company-registry-editor-verification.json",
+      "build/company-registry-form-regression.json"
+    ],
+    "limits": [
+      "No live ARES/VIES call; provider disabled in isolated QA",
+      "Actual app registration/install/form/failure-draft/restart verified in19ef827",
+      "Re-run source/host/editor regressions with final plugin UI integration as appropriate"
+    ],
+    "files": [
+      "NativeAres.swift",
+      "NativeCompanyRegistry.swift",
+      "NativeAresPlugin.swift",
+      "NativeCompanyRegistryControls.swift",
+      "NativeCompanyRegistryEditor.swift"
+    ]
+  },
+  "pluginAdmin": {
+    "status": "real_AppKit_SQLite_83_passed_current_shared_snapshot",
+    "proof": "build/plugins-admin-verification.json",
+    "files": [
+      "NativePluginsAdmin.swift",
+      "NativePluginsSettingsWindow.swift",
+      "NativePluginLogWindow.swift",
+      "NativePluginsApplication.swift",
+      "NativePluginsMail.swift",
+      "NativePluginsQAServices.swift"
+    ],
+    "verified": [
+      "Japanese install permission acknowledgement and field validation",
+      "blank secret input preserves immutable stored credential; successful save clears input",
+      "stale revision refuses overwrite; dirty draft cancellation",
+      "enable/disable/admin action result",
+      "206-entry export/secret exclusion/0600/exclusive file creation",
+      "100-row logs and current-role revocation clear views"
+    ],
+    "integration": "Candidate19ef827 built/signed; actual isolated GUI install/worker/form/draft/quit/restart/log11 checks pass. No real provider or normal-data changes. Per-plugin presentation integration remains.",
+    "checks": 83
+  },
+  "pluginPresentation": {
+    "status": "integrated_and_verified_at_recorded_snapshots",
+    "integration": "plugins-presentation-integration.json",
+    "next": "Full app regression and remaining administration/migration integration; static log Japanese display mapping still pending"
+  },
+  "pluginsBackend": {
+    "common": "build/plugins-completion-verification.json:1343checks",
+    "odoo": "build/odoo-effects-verification.json / odoo-http-verification.json / odoo-map-verification.json; current runner list refreeze in progress",
+    "oxo": "build/oxo-verification.json / oxo-http-verification.json / oxo-map-verification.json all passed; production9 fixed"
+  },
+  "pluginsPackagedApp": {
+    "buildProof": "build/plugins-app-build-verification.json",
+    "qaProof": "build/plugins-presentation-app-qa-verification.json",
+    "binarySHA256": "64c4eff0131cc19e5aa18cd31bd154f5616b63a210db07cbb0cafc547e5d304f",
+    "checks": 9,
+    "stopped": true,
+    "appBytes": 15280957,
+    "limits": [
+      "Prior15workflow checks on fb3fa164 recorded separately",
+      "Small synthetic data only; no live provider or complete memory conclusion"
+    ]
+  },
+  "administrationIntegration": {
+    "status": "candidate_app_GUI_verified_remaining_avatar_mail_audit_restore",
+    "proof": "admin-presentation-integration.json",
+    "build": "build/admin-app-build-verification.json",
+    "qa": "build/admin-app-qa-verification.json"
+  }
+}
