@@ -1,0 +1,27 @@
+const fs=require('fs'),path=require('path'),crypto=require('crypto'),sharp=require('sharp');
+const native=__dirname,out=path.join(native,'build/avatar-gif-frame');fs.mkdirSync(out,{recursive:true});
+const hash=b=>crypto.createHash('sha256').update(b).digest('hex');
+const palette=Buffer.from([255,0,0,0,255,0,0,0,255,255,255,0,255,0,255,0,255,255,0,0,0,255,255,255]);
+function word(n){return Buffer.from([n&255,n>>8]);}
+function frame({x=0,y=0,w=6,h=4,color=0,disposal=1,transparent=false,local=false,interlace=false,pattern=false,noControl=false}){
+ const pixels=[];const rows=interlace?[...Array.from({length:Math.ceil(h/8)},(_,i)=>i*8),...Array.from({length:Math.ceil((h-4)/8)},(_,i)=>4+i*8),...Array.from({length:Math.ceil((h-2)/4)},(_,i)=>2+i*4),...Array.from({length:Math.ceil((h-1)/2)},(_,i)=>1+i*2)]:Array.from({length:h},(_,i)=>i);
+ for(const row of rows)for(let col=0;col<w;col++)pixels.push(pattern?(row+col)%8:color);
+ const codes=pixels.flatMap(p=>[8,p]);codes.push(9);const packed=Buffer.alloc(Math.ceil(codes.length/2));codes.forEach((c,i)=>packed[i>>1]|=c<<((i&1)*4));
+ const blocks=[];for(let i=0;i<packed.length;i+=255)blocks.push(Buffer.from([Math.min(255,packed.length-i)]),packed.subarray(i,i+255));
+ return Buffer.concat([...(noControl?[]:[Buffer.from([0x21,0xf9,4,(disposal<<2)|(transparent?1:0),20,0,0,0])]),Buffer.from([0x2c]),word(x),word(y),word(w),word(h),Buffer.from([(local?0x82:0)|(interlace?0x40:0)]),...(local?[Buffer.from(palette).reverse()]:[]),Buffer.from([3]),...blocks,Buffer.from([0])]);
+}
+function gif(frames,{bg=0}={}){return Buffer.concat([Buffer.from('GIF89a'),word(6),word(4),Buffer.from([0x82,bg,0]),palette,...frames.map(frame),Buffer.from([0x3b])]);}
+(async()=>{
+ const cases=[];
+ const variants={keep:[{color:0},{x:1,y:1,w:3,h:2,color:1},{x:3,y:0,w:2,h:4,color:2}],restore:[{color:0},{x:1,y:1,w:3,h:2,color:1,disposal:3},{x:3,y:0,w:2,h:4,color:2}],clear:[{color:0},{x:1,y:1,w:3,h:2,color:1,disposal:2},{x:3,y:0,w:2,h:4,color:2}],firstPartial:[{x:1,y:1,w:3,h:2,color:1},{x:3,y:0,w:2,h:4,color:2}],transparent:[{color:2},{color:0,transparent:true},{x:2,y:1,w:2,h:2,color:1}],local:[{color:0},{x:1,y:1,w:3,h:2,color:1,local:true},{x:3,y:0,w:2,h:4,color:2}],interlaced:[{pattern:true,interlace:true},{x:1,y:1,w:3,h:2,color:1}],noGCE:[{color:0,noControl:true},{x:1,y:1,w:3,h:2,color:1,noControl:true}],reservedDisposal:[{color:0},{x:1,y:1,w:3,h:2,color:1,disposal:7},{x:3,y:0,w:2,h:4,color:2}]};
+ for(const [name,frames]of Object.entries(variants)) {const file=path.join(out,name+'.gif');fs.writeFileSync(file,gif(frames));cases.push({name,file});}
+ const existing=JSON.parse(fs.readFileSync(path.join(native,'build/user-avatar-animation-reference.json')));
+ for(const f of existing.fixtures.filter(f=>f.format==='gif'&&!f.name.endsWith('oversize')))cases.push({name:f.name,file:path.join(native,f.file)});
+ for(const c of cases){const {data,info}=await sharp(c.file,{animated:true}).ensureAlpha().raw().toBuffer({resolveWithObject:true});c.width=info.width;c.height=info.pageHeight;c.count=info.pages;c.sha256=hash(fs.readFileSync(c.file));c.frames=Array.from({length:info.pages},(_,i)=>hash(data.subarray(i*info.pageHeight*info.width*4,(i+1)*info.pageHeight*info.width*4)));}
+ const {chromium}=require('@playwright/test');const browser=await chromium.launch({executablePath:'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',headless:true,args:['--disable-background-networking','--disable-component-update','--no-first-run']});
+ const browserCases=[];
+ try {const page=await browser.newPage();await page.route('**/*',r=>r.request().url()==='https://avatar.invalid/'?r.fulfill({contentType:'text/html',body:'<!doctype html><html></html>'}):r.abort());await page.goto('https://avatar.invalid/');
+  for(const c of cases.filter(c=>!c.name.startsWith('gif-'))){const frames=await page.evaluate(async({bytes})=>{const decoder=new ImageDecoder({data:new Uint8Array(bytes),type:'image/gif'});await decoder.tracks.ready;const result=[];try{for(let frameIndex=0;frameIndex<decoder.tracks.selectedTrack.frameCount;frameIndex++){const {image}=await decoder.decode({frameIndex});const canvas=new OffscreenCanvas(image.displayWidth,image.displayHeight),context=canvas.getContext('2d');context.drawImage(image,0,0);result.push([...context.getImageData(0,0,canvas.width,canvas.height).data]);image.close();}}finally{decoder.close();}return result;},{bytes:[...fs.readFileSync(c.file)]});const hashes=frames.map(b=>hash(Buffer.from(b))),nativeFrames=[];for(const bytes of frames)nativeFrames.push(hash(await sharp(Buffer.from(bytes),{raw:{width:c.width,height:c.height,channels:4}}).extract({left:(c.width-c.height)/2,top:0,width:c.height,height:c.height}).raw().toBuffer()));browserCases.push({name:c.name,frames:hashes,nativeFrames,sharpEqual:JSON.stringify(hashes)===JSON.stringify(c.frames)});}
+ }finally{await browser.close();}
+ fs.writeFileSync(path.join(native,'build/user-avatar-gif-frame-reference.json'),JSON.stringify({cases,browserCases,scope:'Locked sharp full-frame RGBA plus actual installed Chrome ImageDecoder compositing for custom disposal/palette/interlace cases. Browser requests locally fulfilled or blocked; no external HTTP.'},null,2)+'\n');console.log(JSON.stringify({cases:cases.length,browserCases:browserCases.length,browserDifferences:browserCases.filter(c=>!c.sharpEqual).map(c=>c.name)}));
+})().catch(e=>{console.error(e);process.exitCode=1});

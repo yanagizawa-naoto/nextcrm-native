@@ -1,0 +1,531 @@
+[
+  {
+    "id": "empty",
+    "html": ""
+  },
+  {
+    "id": "paragraph",
+    "html": "<p>日本語 &amp; 😀 {{first_name}}様</p><p></p>"
+  },
+  {
+    "id": "marks",
+    "html": "<p><strong>太字</strong><em>斜体</em><u>下線</u><s>取消</s><code>x&lt;y</code></p>"
+  },
+  {
+    "id": "nested_marks",
+    "html": "<p><strong><em><u><s>複合😀</s></u></em></strong></p>"
+  },
+  {
+    "id": "headings",
+    "html": "<h1>見出し1<strong>強調</strong></h1><h2>見出し2<strong>強調</strong></h2><h3>見出し3<strong>強調</strong></h3><h4>見出し4<strong>強調</strong></h4><h5>見出し5<strong>強調</strong></h5><h6>見出し6<strong>強調</strong></h6>"
+  },
+  {
+    "id": "hardbreak",
+    "html": "<p>前<br>後<br><br>終</p>"
+  },
+  {
+    "id": "marked_break",
+    "html": "<p><strong>前<br>後</strong></p>"
+  },
+  {
+    "id": "bullet",
+    "html": "<ul><li><p>一</p><ul><li><p>子</p></li></ul></li><li><p>二</p></li></ul>"
+  },
+  {
+    "id": "ordered",
+    "html": "<ol start=\"3\"><li><p>一</p></li><li><p>二</p></li></ol>"
+  },
+  {
+    "id": "list_inline",
+    "html": "<ul><li>前<strong>強調</strong><ul><li>子</li></ul>後</li></ul>"
+  },
+  {
+    "id": "quote",
+    "html": "<blockquote><p>引用</p><p>二段落</p></blockquote><p>続き</p>"
+  },
+  {
+    "id": "code",
+    "html": "<pre><code class=\"language-swift\">let x = 1\n  print(x)\n日本語😀</code></pre>"
+  },
+  {
+    "id": "rule",
+    "html": "<hr><p>後</p>"
+  },
+  {
+    "id": "inline",
+    "html": "前<strong>強調</strong>後"
+  },
+  {
+    "id": "link",
+    "html": "<p><a href=\"https://example.invalid/?a=1&amp;b=2\">リンク</a></p>"
+  },
+  {
+    "id": "link_marks",
+    "html": "<p><a href=\"mailto:hello@example.invalid\"><strong>連絡</strong></a></p>"
+  },
+  {
+    "id": "spaces",
+    "html": "<p>前 <strong>強調</strong> 後</p>"
+  },
+  {
+    "id": "spaces_between",
+    "html": "<p><strong>A </strong> <em> B</em></p>",
+    "expectEditable": true
+  },
+  {
+    "id": "nbsp",
+    "html": "<p>&nbsp; A&nbsp;&nbsp;B &nbsp;</p>"
+  },
+  {
+    "id": "tabnewline",
+    "html": "<p> a\n b\t c </p>"
+  },
+  {
+    "id": "empty_list",
+    "html": "<ul><li></li><li><p></p></li></ul>"
+  },
+  {
+    "id": "code_empty",
+    "html": "<pre><code></code></pre>"
+  },
+  {
+    "id": "code_trailing",
+    "html": "<pre><code>x\n\n</code></pre>"
+  },
+  {
+    "id": "table",
+    "html": "<table><tr><td>表😀</td><td>二</td></tr></table>"
+  },
+  {
+    "id": "image",
+    "html": "<p>前<img src=\"data:image/png;base64,iVBORw0KGgo=\" alt=\"説明\">後</p>"
+  },
+  {
+    "id": "style",
+    "html": "<p style=\"color:red\">色</p>"
+  },
+  {
+    "id": "html",
+    "html": "<html><head><style>p {color:red}</style></head><body><p>文</p></body></html>"
+  },
+  {
+    "id": "comment",
+    "html": "<p><!--[if mso]>維持<![endif]-->本文</p>"
+  },
+  {
+    "id": "link_self",
+    "html": "<p><a href=\"https://example.invalid\" target=\"_self\">既存リンク</a></p>",
+    "expectEditable": true
+  },
+  {
+    "id": "unicode",
+    "html": "<p>é é 👩🏽‍💻 🇯🇵 Ａ　Ｂ</p>"
+  },
+  {
+    "id": "strike_alias",
+    "html": "<p><del>削除</del><strike>取消</strike></p>",
+    "expectEditable": true
+  },
+  {
+    "id": "break_only",
+    "html": "<p><br></p>"
+  },
+  {
+    "id": "two_inline",
+    "html": "<strong>一</strong><em>二</em>"
+  },
+  {
+    "id": "nested_code_mark",
+    "html": "<p><strong><code>x</code></strong></p>"
+  },
+  {
+    "id": "heading_empty",
+    "html": "<h1></h1><p>後</p>"
+  },
+  {
+    "id": "marked_space",
+    "html": "<p>A<strong> </strong>B</p>",
+    "expectEditable": true
+  },
+  {
+    "id": "code_break",
+    "html": "<p><code>A<br>B</code></p>"
+  },
+  {
+    "id": "code_excludes_em",
+    "html": "<p><em><code>x</code></em></p>"
+  },
+  {
+    "id": "code_excludes_u",
+    "html": "<p><u><code>x</code></u></p>"
+  },
+  {
+    "id": "code_excludes_s",
+    "html": "<p><s><code>x</code></s></p>"
+  },
+  {
+    "id": "code_excludes_a",
+    "html": "<p><a href=\"https://example.invalid\"><code>x</code></a></p>"
+  },
+  {
+    "id": "empty_quote",
+    "html": "<blockquote></blockquote><p>後</p>"
+  },
+  {
+    "id": "empty_pre_direct",
+    "html": "<pre></pre>",
+    "expectEditable": true
+  },
+  {
+    "id": "pre_spaces",
+    "html": "<pre><code>  \n </code></pre>"
+  },
+  {
+    "id": "empty_code_in_list",
+    "html": "<ul><li><pre><code></code></pre></li></ul>",
+    "expectEditable": true
+  },
+  {
+    "id": "boundary_strong_leading",
+    "html": "<p>前<strong> 文</strong>後</p>",
+    "expectEditable": true
+  },
+  {
+    "id": "boundary_strong_trailing",
+    "html": "<p>前<strong>文 </strong>後</p>",
+    "expectEditable": true
+  },
+  {
+    "id": "boundary_strong_both",
+    "html": "<p>前<strong> 文 </strong>後</p>",
+    "expectEditable": true
+  },
+  {
+    "id": "boundary_strong_tabs",
+    "html": "<p>前<strong>\t文\t</strong>後</p>",
+    "expectEditable": true
+  },
+  {
+    "id": "boundary_strong_newlines",
+    "html": "<p>前<strong>\n文\n</strong>後</p>",
+    "expectEditable": true
+  },
+  {
+    "id": "boundary_strong_mixed",
+    "html": "<p>前<strong> \t\r\n文\r\n\t </strong>後</p>",
+    "expectEditable": true
+  },
+  {
+    "id": "boundary_em_leading",
+    "html": "<p>前<em> 文</em>後</p>",
+    "expectEditable": true
+  },
+  {
+    "id": "boundary_em_trailing",
+    "html": "<p>前<em>文 </em>後</p>",
+    "expectEditable": true
+  },
+  {
+    "id": "boundary_em_both",
+    "html": "<p>前<em> 文 </em>後</p>",
+    "expectEditable": true
+  },
+  {
+    "id": "boundary_em_tabs",
+    "html": "<p>前<em>\t文\t</em>後</p>",
+    "expectEditable": true
+  },
+  {
+    "id": "boundary_em_newlines",
+    "html": "<p>前<em>\n文\n</em>後</p>",
+    "expectEditable": true
+  },
+  {
+    "id": "boundary_em_mixed",
+    "html": "<p>前<em> \t\r\n文\r\n\t </em>後</p>",
+    "expectEditable": true
+  },
+  {
+    "id": "boundary_u_leading",
+    "html": "<p>前<u> 文</u>後</p>",
+    "expectEditable": true
+  },
+  {
+    "id": "boundary_u_trailing",
+    "html": "<p>前<u>文 </u>後</p>",
+    "expectEditable": true
+  },
+  {
+    "id": "boundary_u_both",
+    "html": "<p>前<u> 文 </u>後</p>",
+    "expectEditable": true
+  },
+  {
+    "id": "boundary_u_tabs",
+    "html": "<p>前<u>\t文\t</u>後</p>",
+    "expectEditable": true
+  },
+  {
+    "id": "boundary_u_newlines",
+    "html": "<p>前<u>\n文\n</u>後</p>",
+    "expectEditable": true
+  },
+  {
+    "id": "boundary_u_mixed",
+    "html": "<p>前<u> \t\r\n文\r\n\t </u>後</p>",
+    "expectEditable": true
+  },
+  {
+    "id": "boundary_s_leading",
+    "html": "<p>前<s> 文</s>後</p>",
+    "expectEditable": true
+  },
+  {
+    "id": "boundary_s_trailing",
+    "html": "<p>前<s>文 </s>後</p>",
+    "expectEditable": true
+  },
+  {
+    "id": "boundary_s_both",
+    "html": "<p>前<s> 文 </s>後</p>",
+    "expectEditable": true
+  },
+  {
+    "id": "boundary_s_tabs",
+    "html": "<p>前<s>\t文\t</s>後</p>",
+    "expectEditable": true
+  },
+  {
+    "id": "boundary_s_newlines",
+    "html": "<p>前<s>\n文\n</s>後</p>",
+    "expectEditable": true
+  },
+  {
+    "id": "boundary_s_mixed",
+    "html": "<p>前<s> \t\r\n文\r\n\t </s>後</p>",
+    "expectEditable": true
+  },
+  {
+    "id": "boundary_code_leading",
+    "html": "<p>前<code> 文</code>後</p>",
+    "expectEditable": true
+  },
+  {
+    "id": "boundary_code_trailing",
+    "html": "<p>前<code>文 </code>後</p>",
+    "expectEditable": true
+  },
+  {
+    "id": "boundary_code_both",
+    "html": "<p>前<code> 文 </code>後</p>",
+    "expectEditable": true
+  },
+  {
+    "id": "boundary_code_tabs",
+    "html": "<p>前<code>\t文\t</code>後</p>",
+    "expectEditable": true
+  },
+  {
+    "id": "boundary_code_newlines",
+    "html": "<p>前<code>\n文\n</code>後</p>",
+    "expectEditable": true
+  },
+  {
+    "id": "boundary_code_mixed",
+    "html": "<p>前<code> \t\r\n文\r\n\t </code>後</p>",
+    "expectEditable": true
+  },
+  {
+    "id": "boundary_a_leading",
+    "html": "<p>前<a href=\"https://example.invalid/?a=1&amp;b=2\"> 文</a>後</p>",
+    "expectEditable": true
+  },
+  {
+    "id": "boundary_a_trailing",
+    "html": "<p>前<a href=\"https://example.invalid/?a=1&amp;b=2\">文 </a>後</p>",
+    "expectEditable": true
+  },
+  {
+    "id": "boundary_a_both",
+    "html": "<p>前<a href=\"https://example.invalid/?a=1&amp;b=2\"> 文 </a>後</p>",
+    "expectEditable": true
+  },
+  {
+    "id": "boundary_a_tabs",
+    "html": "<p>前<a href=\"https://example.invalid/?a=1&amp;b=2\">\t文\t</a>後</p>",
+    "expectEditable": true
+  },
+  {
+    "id": "boundary_a_newlines",
+    "html": "<p>前<a href=\"https://example.invalid/?a=1&amp;b=2\">\n文\n</a>後</p>",
+    "expectEditable": true
+  },
+  {
+    "id": "boundary_a_mixed",
+    "html": "<p>前<a href=\"https://example.invalid/?a=1&amp;b=2\"> \t\r\n文\r\n\t </a>後</p>",
+    "expectEditable": true
+  },
+  {
+    "id": "nested_boundary",
+    "html": "<p>前<strong> <em>内 </em> 外 </strong>後</p>",
+    "expectEditable": true
+  },
+  {
+    "id": "nested_empty",
+    "html": "<p>A<strong> <em> </em> </strong>B</p>",
+    "expectEditable": true
+  },
+  {
+    "id": "siblings_empty",
+    "html": "<p>A<strong></strong><em> </em><u></u><s> </s>B</p>",
+    "expectEditable": true
+  },
+  {
+    "id": "only_empty_marks",
+    "html": "<strong> </strong><em></em><u>\t</u><s>\n</s>",
+    "expectEditable": true
+  },
+  {
+    "id": "empty_between_blocks",
+    "html": "<p>前</p><strong> </strong><p>後</p>",
+    "expectEditable": true
+  },
+  {
+    "id": "block_edge_marks",
+    "html": "<p><strong>  前 </strong><em> 後  </em></p>",
+    "expectEditable": true
+  },
+  {
+    "id": "link_nested_boundary",
+    "html": "<p>前<a href=\"https://example.invalid\"><strong>  リンク </strong> 次 </a>後</p>",
+    "expectEditable": true
+  },
+  {
+    "id": "quoted_angle_attr",
+    "html": "<p>前<a href=\"https://example.invalid/?x=&gt;\"> リンク </a>後</p>",
+    "expectEditable": true,
+    "knownURLNormalization": {
+      "from": "https://example.invalid/?x=>",
+      "to": "https://example.invalid/?x=%3E"
+    }
+  },
+  {
+    "id": "empty_nodes_sequence",
+    "html": "<h1></h1><h2></h2><p></p><pre><code></code></pre><ul><li></li><li> </li><li><p></p></li></ul>",
+    "expectEditable": true
+  },
+  {
+    "id": "break_whitespace",
+    "html": "<p>前 <strong> <br> </strong> 後</p>",
+    "expectEditable": true
+  },
+  {
+    "id": "pre_code_boundary_spaces",
+    "html": "<pre><code class=\"language-swift\"> \t x \n \n </code></pre>",
+    "expectEditable": true
+  },
+  {
+    "id": "source_like_token",
+    "html": "<p>NextCRMPreserveNotActualE <strong> text </strong> NextCRMEmptyLiteral</p>",
+    "expectEditable": true
+  },
+  {
+    "id": "attribute_pseudo_tags",
+    "html": "<p>😀前<a href='https://example.invalid/?x=<strong> </strong>&amp;y=<code></code>'> リンク </a>後</p>",
+    "expectEditable": true,
+    "knownURLNormalization": {
+      "from": "https://example.invalid/?x=<strong> </strong>&y=<code></code>",
+      "to": "https://example.invalid/?x=%3Cstrong%3E%20%3C/strong%3E&y=%3Ccode%3E%3C/code%3E"
+    }
+  },
+  {
+    "id": "pre_text",
+    "html": "<pre> a\n b </pre>",
+    "expectEditable": true
+  },
+  {
+    "id": "pre_empty_spaces",
+    "html": "<pre> \n </pre>",
+    "expectEditable": true
+  },
+  {
+    "id": "list_code_text",
+    "html": "<ul><li><pre><code>abc</code></pre></li></ul>",
+    "expectEditable": true
+  },
+  {
+    "id": "list_code_then_para",
+    "html": "<ul><li><pre><code></code></pre><p>after</p></li></ul>",
+    "expectEditable": true
+  },
+  {
+    "id": "list_para_then_code",
+    "html": "<ul><li><p></p><pre><code></code></pre></li></ul>",
+    "expectEditable": true
+  },
+  {
+    "id": "list_two_items_code",
+    "html": "<ul><li><pre><code>x</code></pre></li><li>next</li></ul>",
+    "expectEditable": true
+  },
+  {
+    "id": "ordered_code",
+    "html": "<ol start=\"3\"><li><pre><code>x</code></pre></li></ol>",
+    "expectEditable": true
+  },
+  {
+    "id": "list_heading",
+    "html": "<ul><li><h1>title</h1><p>body</p></li></ul>",
+    "expectEditable": true
+  },
+  {
+    "id": "list_quote",
+    "html": "<ul><li><blockquote><p>quote</p></blockquote></li></ul>",
+    "expectEditable": true
+  },
+  {
+    "id": "nested_code",
+    "html": "<ul><li><ul><li><pre><code>x</code></pre></li></ul></li></ul>",
+    "expectEditable": true
+  },
+  {
+    "id": "pre_multiple_code",
+    "html": "<pre><code>a</code><code>b</code></pre>",
+    "expectEditable": true
+  },
+  {
+    "id": "link_attributes",
+    "html": "<p><a href=\"https://example.invalid\" target=\"my-window\" rel=\"external\" title=\"説明\" class=\"test\">link</a></p>",
+    "expectEditable": true
+  },
+  {
+    "id": "strikes_space",
+    "html": "<p>前<del> 削除 </del>後<strike> 取消 </strike>後</p>",
+    "expectEditable": true
+  },
+  {
+    "id": "pre_final_newline",
+    "html": "<pre>x\n</pre>",
+    "expectEditable": true
+  },
+  {
+    "id": "pre_multiple_final_newlines",
+    "html": "<pre>x\n\n</pre>",
+    "expectEditable": true
+  },
+  {
+    "id": "pre_neighbors",
+    "html": "<pre>x</pre><p>middle</p><pre>\n y\n</pre>",
+    "expectEditable": true
+  },
+  {
+    "id": "pre_code_final_newline",
+    "html": "<pre><code class=\"language-js\">x\n</code></pre>",
+    "expectEditable": true
+  },
+  {
+    "id": "pre_blockquote",
+    "html": "<blockquote><pre></pre><p>after</p></blockquote>",
+    "expectEditable": true
+  }
+]

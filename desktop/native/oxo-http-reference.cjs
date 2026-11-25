@@ -1,0 +1,13 @@
+const fs=require('node:fs');const {createSourceLoader}=require('./plugins-source-loader.cjs');const loader=createSourceLoader(),{oxoClient}=loader.load('plugins/oxo-erp-connector/oxo.ts');
+const scenarios=[];function add(name,op,responses,more={}){scenarios.push({name,op,responses,path:'/products',params:[['updatedSince','2026-01-01T12:34:56+09:00'],['x','a b+~!*日本']],...more})}
+add('json-feff','get',[{status:200,body:{name:'\uFEFFCZ',nested:['\uFEFFTokyo']}}]);
+add('get','get',[{status:200,body:{items:[{id:1}],nextCursor:null}}]);
+add('post','post',[{status:201,body:{id:7}}],{path:'/orders',body:{crmNumber:'CRM1',name:'日本',lines:[{productId:1,quantity:'1.2345'}]}});
+add('pages','all',[{status:200,body:{items:[{id:1}],nextCursor:'a +/='}},{status:200,body:{items:[{id:2}],nextCursor:null}}]);
+add('empty-page-cursor','all',[{status:200,body:{items:[],nextCursor:'cursor'}},{status:200,body:{items:[{id:3}],nextCursor:''}}],{params:[['limit','9'],['cursor','initial']]});
+for(const status of [200,201,204,400,401,403,409,422,429,500,503])for(const shape of [{message:'provider message',error:'writes_disabled'},{error:'invalid'},{message:'',error:null},null])add('status-'+status+'-'+JSON.stringify(shape),'get',[{status,body:shape,statusText:'CUSTOM reason'}]);
+for(const error of ['offline','The operation was aborted due to timeout'])add('network-'+error,'post',[{throw:error}],{body:{number:'one'},path:'/orders'});
+for(const status of [200,500])add('bad-json-'+status,'get',[{status,raw:'{',statusText:''}]);
+add('no-retry','post',[{status:503,body:{message:'not ready'}},{status:201,body:{id:1}}],{body:{number:'one'},path:'/orders'});
+(async()=>{for(const s of scenarios){const requests=[],ctx={settings:{url:'https://oxo.example.invalid///'},secrets:{apiKey:'oxo_'+'a'.repeat(40)},http:{fetch:async(url,options)=>{requests.push({url,method:options.method,headers:options.headers,timeoutMs:options.timeoutMs,...(options.body?{body:JSON.parse(options.body)}:{})});const r=s.responses[requests.length-1];if(r.throw)throw Error(r.throw);return {ok:r.status>=200&&r.status<=299,status:r.status,statusText:r.statusText??'',json:async()=>r.raw===undefined?r.body:JSON.parse(r.raw)}}}};const c=oxoClient(ctx);let value,error;try{value=s.op==='post'?await c.post(s.path,s.body):await c[s.op](s.path,Object.fromEntries(s.params))}catch(e){error={message:e.message,status:e.status??null,code:e.code??null}}s.result={...(error?{error}:{value}),requests}}
+fs.writeFileSync(process.argv[2],JSON.stringify({scenarios,sourceSHA256:loader.hashes})+'\n');console.log(JSON.stringify({scenarios:scenarios.length}))})().catch(e=>{console.error(e);process.exit(1)});

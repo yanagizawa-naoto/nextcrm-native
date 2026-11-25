@@ -1,0 +1,65 @@
+{
+  "testInputs": [
+    {
+      "file": "SMTPReviewTests.swift",
+      "originalSHA256": "4c195a33a0a8c002d1198f45afecd0e6740aacc7ab41f532a846574b827250f0",
+      "publishedSHA256": "b5880710d3e67625acdd3983e2c06cec272919037c8efbb020405ebfc8108104",
+      "changes": [
+        "Import the shared test module with test access"
+      ]
+    },
+    {
+      "file": "PersonalGoogleRestoredReviewTests.swift",
+      "originalSHA256": "3b2224dda0256cee655d382f0bc42fdf838bc71adec3b453039ee2febbde2e4e",
+      "publishedSHA256": "6a8524638bef5bd8080df9da60e9b528a23a8dc05d75d60d027ee35bc65d9fff",
+      "changes": [
+        "Import the shared test module with test access"
+      ]
+    },
+    {
+      "file": "ExistingGooglePushSupport.swift",
+      "originalSHA256": "5bc71e321824bf38416ffcec719f9aa5d6d5f5376ee0f900456482079291e223",
+      "publishedSHA256": "57519ba73d818f86acd27e88030f55cd90a19ed26b0639cda78ab724ce3ace40",
+      "changes": [
+        "Import the shared test module with test access",
+        "Create every fixture beneath the caller-owned temporary directory",
+        "Use the repository-relative reference fixture path (the policy function is not run by the 433-check suite)"
+      ]
+    },
+    {
+      "file": "HoldTests.swift",
+      "originalSHA256": "c30b082a6d18514e826d0893f7840a34d84accd984ecb4a89ab3fa00daee73a7",
+      "publishedSHA256": "07b4109aec88e63d8cc9ab1e0401e6f54dbcb00c6955df9493c7d14b05468769",
+      "changes": [
+        "Import the shared test module with test access"
+      ]
+    },
+    {
+      "file": "PersonalRunningReviewTests.swift",
+      "originalSHA256": "a36538389a37076166d16dd64dd8485e95a3c41673e31ed567ed2af875dfb7f0",
+      "publishedSHA256": "478f6219571924a43ee171f039fe6117cbe4d2ecfd399ca0880a6eb17b9a0027",
+      "changes": [
+        "Use the shared test module name"
+      ]
+    },
+    {
+      "file": "fixtures/google-calendar-outbound-reference.json",
+      "originalSHA256": "1725efe5b9e3b88d303e59ec76bbb46be070a69a01494679d75dd3521cd64908",
+      "publishedSHA256": "1725efe5b9e3b88d303e59ec76bbb46be070a69a01494679d75dd3521cd64908",
+      "changes": [],
+      "purpose": "Unchanged reference used by the preserved, uninvoked policy helper; no extra checks claimed"
+    }
+  ],
+  "existingIntegratedProof": {
+    "testCounts": [
+      52,
+      45,
+      61,
+      275
+    ],
+    "total": 433,
+    "sourceCount": 453,
+    "databaseTypecheck": true
+  },
+  "publicRunnerExecution": "Preparation provenance only. Each execution writes its own build/provider-review-tests verification.json; this file is not a successful build claim."
+}

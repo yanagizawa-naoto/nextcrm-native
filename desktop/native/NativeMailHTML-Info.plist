@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0"><dict>
+<key>CFBundleIdentifier</key><string>local.nextcrm.native.mailviewer</string>
+<key>CFBundleName</key><string>NextCRM メール表示</string>
+<key>CFBundleDisplayName</key><string>NextCRM メール表示</string>
+<key>CFBundleExecutable</key><string>NextCRMMailViewer</string>
+<key>CFBundlePackageType</key><string>APPL</string>
+<key>CFBundleVersion</key><string>1</string>
+<key>CFBundleShortVersionString</key><string>1.0</string>
+<key>LSMinimumSystemVersion</key><string>13.0</string>
+<key>CFBundleDevelopmentRegion</key><string>ja</string>
+<key>CFBundleLocalizations</key><array><string>ja</string></array>
+<key>NSHighResolutionCapable</key><true/>
+<key>NSAppTransportSecurity</key><dict><key>NSAllowsArbitraryLoadsInWebContent</key><true/></dict>
+</dict></plist>

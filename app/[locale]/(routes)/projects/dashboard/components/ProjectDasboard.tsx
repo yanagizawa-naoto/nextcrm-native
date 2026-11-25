@@ -1,0 +1,293 @@
+"use client";
+
+import moment from "moment";
+import Link from "next/link";
+
+import { TeamConversations } from "../../tasks/viewtask/[taskId]/components/team-conversation";
+import { toast } from "sonner";
+
+import { useRouter } from "next/navigation";
+import { getTaskDone } from "../../actions/get-task-done";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { CheckSquare, Eye, MessagesSquare, Pencil } from "lucide-react";
+import UpdateTaskDialog from "../../dialogs/UpdateTask";
+import { Button } from "@/components/ui/button";
+import { Sections } from "@prisma/client";
+import { ElementRef, useRef, useState } from "react";
+import FormSheet from "@/components/sheets/form-sheet";
+
+interface DashboardData {
+  getTaskPastDue: Tasks[];
+  getTaskPastDueInSevenDays: Tasks[];
+}
+
+export interface Tasks {
+  id: string;
+  title: string;
+  content: string;
+  dueDateAt: Date;
+  priority: string;
+  section: string;
+  comments: Comment[];
+}
+
+export interface Comment {
+  id: string;
+  content: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+const ProjectDashboardCockpit = ({
+  dashboardData,
+  boards,
+  sections,
+}: {
+  dashboardData: DashboardData;
+  boards: any;
+  sections: Sections[];
+}) => {
+  const router = useRouter();
+
+  const [updateOpenSheet, setUpdateOpenSheet] = useState(false);
+  const closeRef = useRef<ElementRef<"button">>(null);
+
+  //Actions
+  const onDone = async (taskId: string) => {
+    try {
+      await getTaskDone(taskId);
+    } catch (error) {
+      toast.error("エラー");
+    } finally {
+      toast.success("完了");
+      router.refresh();
+    }
+  };
+
+  //Console logs
+
+  return (
+    <div className="flex flex-col md:flex-row items-start justify-center h-full w-full overflow-auto">
+      <div className="w-full md:w-1/2">
+        <div>
+          <h2 className="font-bold text-lg ">
+            {"今日が期限のタスク（"}{dashboardData?.getTaskPastDue?.length})
+          </h2>
+          {/*         <pre>
+            <code>{JSON.stringify(dashboardData, null, 2)}</code>
+          </pre> */}
+        </div>
+
+        {dashboardData?.getTaskPastDue?.map((task: Tasks) => (
+          <Card key={task.id} className="m-2">
+            <CardHeader>
+              <CardTitle className="text-xl">
+                {task.title === "" ? "無題" : task.title}
+              </CardTitle>
+              <CardDescription>{task.content}</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div
+                className={
+                  task.dueDateAt < new Date() ? "text-red-500 text-xs" : ""
+                }
+              >
+                {"期限："}{moment(task.dueDateAt).format("YYYY-MM-DD")}
+              </div>
+              <div>
+                <p
+                  className={
+                    task.priority === "normal"
+                      ? `text-yellow-500`
+                      : task.priority === "high"
+                      ? `text-red-500`
+                      : task.priority === "low"
+                      ? `text-green-500`
+                      : `text-slate-600`
+                  }
+                >
+                  {"優先度："}{task.priority}
+                </p>
+              </div>
+            </CardContent>
+            <CardFooter className="space-x-2 ">
+              <Link href={`/projects/tasks/viewtask/${task.id}`}>
+                <Badge variant={"outline"}>
+                  <Eye className="w-4 h-4 mr-2" />
+                  <span>{"タスクを見る"}</span>
+                </Badge>
+              </Link>
+              <Sheet>
+                <SheetTrigger asChild>
+                  <Badge variant={"outline"} className="cursor-pointer">
+                    <MessagesSquare className="w-4 h-4 mr-2" />
+                    <span>{"チャット"}</span>
+                  </Badge>
+                </SheetTrigger>
+                <SheetContent className="max-w-3xl overflow-y-auto">
+                  <SheetHeader>
+                    <SheetTitle>{"チームの会話"}</SheetTitle>
+                    <SheetDescription>
+                      {"このタスクについてチームで相談できます"}</SheetDescription>
+                  </SheetHeader>
+                  <div className="mt-6 space-y-4">
+                    <TeamConversations taskId={task.id} data={task.comments} />
+                  </div>
+                </SheetContent>
+              </Sheet>
+              <Badge
+                variant={"outline"}
+                onClick={() => onDone(task.id)}
+                className="cursor-pointer"
+              >
+                <CheckSquare className="w-4 h-4 mr-2" />
+                <span>{"完了にする"}</span>
+              </Badge>
+
+              <FormSheet
+                trigger={"編集"}
+                title="タスクを更新"
+                description="タスク名・説明・期限・優先度を編集します"
+                onClose={closeRef}
+              >
+                <UpdateTaskDialog
+                  boards={boards}
+                  boardId={
+                    sections.find(
+                      (section: Sections) => section.id === task.section
+                    )?.board
+                  }
+                  initialData={task}
+                  onDone={() => closeRef.current?.click()}
+                />
+                <div className="w-full justify-end items-end flex pt-2">
+                  <Button
+                    className="ml-auto"
+                    variant={"destructive"}
+                    onClick={() => closeRef.current?.click()}
+                  >
+                    {"閉じる"}</Button>
+                </div>
+              </FormSheet>
+            </CardFooter>
+          </Card>
+        ))}
+      </div>
+      <div className="w-full pt-5 md:w-1/2 md:pt-0">
+        <div>
+          <h2 className="font-bold text-lg ">
+            {"7日以内が期限のタスク（"}{dashboardData?.getTaskPastDueInSevenDays?.length})
+          </h2>
+        </div>
+        {dashboardData?.getTaskPastDueInSevenDays?.map((task: Tasks) => (
+          <Card key={task.id} className="m-2">
+            <CardHeader>
+              <CardTitle className="text-xl">
+                {task.title === "" ? "無題" : task.title}
+              </CardTitle>
+              <CardDescription>{task.content}</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div
+                className={
+                  task.dueDateAt < new Date()
+                    ? "text-red-500 text-xs"
+                    : "text-xs"
+                }
+              >
+                {"期限："}{moment(task.dueDateAt).format("YYYY-MM-DD")}
+              </div>
+              <div>
+                <p
+                  className={
+                    task.priority === "normal"
+                      ? `text-yellow-500`
+                      : task.priority === "high"
+                      ? `text-red-500`
+                      : task.priority === "low"
+                      ? `text-green-500`
+                      : `text-slate-600`
+                  }
+                >
+                  {"優先度："}{task.priority}
+                </p>
+              </div>
+            </CardContent>
+            <CardFooter className="space-x-2">
+              <Link href={`/projects/tasks/viewtask/${task.id}`}>
+                <Badge variant={"outline"}>
+                  <Eye className="w-4 h-4 mr-2" />
+                  <span>{"タスクを見る"}</span>
+                </Badge>
+              </Link>
+
+              <Sheet>
+                <SheetTrigger asChild>
+                  <Badge variant={"outline"} className="cursor-pointer">
+                    <MessagesSquare className="w-4 h-4 mr-2" />
+                    <span>{"チャット"}</span>
+                  </Badge>
+                </SheetTrigger>
+
+                <SheetContent className="max-w-3xl overflow-y-auto">
+                  <SheetHeader>
+                    <SheetTitle>{"チームの会話"}</SheetTitle>
+                    <SheetDescription>
+                      {"このタスクについてチームで相談できます"}</SheetDescription>
+                  </SheetHeader>
+                  <div className="mt-6 space-y-4">
+                    <TeamConversations taskId={task.id} data={task.comments} />
+                  </div>
+                </SheetContent>
+              </Sheet>
+
+              <Badge variant={"outline"} onClick={() => onDone(task.id)} className="cursor-pointer">
+                <CheckSquare className="w-4 h-4 mr-2" />
+                <span>{"完了にする"}</span>
+              </Badge>
+              <Sheet>
+                <SheetTrigger asChild>
+                  <Badge variant={"outline"} className="cursor-pointer">
+                    <Pencil className="w-4 h-4 mr-2" />
+                    <span>{"編集"}</span>
+                  </Badge>
+                </SheetTrigger>
+                <SheetContent className="max-w-3xl overflow-y-auto">
+                  <SheetHeader>
+                    <SheetTitle>{"タスクを編集"}</SheetTitle>
+                    <SheetDescription>
+                      {"タスク名・説明・期限・優先度を更新します"}</SheetDescription>
+                  </SheetHeader>
+                  <div className="mt-6 space-y-4">
+                    <UpdateTaskDialog
+                      boards={boards}
+                      initialData={task}
+                    />
+                  </div>
+                </SheetContent>
+              </Sheet>
+            </CardFooter>
+          </Card>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default ProjectDashboardCockpit;

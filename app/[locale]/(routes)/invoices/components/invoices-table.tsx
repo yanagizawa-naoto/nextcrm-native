@@ -1,0 +1,203 @@
+"use client";
+
+import { useMemo, useState } from "react";
+import { useLocale } from "next-intl";
+import Link from "next/link";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { StatusBadge } from "./status-badge";
+import { cn } from "@/lib/utils";
+
+interface Invoice {
+  id: string;
+  number: string | null;
+  type: string;
+  status: string;
+  issueDate: string | null;
+  dueDate: string | null;
+  grandTotal: string;
+  currency: string;
+  account: { id: string; name: string } | null;
+  series: { id: string; name: string } | null;
+}
+
+type SortField = "number" | "account" | "issueDate" | "dueDate" | "grandTotal" | "status";
+type SortDir = "asc" | "desc";
+
+interface InvoicesTableProps {
+  invoices: Invoice[];
+  statusLabels?: Record<string, string>;
+  tableLabels?: {
+    number?: string;
+    account?: string;
+    issueDate?: string;
+    dueDate?: string;
+    total?: string;
+    status?: string;
+    type?: string;
+    currency?: string;
+  };
+}
+
+function formatDate(d: string | null, locale: string) {
+  if (!d) return "-";
+  return new Date(d).toLocaleDateString(locale);
+}
+
+function formatCurrency(amount: string, currency: string, locale: string) {
+  const num = parseFloat(amount);
+  if (isNaN(num)) return amount;
+  return new Intl.NumberFormat(locale, {
+    style: "currency",
+    currency,
+    minimumFractionDigits: currency === "JPY" ? 0 : 2,
+  }).format(num);
+}
+
+function SortHeader({
+  field,
+  sortField,
+  sortDir,
+  onSort,
+  children,
+}: {
+  field: SortField;
+  sortField: SortField;
+  sortDir: SortDir;
+  onSort: (field: SortField) => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <TableHead
+      className="cursor-pointer select-none"
+      onClick={() => onSort(field)}
+    >
+      {children}
+      {sortField === field && (
+        <span className="ml-1">{sortDir === "asc" ? "↑" : "↓"}</span>
+      )}
+    </TableHead>
+  );
+}
+
+export function InvoicesTable({
+  invoices,
+  statusLabels,
+  tableLabels,
+}: InvoicesTableProps) {
+  const locale = useLocale();
+  const [sortField, setSortField] = useState<SortField>("issueDate");
+  const [sortDir, setSortDir] = useState<SortDir>("desc");
+
+  const toggleSort = (field: SortField) => {
+    if (sortField === field) {
+      setSortDir(sortDir === "asc" ? "desc" : "asc");
+    } else {
+      setSortField(field);
+      setSortDir("asc");
+    }
+  };
+
+  const sorted = useMemo(() => {
+    const copy = [...invoices];
+    copy.sort((a, b) => {
+      let cmp = 0;
+      switch (sortField) {
+        case "number":
+          cmp = (a.number ?? "").localeCompare(b.number ?? "");
+          break;
+        case "account":
+          cmp = (a.account?.name ?? "").localeCompare(b.account?.name ?? "");
+          break;
+        case "issueDate":
+          cmp = (a.issueDate ?? "").localeCompare(b.issueDate ?? "");
+          break;
+        case "dueDate":
+          cmp = (a.dueDate ?? "").localeCompare(b.dueDate ?? "");
+          break;
+        case "grandTotal":
+          cmp = parseFloat(a.grandTotal) - parseFloat(b.grandTotal);
+          break;
+        case "status":
+          cmp = a.status.localeCompare(b.status);
+          break;
+      }
+      return sortDir === "asc" ? cmp : -cmp;
+    });
+    return copy;
+  }, [invoices, sortField, sortDir]);
+
+  const isOverdue = (inv: Invoice) => {
+    if (inv.status === "OVERDUE") return true;
+    if (
+      inv.dueDate &&
+      ["ISSUED", "SENT", "PARTIALLY_PAID"].includes(inv.status)
+    ) {
+      return new Date(inv.dueDate) < new Date();
+    }
+    return false;
+  };
+
+  const labels = tableLabels ?? {};
+  const sortProps = { sortField, sortDir, onSort: toggleSort };
+
+  return (
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <SortHeader {...sortProps} field="number">{labels.number ?? "番号"}</SortHeader>
+          <SortHeader {...sortProps} field="account">{labels.account ?? "取引先"}</SortHeader>
+          <SortHeader {...sortProps} field="issueDate">
+            {labels.issueDate ?? "発行日"}
+          </SortHeader>
+          <SortHeader {...sortProps} field="dueDate">{labels.dueDate ?? "支払期限"}</SortHeader>
+          <SortHeader {...sortProps} field="grandTotal">
+            {labels.total ?? "合計"}
+          </SortHeader>
+          <SortHeader {...sortProps} field="status">{labels.status ?? "状態"}</SortHeader>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {sorted.map((inv) => (
+          <TableRow
+            key={inv.id}
+            className={cn(isOverdue(inv) && "bg-red-50 dark:bg-red-950/20")}
+          >
+            <TableCell>
+              <Link
+                href={`/invoices/${inv.id}`}
+                className="font-medium text-primary hover:underline"
+              >
+                {inv.number ?? "下書き"}
+              </Link>
+            </TableCell>
+            <TableCell>{inv.account?.name ?? "-"}</TableCell>
+            <TableCell>{formatDate(inv.issueDate, locale)}</TableCell>
+            <TableCell>{formatDate(inv.dueDate, locale)}</TableCell>
+            <TableCell className="font-mono">
+              {formatCurrency(inv.grandTotal, inv.currency, locale)}
+            </TableCell>
+            <TableCell>
+              <StatusBadge status={inv.status} labels={statusLabels} />
+            </TableCell>
+          </TableRow>
+        ))}
+        {sorted.length === 0 && (
+          <TableRow>
+            <TableCell
+              colSpan={6}
+              className="text-center text-muted-foreground py-8"
+            >
+              {"請求書が見つかりません"}</TableCell>
+          </TableRow>
+        )}
+      </TableBody>
+    </Table>
+  );
+}

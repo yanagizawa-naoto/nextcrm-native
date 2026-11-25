@@ -1,0 +1,64 @@
+import { PrismaClient } from "@prisma/client";
+
+// Stable deterministic UUIDs for idempotent re-runs
+const SERIES_ID = "00000000-0000-4000-a000-000000000001";
+const SETTINGS_ID = "00000000-0000-4000-a000-000000000002";
+const TAX_RATE_21_ID = "00000000-0000-4000-a000-000000000010";
+const TAX_RATE_12_ID = "00000000-0000-4000-a000-000000000011";
+const TAX_RATE_0_ID = "00000000-0000-4000-a000-000000000012";
+
+const TAX_RATES = [
+  { id: TAX_RATE_21_ID, name: "標準税率 10%", rate: 10, isDefault: true },
+  { id: TAX_RATE_12_ID, name: "軽減税率 8%", rate: 8, isDefault: false },
+  { id: TAX_RATE_0_ID, name: "税率 0%", rate: 0, isDefault: false },
+];
+
+export async function seedInvoices(prisma: PrismaClient) {
+  console.log("Seeding invoice series...");
+  await prisma.invoice_Series.upsert({
+    where: { id: SERIES_ID },
+    update: { name: "通常請求書", prefixTemplate: "INV-{YYYY}-{####}" },
+    create: {
+      id: SERIES_ID,
+      name: "通常請求書",
+      prefixTemplate: "INV-{YYYY}-{####}",
+      resetPolicy: "YEARLY",
+      counter: 0,
+      isDefault: true,
+    },
+  });
+
+  console.log("Seeding invoice tax rates...");
+  for (const tr of TAX_RATES) {
+    await prisma.invoice_TaxRates.upsert({
+      where: { id: tr.id },
+      update: { name: tr.name, rate: tr.rate, isDefault: tr.isDefault },
+      create: {
+        id: tr.id,
+        name: tr.name,
+        rate: tr.rate,
+        isDefault: tr.isDefault,
+      },
+    });
+  }
+
+  console.log("Seeding invoice settings...");
+  await prisma.invoice_Settings.upsert({
+    where: { id: SETTINGS_ID },
+    update: {
+      baseCurrency: "JPY",
+      defaultDueDays: 14,
+      defaultSeriesId: SERIES_ID,
+      defaultTaxRateId: TAX_RATE_21_ID,
+    },
+    create: {
+      id: SETTINGS_ID,
+      baseCurrency: "JPY",
+      defaultDueDays: 14,
+      defaultSeriesId: SERIES_ID,
+      defaultTaxRateId: TAX_RATE_21_ID,
+    },
+  });
+
+  console.log("Invoice seed data completed.");
+}

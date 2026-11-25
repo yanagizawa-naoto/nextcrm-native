@@ -1,0 +1,71 @@
+"use client";
+
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { signOut } from "@/lib/auth-client";
+
+import { LogOut, Settings } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useAvatarContext } from "@/context/avatar-context";
+
+type Props = {
+  avatar: string;
+  userId: string;
+  name: string;
+  email: string;
+};
+
+const AvatarDropdown = ({ avatar, userId, name, email }: Props) => {
+  const router = useRouter();
+  const { avatar: newAvatar } = useAvatarContext();
+
+  //console.log(newAvatar, "newAvatar");
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger>
+        <Avatar>
+          <AvatarImage
+            src={
+              newAvatar
+                ? newAvatar
+                : "/images/nouser.png"
+            }
+          />
+        </Avatar>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent>
+        <DropdownMenuLabel className="space-y-1">
+          <div>{name}</div>
+          <div className="text-xs text-muted-foreground">{email}</div>
+        </DropdownMenuLabel>
+
+        <DropdownMenuSeparator />
+        <DropdownMenuItem onClick={() => router.push("/projects/dashboard")}>
+          {"タスクのダッシュボード"}</DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={() => router.push(`/crm/dashboard/${userId}`)}
+        >
+          {"営業ダッシュボード"}</DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem onClick={() => router.push("/profile")}>
+          <Settings className="w-4 h-4 inline-block mr-2 stroke-current text-muted-foreground" />
+          <span>{"プロフィール設定"}</span>
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem onClick={async () => { await signOut(); window.location.href = new URL("/sign-in", window.location.origin).href; }}>
+          <LogOut className="w-4 h-4 inline-block mr-2 stroke-current text-muted-foreground" />
+          <span>{"ログアウト"}</span>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+};
+
+export default AvatarDropdown;

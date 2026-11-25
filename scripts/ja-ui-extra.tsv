@@ -1,0 +1,2114 @@
+Try again	再試行
+Your account has been deactivated by Admin	管理者によりアカウントが無効化されています
+Hi, your	お使いの
+account has been disabled. Ask someone in your organization to activate your account again.	アカウントは無効です。管理者に再有効化を依頼してください。
+Admin List	管理者一覧
+Log-in with another account	別のアカウントでログイン
+or	または
+Github stars	GitHubのスター
+- your account must be allowed by Admin	— 利用には管理者の承認が必要です
+Hi, welcome to	ようこそ
+. Ask someone in your organization to approve your account. If you are fist user call to tech support to enable account.	。管理者にアカウントの承認を依頼してください。最初のユーザーの場合は、システムの管理担当者にお問い合わせください。
+Something went wrong with Google sign-in.	Googleでログインできませんでした。
+Please enter your email address.	メールアドレスを入力してください。
+Verification code sent to your email.	認証コードをメールで送信しました。
+Failed to send verification code.	認証コードを送信できませんでした。
+Please enter the 6-digit code.	6桁の認証コードを入力してください。
+Login successful.	ログインしました。
+Verification failed.	認証できませんでした。
+Login	ログイン
+Choose your sign-in method	ログイン方法を選択してください
+Continue with Google	Googleでログイン
+Or continue with email	またはメールでログイン
+Send verification code	認証コードを送信
+Enter the 6-digit code sent to	6桁の認証コードを入力してください。送信先：
+Verify and sign in	認証してログイン
+Use a different email	別のメールアドレスを使用
+Welcome to	ようこそ
+LLM Keys	AIのAPIキー
+Services	外部サービス
+CRM Settings	営業管理の設定
+Funnel Settings	営業フローの設定
+Calendar Settings	カレンダー設定
+Audit Log	変更履歴
+Currencies	通貨
+Resend.com - API Key	ResendのAPIキー
+ENV API key:	環境変数のAPIキー：
+API key from DB:	保存済みAPIキー：
+Your API key	APIキーを入力
+Set Resend key	Resendのキーを保存
+Access denied	アクセスできません
+Complete history of all CRM changes.	CRM全体の変更履歴を確認できます。
+Unauthorized	ログインが必要です
+Forbidden	操作する権限がありません
+Save the API token first.	先にAPIトークンを保存してください。
+Calendly settings saved.	Calendlyの設定を保存しました。
+API token	APIトークン
+Calendly personal access token	Calendlyの個人アクセストークン
+Webhook signing key	Webhook署名キー
+Optional; generated when you subscribe	任意（連携登録時に自動生成）
+Active subscription:	有効な連携：
+Calendar settings	カレンダー設定
+Calendly organization webhook for booked-call capture.	Calendlyで予約された面談を取り込むための連携設定です。
+Name is required	名称を入力してください
+Max 100 characters	100文字以内で入力してください
+Add	追加
+Automation trigger	自動処理のきっかけ
+None	なし
+Select a replacement before deleting	削除前に置き換え先を選択してください
+Delete &quot;	削除：「
+record	件のデータ
+use this value. Choose a replacement before deleting.	で使用中です。削除前に置き換え先を選択してください。
+Select replacement…	置き換え先を選択…
+Edit Value	項目を編集
+value	値
+No values yet.	項目はまだありません。
+in use	使用中
+Industries	業種
+Contact Types	連絡先の種別
+Lead Statuses	見込み客の状態
+Lead Types	見込み客の種別
+Opportunity Types	商談の種別
+Sales Stages	商談段階
+Manage default values used across CRM modules.	営業管理で使う選択肢と初期値を管理します。
+Rate must be positive	レートは0より大きい値で入力してください
+Failed to update currency	通貨を更新できませんでした
+Failed to set default currency	既定の通貨を変更できませんでした
+Code	コード
+Symbol	記号
++ Add Currency	＋ 通貨を追加
+Add Currency	通貨を追加
+Code (e.g. GBP)	コード（例：JPY）
+Name (e.g. British Pound)	名称（例：日本円）
+Symbol (e.g. £)	記号（例：¥）
+Failed to update ECB setting	為替の自動更新設定を変更できませんでした
+ECB Auto-Update	ECB為替レートの自動更新
+Rate updated	レートを更新しました
+Failed to update rate	レートを更新できませんでした
+Rate	レート
+Exchange Rates	為替レート
+Invalid values — all fields must be whole days in range.	指定範囲内の日数を整数で入力してください。
+Close deal after N days of client silence	顧客から返信がない場合に商談を終了するまでの日数
+Recycle targets N days after sequence end	営業ステップ終了後に営業対象を再開するまでの日数
+Touch 1: business days after quote	1回目の連絡：見積もり送付後の営業日数
+Touch 2: days after touch 1	2回目の連絡：1回目からの日数
+Touch 3: days after touch 2	3回目の連絡：2回目からの日数
+Touch 4: days after touch 3	4回目の連絡：3回目からの日数
+Touch 5 (final): days after touch 3	5回目（最終）の連絡：3回目からの日数
+Care check-in after N days	フォロー連絡までの日数
+Referral ask after N days	紹介依頼までの日数
+Quarterly interval (days)	定期フォローの間隔（日）
+Number of quarterly check-ins	定期フォローの回数
+Surface renewals N days ahead	更新予定を表示するまでの残り日数
+Funnel settings saved	営業フローの設定を保存しました
+Failed to save funnel settings	営業フローの設定を保存できませんでした
+Funnel timing — instance settings	営業フローの実行タイミング
+Changes apply to future stage entries and the next timer runs; already-scheduled cadences keep the timings they started with.	変更は今後の段階変更と次回の定期処理に適用されます。予約済みの連絡は元の予定を維持します。
+Series	採番系列
+Invoice sections	請求書の設定項目
+Manage invoice settings, number series, and tax rates.	請求書の基本設定・採番系列・税率を管理します。
+Failed to save series	採番系列を保存できませんでした
+Delete this series?	この採番系列を削除しますか？
+Series deleted	採番系列を削除しました
+Failed to delete series	採番系列を削除できませんでした
+Actions	操作
+No series configured	採番系列が設定されていません
++ Add Series	＋ 採番系列を追加
+e.g. Standard Invoices	例：通常請求書
+e.g. INV-{YYYY}-	例：INV-{YYYY}-
+Use	使用例：
+for year,	は年、
+for month	は月
+Default due days is required	支払期限までの日数を入力してください
+Must be at least 1 day	1日以上にしてください
+Must be at most 365 days	365日以内にしてください
+Invalid email	有効なメールアドレスを入力してください
+Please fix the highlighted fields	強調表示された項目を確認してください
+Company Details	自社情報
+Company Name	会社名
+e.g. Acme s.r.o.	例：株式会社サンプル
+Street Address	町名・番地・建物名
+e.g. Wenceslas Square 1	例：丸の内1丁目1番1号
+ZIP / Postal Code	郵便番号
+e.g. Czech Republic	例：日本
+VAT ID (DIČ)	税務登録番号
+e.g. CZ12345678	税務登録番号を入力
+Tax ID	税務番号
+Registration No. (IČO)	法人番号・登録番号
+Invoice Defaults	請求書の初期値
+Select series...	採番系列を選択…
+Select tax rate...	税率を選択…
+e.g. Komercni banka	例：○○銀行 ○○支店
+Text displayed at the bottom of invoices	請求書の下部に表示する文言
+Failed to save tax rate	税率を保存できませんでした
+Delete this tax rate?	この税率を削除しますか？
+Tax rate deleted	税率を削除しました
+Failed to delete tax rate	税率を削除できませんでした
+No tax rates configured	税率が設定されていません
++ Add Tax Rate	＋ 税率を追加
+e.g. Standard VAT	例：標準税率
+Failed to save key	APIキーを保存できませんでした
+Failed to remove key	APIキーを削除できませんでした
+ENV active	環境変数で設定済み
+System-wide	システム共通
+Not configured	未設定
+Set via	設定元：
+— read-only	— 閲覧のみ
++ Add key	＋ APIキーを追加
+Paste API key…	APIキーを貼り付け…
+AI Provider Keys	AIサービスのAPIキー
+LLM API key management	AIのAPIキーを管理
+Priority: ENV → System-wide → User profile	優先順位：環境変数 → システム共通 → 個人設定
+System-wide keys are used when no ENV variable is set. Users can configure their own keys in profile settings.	環境変数が未設定の場合はシステム共通キーを使います。ユーザーごとのキーはプロフィールから設定できます。
+Not found	見つかりません
+System service integrations	外部サービス連携
+System service integrations. Priority: ENV → System-wide (DB).	外部サービスの接続設定です。環境変数をシステム共通設定より優先します。
+Please select a user language.	言語を選択してください。
+Select a user language	言語を選択
+Partner account	パートナー企業
+The partner&apos;s own company. He will see it read-only.	パートナー自身の企業です。パートナーには閲覧のみ許可されます。
+Clear	クリア
+Date created	作成日
+Last login	最終ログイン
+Role	権限
+Asc	昇順
+Desc	降順
+Hide	非表示
+selected	件を選択
+Clear filters	絞り込みを解除
+of	／
+row(s) selected.	件を選択中
+Page	ページ
+The URL has been copied to your clipboard.	URLをコピーしました。
+User has been deleted	ユーザーを削除しました
+User has been activated.	ユーザーを有効にしました。
+Something went wrong while activating user. Please try again.	ユーザーを有効にできませんでした。もう一度お試しください。
+User has been deactivated.	ユーザーを無効にしました。
+Something went wrong while deactivating user. Please try again.	ユーザーを無効にできませんでした。もう一度お試しください。
+Something went wrong while revoking API tokens. Please try again.	APIトークンを失効できませんでした。もう一度お試しください。
+Something went wrong while changing role. Please try again.	権限を変更できませんでした。もう一度お試しください。
+Copy ID	IDをコピー
+Deactivate	無効にする
+Revoke API tokens	APIトークンを失効
+Set Role	権限を変更
+Manager	マネージャー
+User	一般ユーザー
+Filter Users ...	ユーザーを絞り込み…
+No results.	該当する結果はありません。
+Inactive	無効
+Pending	保留中
+Pause	一時停止
+Bounced	配信エラー
+Search name or email...	氏名・メールアドレスを検索…
+No recipients found.	送信先が見つかりません。
+recipients	件の送信先
+Campaign Steps	配信ステップ
+Template:	テンプレート：
+Scheduled	予約済み
+sent &middot;	送信済み・
+% opens	% 開封
+No steps configured.	配信ステップがありません。
+Campaign has been deleted	キャンペーンを削除しました
+Scheduled At	配信予定
+All Campaigns	すべてのキャンペーン
+Filter by name ...	名称で絞り込み…
+No campaigns found.	キャンペーンが見つかりません。
+Campaign name is required	キャンペーン名を入力してください
+Campaign Name *	キャンペーン名（必須）
+e.g. Q2 Product Outreach	例：新商品のご案内
+Optional description...	説明（任意）…
+From Name	差出人名
+e.g. Jane from Acme	例：株式会社サンプル 山田
+Reply-to Email	返信先メールアドレス
+Next →	次へ →
+Subject line is required	件名を入力してください
+Email content is required	本文を入力してください
+Generate with AI	AIで作成
+Choose Existing	既存のテンプレートを選択
+Describe your email campaign...	キャンペーンの内容を入力…
+No templates yet.	テンプレートはまだありません。
+Subject Line *	件名（必須）
+Your email subject...	メールの件名…
+Email Content	メール本文
+← Back	← 戻る
+Select at least one target list	営業対象リストを1つ以上選択してください
+Search target lists...	営業対象リストを検索…
+targets	件の営業対象
+No target lists found.	営業対象リストが見つかりません。
+recipients selected across	件の送信先を選択（対象：
+list(s)	リスト）
+Pick a date or choose Send Now	配信日時を指定するか、今すぐ送信を選択してください
+When to send	配信日時
+Send now	今すぐ送信
+Schedule for later	日時を指定して送信
+Follow-up Steps	フォローアップのステップ
+No follow-ups. Add one below.	フォローアップは未設定です。下から追加できます。
+Follow-up	フォローアップ
+Delay (days after previous)	前回の配信からの日数
+Send to	送信先
+All recipients	すべての送信先
+Non-openers only	未開封の送信先のみ
+Subject	件名
+Follow-up subject line...	フォローアップの件名…
++ Add follow-up	＋ フォローアップを追加
+Campaign saved, but it could not be sent or scheduled	保存しましたが、送信・配信予約はできませんでした
+New Campaign	キャンペーンを作成
+Create an email campaign	メールキャンペーンを作成します
+Manage your email campaigns	メールキャンペーンを管理します
++ New Campaign	＋ キャンペーンを作成
+Target list not found	対象リストが見つかりません
+Target removed from list	リストから営業対象を外しました
+ID:	ID：
+Created by	作成者
+Created on	作成日
+Targets (	営業対象（
++ Add Target	＋ 営業対象を追加
+No targets in this list yet.	このリストに営業対象はまだありません。
+View and manage targets in this list	リスト内の営業対象を確認・管理します
+Manage your target lists for campaigns and outreach	キャンペーンや営業活動で使うリストを管理します
+Target list has been deleted	営業対象リストを削除しました
+This content is hidden now. Click on	内容は非表示です。表示するには次をクリック：
+to show content	
+Target not found	対象顧客が見つかりません
+Company website	会社のウェブサイト
+Personal website	個人のウェブサイト
+Last updated	最終更新
+Tags:	タグ：
+Contact information	連絡先情報
+Social networks	SNS
+Notes	メモ
+Target converted — deal created.	営業対象を商談に変換しました。
+Failed to convert target.	営業対象を変換できませんでした。
+Convert to deal	商談に変換
+Enrichment started — you'll be notified when done	情報補完を開始しました。完了時に通知します
+Failed to start enrichment	情報補完を開始できませんでした
+Enrich with AI	AIで情報を補完
+Target enriched successfully	営業対象の情報を補完しました
+Firecrawl searches the web to fill in missing target details.	Firecrawlがウェブを検索し、不足している情報を補完します。
+Add an email or company name to this target to enable enrichment.	情報補完にはメールアドレスまたは会社名を登録してください。
+Personal search	人物を検索
+Company search	企業を検索
+Review enriched data. Uncheck any fields you don&apos;t want to apply.	取得した情報を確認し、反映しない項目はチェックを外してください。
+Field	項目
+Current	現在の値
+Enriched	取得した情報
+% confident	% の確信度
+empty	未入力
+Discard	破棄
+Running	実行中
+Failed	失敗
+Skipped	スキップ
+Contact added	連絡先を追加しました
+Add Contact	連絡先を追加
+Jane Smith	山田 花子
+LinkedIn URL	LinkedInのURL
+No contacts yet. Run enrichment to discover C-level contacts, or add one manually.	連絡先はまだありません。AIによる情報補完か手動で追加してください。
+Enrich	情報を補完
+Everything you need to know about this target	営業対象の詳細を確認します
+Select fields to enrich. Enrichment will run in the background. Only empty fields will be filled — existing data is never overwritten.	補完する項目を選択してください。バックグラウンドで検索し、未入力の項目だけを補完します。
+Please provide either last name or company.	姓または会社名を入力してください。
+Target created successfully	営業対象を作成しました
+John	太郎
+Doe	山田
+CEO	代表取締役
+Acme Corp	株式会社サンプル
+Personal Email	個人メールアドレス
+Company Email	会社メールアドレス
+Company Phone	会社電話番号
+Prague	東京都
+Czech Republic	日本
+Industry	業種
+Short company description	会社の概要
+Is target active?	有効な営業対象
++ New Target	＋ 営業対象を作成
+Create new Target	営業対象を作成
+Add a new target to your CRM system.	新しい営業対象をCRMに登録します。
+Converted! Account and Contact created.	取引先と連絡先を作成しました。
+Target updated successfully	営業対象を更新しました
+Last name *	姓（必須）
+Converted to Account + Contact on	取引先・連絡先への変換日：
+Convert to Account	取引先に変換
+Convert to Account + Contact?	取引先と連絡先を作成しますか？
+This creates a new Account from &quot;	新しい取引先「
+&quot; and a new Contact for &quot;	」と連絡先「
+&quot;. The target will be marked as converted.	」を作成し、営業対象を変換済みにします。
+Retry queued. Refresh to see updated status.	再試行を予約しました。更新して状態を確認してください。
+Target Enrichment Jobs	営業対象の情報補完
+Refresh	更新
+enrichment job	件の情報補完処理
+Target	営業対象
+Fields	項目
+Started	開始日時
+By	実行者
+No enrichment jobs yet. Start one from the targets list.	情報補完の履歴はありません。営業対象の一覧から開始できます。
+Manage your marketing and sales targets	マーケティングと営業の対象を管理します
+Select all	すべて選択
+Select row	この行を選択
+Mobile	携帯電話
+Target has been deleted	営業対象を削除しました
+Update target details	営業対象の詳細を更新します
+Filter by last name ...	姓で絞り込み…
+Template not found.	テンプレートが見つかりません。
+Edit Template	テンプレートを編集
+Update your campaign email template	キャンペーンのメールテンプレートを編集します
+Template has been deleted	テンプレートを削除しました
+Subject Default	既定の件名
+Created By	作成者
+Created On	作成日
+Templates	テンプレート
++ New Template	＋ テンプレートを作成
+Template name is required	テンプレート名を入力してください
+Template Name *	テンプレート名（必須）
+e.g. Welcome Email	例：ご登録のお礼
+Optional description	説明（任意）
+e.g. Hi {{first_name}}, a quick note from us	例：{{first_name}}様、ご案内です
+Describe the email you want	作成したいメールの内容
+e.g. A warm outreach email introducing our SaaS product to a B2B prospect, focusing on ROI benefits	例：法人の見込み客に、導入効果を伝える丁寧なサービス紹介メール
+Email Body	メール本文
+Preview	プレビュー
+Rendering preview...	プレビューを作成しています…
+Email preview	メールのプレビュー
+New Template	テンプレートを作成
+Create a campaign email template	キャンペーンのメールテンプレートを作成します
+Campaign Templates	キャンペーンのテンプレート
+Reusable email templates	繰り返し使えるメールテンプレート
+Feedback	ご意見・ご要望
+Feedback must be at least 1 character.	内容を入力してください。
+Thank you for your feedback.	ご意見をお送りいただき、ありがとうございます。
+Something went wrong. Please try again later.	処理に失敗しました。しばらくしてからお試しください。
+Send us a feedback	ご意見を送る
+Your feedback	ご意見・ご要望
+We appreciate every feedback. Thank you for helping us make this app better	改善のため、ご意見・ご要望をお寄せください。
+Sending ...	送信しています…
+powered by Next.js	Next.jsで構築
+hosted by:	ホスティング：
+Search	検索
+Loading	読み込み中
+Loading...	読み込み中…
+My Dashboard	自分のダッシュボード
+Overview	概要
+Approvals	承認
+Activity	活動履歴
+Navigation	ナビゲーション
+Todo Dashboard	タスクのダッシュボード
+Sales Dashboard	営業ダッシュボード
+Profile Settings	プロフィール設定
+Logout	ログアウト
+Todo dashboard	タスクのダッシュボード
+Sales dashboard	営業ダッシュボード
+Sign out	ログアウト
+Update Account -	取引先を編集：
+Update account details	取引先の詳細を更新します
+No partner	指定なし
+The external partner who looks after this account. The internal owner stays as it is.	この取引先を担当する外部パートナーです。社内の担当者は変更されません。
+Assignment cancelled	割り当てを解除しました
+Qty	数量
+Start	開始
+End	終了
+Product assigned successfully	商品を割り当てました
+Assign Product	商品を割り当て
+Assign a product or service to this account	取引先に商品・サービスを割り当てます
+Custom Price (optional)	個別価格（任意）
+Start Date	開始日
+End Date (optional)	終了日（任意）
+Renewal Date (optional)	更新日（任意）
+Opportunity not found	商談が見つかりません
+Company ID	法人番号・登録番号
+VAT number	税務登録番号
+Fax	FAX番号
+Last update	最終更新日
+Last update by	最終更新者
+Member of	所属グループ
+Billing Address	請求先住所
+Billing city	請求先の市区町村
+Shipping Address	送付先住所
+Shipping city	送付先の市区町村
+Case study	導入事例
+Approved	承認済み
+Candidate	候補
+Withdraw candidacy	候補を取り下げる
+Flag as candidate	候補にする
+Approve case study	導入事例を承認
+Revoke approval	承認を取り消す
+Clients with strong measurable results are flagged here; a manager approves before marketing may reference them.	成果のある顧客を候補として登録します。事例の紹介にはマネージャーの承認が必要です。
+New task name	タスク名
+Task description	タスクの説明
+Task due date	期限
+Pick a date	日付を選択
+Select assigned user	担当者を選択
+Choose task priority	優先度を選択
+Select tasks priority	優先度を選択
+Close	閉じる
+Create new Task	タスクを作成
+Create a new task for this account with assigned user, due date, and priority	担当者・期限・優先度を指定して、取引先のタスクを作成します
+Account not found	取引先が見つかりません
+Task deleted successfully	タスクを削除しました
+Something went wrong, during deleting task	タスクを削除できませんでした
+Filter tasks...	タスクを絞り込み…
+Bug	不具合
+Feature	機能追加
+Documentation	資料作成
+Complete	完了
+Normal	通常
+NextCRM Inc.	株式会社サンプル
+Registry country	企業登録情報の国
+Švábova 772/18	丸の内1丁目1番1号
+Czechia	日本
+Tesla Inc.	株式会社サンプル
+Account contact	取引先の連絡先
+Account has been deleted	取引先を削除しました
+Something went wrong while deleting account. Please try again.	取引先を削除できませんでした。もう一度お試しください。
+Watch Account	取引先の更新を通知
+Stop watching Account	取引先の更新通知を解除
+In progress	進行中
+No deals waiting for approval.	承認待ちの商談はありません。
+Deal	商談
+Rep	営業担当者
+Requested	申請日時
+Reject quote —	見積もりを却下：
+What needs to change? (sent to the rep)	修正が必要な内容（担当者に通知されます）
+Reject quote	見積もりを却下
+Quote approvals	見積もりの承認
+Deals waiting for a quote/SOW decision	見積もり・作業範囲の承認待ち商談
+New invoice	請求書を作成
+Product Catalog	商品一覧
+Line item added	明細を追加しました
+Add Line Item	明細を追加
+Add a product or custom line item	商品または任意の明細を追加します
+Product (optional)	商品（任意）
+-- Select a product --	商品を選択
+Discount Type	値引き方法
+Percentage (%)	割合（%）
+Fixed Amount	定額
+Line item updated	明細を更新しました
+Edit Line Item	明細を編集
+Update the line item details	明細の内容を更新します
+Line item removed	明細を削除しました
+No line items yet. Add one to get started.	明細はまだありません。追加してください。
+Discount	値引き
+Line Total	明細合計
+Birthday	生年月日
+Personal e-mail	個人メールアドレス
+Update Contact -	連絡先を編集：
+Update contact details	連絡先の詳細を更新します
+Contact enriched successfully	連絡先の情報を補完しました
+No email address found on this contact.	メールアドレスが登録されていません。
+Contact not found	連絡先が見つかりません
+contacts	件の連絡先
+Select fields to enrich. Firecrawl will run in the background. Only empty fields will be filled — existing data is never overwritten.	補完する項目を選択してください。Firecrawlがバックグラウンドで検索し、未入力の項目だけを補完します。
+The contact's job title or role at their company	連絡先の勤務先での役職
+The company's official website URL	会社の公式ウェブサイトURL
+The contact's or company's LinkedIn profile URL	連絡先または会社のLinkedInプロフィールURL
+The contact's or company's Twitter/X profile URL	連絡先または会社のXプロフィールURL
+The contact's or company's Facebook page URL	連絡先または会社のFacebookページURL
+The contact's or company's Instagram profile URL	連絡先または会社のInstagramプロフィールURL
+A brief description of what the company does	会社の事業内容の概要
+The company or contact's office phone number	会社または勤務先の電話番号
+The contact's mobile phone number	連絡先の携帯電話番号
+Select the data points to enrich. Firecrawl will search the web to find them.	補完する項目を選択してください。Firecrawlがウェブで情報を探します。
+Add custom field	任意の項目を追加
+Field name (e.g. Number of employees)	項目名（例：従業員数）
+Description (optional)	説明（任意）
+Add field	項目を追加
+CTO	最高技術責任者
+Completed	完了
+Enrichment Jobs	情報補完の履歴
+No enrichment jobs yet. Start one from the contacts list.	情報補完の履歴はありません。連絡先の一覧から開始できます。
+Assigned account	取引先
+Sure name	姓
+Contact has been deleted	連絡先を削除しました
+Something went wrong while deleting contact. Please try again.	連絡先を削除できませんでした。もう一度お試しください。
+Filter in last name ...	姓で絞り込み…
+Contract not found	契約が見つかりません
+End Date	終了日
+Renewal Reminder	更新通知
+Customer Signed Date	顧客の署名日
+Company Signed Date	自社の署名日
+Assigned To	担当者
+Last Update	最終更新日
+Updated by	更新者
+Please select an opportunity	商談を選択してください
+Copy from Opportunity	商談からコピー
+Copy Line Items from Opportunity	商談の明細をコピー
+Select an opportunity to copy its line items into this contract. Existing line items will not be removed.	明細をコピーする商談を選択してください。契約の既存の明細は残ります。
+Opportunity	商談
+-- Select an opportunity --	商談を選択
+Create a new contract with specified terms, dates, and assigned users	契約条件・日付・担当者を指定して契約を作成します
+Contract updated successfully!	契約を更新しました
+Update contract	契約を更新
+Update contract details, dates, status, and assignments	契約内容・日付・状態・担当者を更新します
+Renewal Reminder Date	更新通知日
+Customer signed	顧客署名済み
+Contract has been deleted	契約を削除しました
+Something went wrong while deleting contract. Please try again.	契約を削除できませんでした。もう一度お試しください。
+Filter contracts ...	契約を絞り込み…
+Not started	未開始
+Signed	署名済み
+Your sales data in one place	営業情報をまとめて確認できます
+Calls overview	電話対応の概要
+Tasks in Accounts	取引先のタスク
+Meetings overview	面談の概要
+Leads overview	見込み客の概要
+Amount:	金額：
+Expected closing:	受注予定：
+Opportunity stage changed	商談段階を変更しました
+Something went wrong	処理に失敗しました
+Opportunity has been set to inactive	商談を無効にしました
+Lost	失注
+CRM Dashboard	営業ダッシュボード
+In development. After this compoment is finished, there will be a optimistic update of the data.	この機能は開発中です。
+Your personal CRM overview	担当する営業活動の概要
+Total Tasks	タスク総数
+My Leads	自分の見込み客
+Active Opportunities	進行中の商談
+My Tasks	自分のタスク
+No tasks assigned.	担当するタスクはありません。
+My Opportunities	自分の商談
+No opportunities assigned.	担当する商談はありません。
+Stage	段階
+No leads assigned.	担当する見込み客はありません。
+Company name	会社名
+refered_by	紹介者
+Update lead -	見込み客を編集：
+Update lead details	見込み客の詳細を更新します
+Lead not found	見込み客が見つかりません
+Johny	太郎
+Walker	山田
+New NextCRM functionality	新機能のご案内
+Select source…	獲得経路を選択…
+Johny Walker	山田 太郎
+Lead Status	見込み客の状態
+Select status…	状態を選択…
+Lead Type	見込み客の種別
+Select type…	種別を選択…
+Expected close	受注予定日
+Lead has been deleted	見込み客を削除しました
+Something went wrong while deleting lead. Please try again.	見込み客を削除できませんでした。もう一度お試しください。
+Filter leads ...	見込み客を絞り込み…
+New	新規
+Approval pending	承認待ち
+Rejected	却下済み
+Opportunity amount	商談金額
+Sales stage	商談段階
+Will be added in the future	今後追加予定です
+Update Opportunity -	商談を編集：
+Update opportunity details	商談の詳細を更新します
+Approval requested — approvers were notified.	承認を申請し、承認担当者に通知しました。
+Request approval	承認を申請
+A expected close date is required.	受注予定日を入力してください。
+Delivery deadline	納品期限
+Search account...	取引先を検索…
+Assigned Contact	連絡先
+Select a user to assign the account	取引先の担当者を選択
+Search contact...	連絡先を検索…
+From campaign	獲得キャンペーン
+Select a campaign	キャンペーンを選択
+Contact ID	連絡先ID
+No campaign	指定なし
+Opportunity has been deleted	商談を削除しました
+Something went wrong while deleting opportunity. Please try again.	商談を削除できませんでした。もう一度お試しください。
+Filter opportunities...	商談を絞り込み…
+Closed	終了
+No accounts assigned to this product yet.	この商品に関連する取引先はまだありません。
+Renewal Date	更新日
+Product Information	商品情報
+Unit Cost	単位原価
+Margin	利益
+Unit	単位
+Recurring	定期請求
+Billing Period	請求周期
+Product not found	商品が見つかりません
+Basic	基本情報
+Accounts (	取引先（
+Product created successfully	商品を作成しました
+Create Product	商品を作成
+Add a new product or service to your catalog	商品・サービスを一覧に追加します
+Tax Rate (%)	税率（%）
+Recurring billing	定期請求
+Product updated successfully	商品を更新しました
+Update Product	商品を更新
+Update the product details	商品の詳細を更新します
+Import	読み込み
+Import Products from CSV	CSVから商品を読み込む
+Upload a CSV file to bulk import products. Download the template to see the expected format.	CSVで商品を一括登録できます。テンプレートで入力形式を確認してください。
+Download CSV Template	CSVテンプレートを保存
+Showing first	プレビューの先頭
+row(s) of preview	件を表示
+product(s) imported successfully	件の商品を読み込みました
+row(s) skipped	行をスキップ
+error(s)	件のエラー
+Done	完了
+Manage your product and service catalog	商品・サービスの一覧を管理します
+Product has been deleted	商品を削除しました
+Something went wrong while deleting product. Please try again.	商品を削除できませんでした。もう一度お試しください。
+Filter products ...	商品を絞り込み…
+Service	サービス
+Monthly	毎月
+Quarterly	3か月ごと
+Annually	毎年
+One Time	1回のみ
+Document name	文書名
+Document was disconnected from task	タスクとの関連を解除しました
+Something went wrong, while disconnecting document from task	タスクとの関連を解除できませんでした
+Disconnect from task	タスクとの関連を解除
+Document was assigned to task	タスクに文書を関連付けました
+Something went wrong, while assigning document to task	タスクに文書を関連付けできませんでした
+Connect to task	タスクに関連付け
+Document name ...	文書名…
+Something went wrong while sending comment to the DB	コメントを保存できませんでした
+Your comment ...	コメントを入力…
+Team conversation	チームの会話
+Invite your team members to collaborate.	チームメンバーを招待して共同作業できます。
+Task details	タスクの詳細
+Property	項目
+Date due	期限
+Date modified	更新日
+Content	内容
+Task documents (	関連する文書（
+Available documents (	利用可能な文書（
+Databox	データボックス
+Module content here	この機能の内容を表示します
+Failed to delete documents	文書を削除できませんでした
+Failed to update type	種別を変更できませんでした
+Failed to link documents	文書を関連付けできませんでした
+Link to Account	取引先に関連付け
+Change Type	種別を変更
+Receipt	領収書
+Contract	契約書
+Offer	見積書
+Other	その他
+Upload Documents	文書をアップロード
+Drop files here or click to browse	ここにファイルをドロップ、またはクリックして選択
+PDF, DOCX, DOC, TXT, Images — up to 64MB each	PDF・Word・テキスト・画像（1ファイル64MBまで）
+Upload anyway	そのままアップロード
+Skip	スキップ
+Uploaded	アップロード済み
+uploaded	件をアップロード済み
+FILE	ファイル
+Document	文書
+Generating summary...	要約を作成しています…
+Document has been deleted	文書を削除しました
+Something went wrong while deleting document.	文書を削除できませんでした。
+Details	詳細
+View File	ファイルを開く
+Search in names & summaries...	文書名・要約を検索…
+Enrichment re-triggered	情報補完を再開しました
+Failed to retry enrichment	情報補完を再試行できませんでした
+Summary	要約
+Version	版
+Version History	版の履歴
+Document uploaded successfully	文書をアップロードしました
+Failed to save document	文書を保存できませんでした
+Processing	処理中
+Compose	メールを作成
+Select account	アカウントを選択
+Select an account	アカウントを選択
+Archive	アーカイブ
+Move to junk	迷惑メールに移動
+Move to trash	ゴミ箱に移動
+Snooze	後で通知
+Snooze until	再通知の日時
+Later today	今日の後ほど
+Tomorrow	明日
+This weekend	今週末
+Next week	来週
+Reply	返信
+Reply all	全員に返信
+Forward	転送
+More	その他
+Mark as unread	未読にする
+Star thread	スターを付ける
+Add label	ラベルを追加
+Mute thread	通知を停止
+From:	差出人：
+To:	宛先：
+CC:	CC：
+Email body	メール本文
+Mute this thread	このスレッドの通知を停止
+No message selected	メールを選択してください
+Previous	前へ
+Next	次へ
+Inbox	受信トレイ
+All mail	すべてのメール
+Unread	未読
+Your connected mailboxes	接続済みのメールボックス
+You don&apos;t have any mailbox registered yet.	メールボックスはまだ登録されていません。
+Go to your profile to set up your first mailbox	プロフィールからメールボックスを設定してください
+Enter a search term above.	上の欄に検索語を入力してください。
+Type at least 2 characters to search.	2文字以上入力してください。
+No results found for &quot;	検索結果がありません：「
+No activity yet	活動履歴はまだありません
+Payment recorded	入金を登録しました
+Failed to add payment	入金を登録できませんでした
+Add Payment (	入金を登録（
+due)	未入金）
+Transaction reference	取引の参照番号
+Optional note	備考（任意）
+Invoice issued	請求書を発行しました
+Invoice cancelled	請求書を取り消しました
+Invoice duplicated	請求書を複製しました
+PDF regenerated	PDFを再作成しました
+Cancel this draft invoice?	この下書きの請求書を取り消しますか？
+Re-render PDF using current company settings	現在の自社情報でPDFを再作成
+No payments recorded	入金はまだ登録されていません
+Email address is required	メールアドレスを入力してください
+Invoice sent by email	請求書をメールで送付しました
+Failed to send email	メールを送信できませんでした
+Send Invoice by Email	請求書をメールで送付
+Subject (optional)	件名（任意）
+Custom subject line	任意の件名
+Message (optional)	本文（任意）
+Optional message to include	添えるメッセージ（任意）
+Address	住所
+Financial Summary	金額の内訳
+Grand Total	総合計
+Balance Due	未入金額
+Bank	金融機関
+Payments	入金履歴
+Please select an account	取引先を選択してください
+At least one line item is required	明細を1行以上追加してください
+Select account...	取引先を選択…
+Variable symbol	振込参照番号
+No invoices found	請求書が見つかりません
+Select...	選択…
+Tax...	税率…
+Totals	合計
+Revoke this token? This cannot be undone.	このトークンを失効しますか？この操作は取り消せません。
+Generate tokens to connect AI agents via MCP. Token prefix:	MCPでAIに接続するためのトークンを作成します。接頭辞：
+Token name (e.g. Claude Desktop)	トークン名（例：Claude Desktop）
+Optional expiry date	有効期限（任意）
+Prefix	接頭辞
+Expires	有効期限
+Revoke	失効
+Token Created	トークンを作成しました
+Copy this token now. It will not be shown again.	今すぐコピーして保管してください。このトークンは再表示されません。
+Calendar connection removed successfully.	カレンダーの接続を解除しました。
+Calendar connections	カレンダー連携
+Connect Google Calendar	Googleカレンダーを接続
+Loading…	読み込み中…
+No calendars connected.	接続済みのカレンダーはありません。
+Enable two-way sync	双方向同期を有効にする
+Reconnect	再接続
+Delete this email account and all synced emails?	このメールアカウントと同期済みのメールを削除しますか？
+No email accounts connected.	接続済みのメールアカウントはありません。
+Last synced:	最終同期：
+Add Email Account	メールアカウントを追加
+Connect Gmail	Gmailを接続
+Other IMAP	その他のIMAP
+Label (e.g. Work Gmail)	表示名（例：仕事用Gmail）
+IMAP Host	IMAPサーバー
+IMAP Port	IMAPポート
+SMTP Host	SMTPサーバー
+SMTP Port	SMTPポート
+Username / Email	ユーザー名・メールアドレス
+Gmail requires a	Gmailの接続には
+16-character App Password	16文字のアプリパスワード
+— your regular Gmail password won&apos;t work.	が必要です。通常のGmailパスワードは使用できません。
+Create one here	ここで作成
+(Google Account → Security → App Passwords). Enter it below.	（Googleアカウント → セキュリティ → アプリパスワード）して、下に入力してください。
+Sent Folder Name	送信済みフォルダ名
+e.g. Sent or [Gmail]/Sent Mail	例：Sent、[Gmail]/Sent Mail
+IMAP SSL	IMAPのSSL接続
+SMTP SSL	SMTPのSSL接続
+Allow self-signed TLS certificates	自己署名TLS証明書を許可
+Off by default. Enable only for a mail server you control that uses a self-signed certificate.	通常は無効にしてください。自分で管理する自己署名証明書のメールサーバーを使う場合のみ有効にします。
+Profile saved successfully	プロフィールを保存しました
+Something went wrong while activating your notion integration.	外部連携を有効にできませんでした。
+John Doe	山田 太郎
+Tesla Inc.,	株式会社サンプル
+avatar	プロフィール画像
+Claude Code Skill	Claude Code用スキル
+Download the SKILL.md file and place it in your	SKILL.mdを保存し、次のフォルダに配置してください：
+directory. It documents all	。このファイルには全
+MCP tools so Claude Code can interact with your CRM data.	MCPツールの説明があり、Claude CodeからCRMのデータを操作できます。
+Download SKILL.md	SKILL.mdを保存
+Used for GPT-4 enrichment and embeddings	AIによる情報補完と検索用データの生成
+Used for web scraping during enrichment	情報補完でのウェブ検索・情報取得
+Claude models	Claudeモデル
+Fast inference	高速なAI処理
+Please enter an API key.	APIキーを入力してください。
+A system-wide key is active — your key is not in use.	システム共通キーが有効なため、個人のキーは使用されていません。
+Current key:	現在のキー：
+Password management is handled via your identity provider.	パスワードはログインに使う認証サービス側で管理します。
+No user data.	ユーザー情報がありません。
+Attention! This task is overdue!	このタスクは期限を過ぎています。
+This task is done!	このタスクは完了しています。
+Mark as done	完了にする
+Due date:	期限：
+Priorita:	優先度：
+Failed to update task position	タスクの位置を更新できませんでした
+Section deleted successfully	セクションを削除しました
+Something went wrong, during deleting section	セクションを削除できませんでした
+New section title saved in database	セクション名を保存しました
+New task saved in database	タスクを保存しました
+Something went wrong, during creating task	タスクを作成できませんでした
+Invalid task. Please select a valid task to delete.	削除するタスクを選択してください。
+Fill out the form below to create a new section to this project.	下のフォームからプロジェクトにセクションを追加できます。
+Update Task	タスクを更新
+Edit task details including title, description, due date, priority, and assignments	タスク名・説明・期限・優先度・担当者を編集します
+Sections	セクション
+Something went wrong while deleting project. Please try again.	プロジェクトを削除できませんでした。もう一度お試しください。
+Delete project	プロジェクトを削除
+Are you sure you want to delete this project? You will not be able to recover it. All tasks will be deleted as well.	このプロジェクトを削除しますか？すべてのタスクも削除され、復元できません。
+Create New Task	タスクを作成
+Fill out the form below to create a new task.	下のフォームからタスクを作成できます。
+Choose section	セクションを選択
+Select tasks section	タスクのセクションを選択
+Tasks due Today (	今日が期限のタスク（
+View task	タスクを見る
+Chat	チャット
+Collaborate with your team on this task	このタスクについてチームで相談できます
+Update task	タスクを更新
+Edit task details including title, description, due date, and priority	タスク名・説明・期限・優先度を編集します
+Tasks due in 7 days (	7日以内が期限のタスク（
+Edit Task	タスクを編集
+Update task details including title, description, due date, and priority	タスク名・説明・期限・優先度を更新します
+DashBoard data not found	ダッシュボードのデータがありません
+Task - Id:	タスクID：
+Project description	プロジェクトの説明
+Project visibility	プロジェクトの公開範囲
+Select projects visibility	公開範囲を選択
+Date Created	作成日
+Task Actions:	タスクの操作：
+Update task details, due date, priority, status, and assigned users	タスクの内容・期限・優先度・状態・担当者を更新します
+Last modified	最終更新
+API Keys Required	APIキーの設定が必要です
+Enrichment requires API keys. Configure them in your profile settings, or ask your admin to set a system-wide key.	情報補完にはAPIキーが必要です。プロフィールで設定するか、管理者にシステム共通キーの設定を依頼してください。
+Go to Settings	設定を開く
+Please select a language.	言語を選択してください。
+Search language ...	言語を検索…
+Toggle theme	テーマを切り替え
+Light	ライト
+Dark	ダーク
+Export	書き出す
+Export Excel	Excelを書き出す
+Available merge tags:	使用できる差し込み項目：
+Activities	活動履歴
+Log activity	活動を記録
+No activities yet. Log a call, meeting, or note.	活動履歴はまだありません。電話・面談・メモを記録できます。
+Activity deleted	活動を削除しました
+Delete activity?	この活動を削除しますか？
+This will permanently delete &ldquo;	次の内容を完全に削除します：「
+&rdquo;. This action cannot be undone.	」。この操作は取り消せません。
+Outcome:	結果：
+Title is required	件名を入力してください
+Date is required	日付を入力してください
+Call	電話
+Meeting	面談
+Visit	訪問
+Title *	件名（必須）
+Brief description	概要を入力
+Date & Time *	日時（必須）
+Duration (minutes)	所要時間（分）
+Outcome	結果
+Result of the call / meeting	電話・面談の結果
+Email Subject	メールの件名
+Subject line	件名
+Additional notes...	補足メモ…
+Entity type	データの種別
+All entities	すべての種別
+Lead	見込み客
+Action	操作
+All actions	すべての操作
+Restored	復元
+Relation added	関連を追加
+Relation removed	関連を解除
+to	〜
+Unknown entity type	不明なデータ種別
+Record restored successfully	データを復元しました
+total entries	件の履歴
+Entity	データ
+Restore	復元
+No audit entries found.	変更履歴はありません。
+No history yet.	履歴はまだありません。
+Find Similar	類似データを探す
+Similar	類似データ
+Still generating similarity data. Check back shortly.	検索用データを準備しています。しばらくしてから確認してください。
+Failed to load similar records.	類似データを読み込めませんでした。
+No similar	類似する
+found yet.	データはありません。
+% match	% 一致
+Failed to load targets	営業対象を読み込めませんでした
+Add Targets to List	リストに営業対象を追加
+Select targets to add to this list. Already-added targets are not shown.	リストに追加する営業対象を選択してください。登録済みの対象は表示されません。
+Search by name, email or company...	氏名・メールアドレス・会社名で検索…
+Select all (	すべて選択（
+Loading targets...	営業対象を読み込んでいます…
+No targets available.	追加できる営業対象はありません。
+target(s) selected	件の営業対象を選択
+Name is required.	名称を入力してください。
+Target list created successfully	営業対象リストを作成しました
++ New List	＋ リストを作成
+Create Target List	営業対象リストを作成
+Create a new list to group your targets for campaigns or outreach.	キャンペーンや営業活動の対象をまとめるリストを作成します。
+Name *	名称（必須）
+Q1 Outreach List	第1四半期の営業対象
+A list of targets for Q1 outreach campaign	第1四半期に連絡する営業対象のリスト
+Could not parse the selected file.	選択したファイルを読み取れませんでした。
+Import CSV / Excel	CSV・Excelを読み込む
+Import Targets	営業対象を読み込む
+Step	手順
+of 3	／3
+Select file	ファイルを選択
+Selected:	選択中：
+AI is suggesting column mappings…	AIが列の対応を提案しています…
+CRM Field	CRMの項目
+CSV Column	CSVの列
+— skip —	— 読み込まない —
+last_name or company is required per row.	各行に姓または会社名が必要です。
+Ready to import	読み込みの準備ができました
+row	行
+will be skipped	は読み込みません
+…and	…ほか
+more	件
+No valid rows to import. Go back and adjust your column mapping.	読み込める行がありません。戻って列の対応を確認してください。
+Importing…	読み込んでいます…
+Image preview	画像のプレビュー
+This format can not be previewed. Please download the file to view it.	この形式はプレビューできません。保存して開いてください。
+Download	保存
+Edit contact	連絡先を編集
+Make changes to the contact information here.	連絡先の情報を編集します。
+Password reset form to be implemented.	パスワード変更には認証サービス側の設定をご利用ください。
+Need help? Join us on	お問い合わせ：
+Find a bug? Create an issue on	不具合の報告：
+Search accounts...	取引先を検索…
+No accounts found.	取引先が見つかりません。
+Load more	さらに読み込む
+Search in Titles ...	件名を検索…
+Columns	表示する列
+Max	最大
+Sidebar	サイドバー
+Displays the mobile sidebar.	モバイル用メニューを表示します。
+Toggle Sidebar	サイドバーを切り替え
+Search users...	ユーザーを検索…
+No users found.	ユーザーが見つかりません。
+You are receiving this email from	このメールの送信元：
+Unsubscribe	配信停止
+Welcome,	ようこそ、
+app:	アプリ：
+Your scheduled report:	定期配信レポート：
+Date range:	対象期間：
+Your scheduled report is attached to this email.	このメールにレポートを添付しています。
+This is an automated report from NextCRM.	このメールはNextCRMから自動送信されています。
+Message from	メッセージの送信元：
+You received this email because you are a user of the	このメールは次のアプリをご利用の方にお送りしています：
+. If you think you received this email by mistake, please contact us at info@nextcrm.dev	。心当たりがない場合は、ご利用のCRMの管理者にお問い合わせください。
+(saved)	（保存済み）
+Saving...	保存中…
+Saving…	保存中…
+Adding…	追加中…
+Adding...	追加中…
+Deleting…	削除中…
+Deleting...	削除中…
+Creating...	作成中…
+Re-subscribe webhook	Webhookを再登録
+Subscribe webhook	Webhookを登録
+Cannot delete the last value	最後の項目は削除できません
+Yes	はい
+No	いいえ
+Initial Send	初回配信
+All Statuses	すべての状態
+Generating...	作成中…
+Generating…	作成中…
+Generate	作成
+Submitting...	送信中…
+Submit Campaign	キャンペーンを確定
+Starting…	開始中…
+Using email to find contact & company info	メールアドレスから連絡先と会社の情報を検索します
+Using company name to find company info	会社名から会社の情報を検索します
+Applying…	反映中…
+Apply Selected	選択した項目を反映
+Everything you need to know about sales potential	取引先の営業状況を確認します
+Discount (%)	値引率（%）
+Discount Amount	値引額
+Add an email to enable enrichment	情報補完にはメールアドレスを登録してください
+Add an email to this contact to enable enrichment.	この連絡先にメールアドレスを登録すると情報補完を利用できます。
+Firecrawl searches the web to fill in missing contact details.	Firecrawlがウェブを検索し、連絡先の不足情報を補完します。
+Not signed yet	未署名
+Unassigned	未割り当て
+Importing...	読み込み中…
+Confirm Import	読み込みを実行
+Everything you need to know about Databox alias Datové schránky	データボックスの情報を確認します
+Uploading...	アップロード中…
+Upload All	すべてアップロード
+Sending…	送信中…
+Sending...	送信中…
+Record Payment	入金を登録
+Issuing...	発行中…
+Regenerating...	再作成中…
+Regenerate PDF	PDFを再作成
+Welcome to NextCRM cockpit, here you can see your company overview	会社全体の状況をまとめて確認できます
+Copied!	コピーしました
+Copy to clipboard	コピー
+Two-way ·	双方向・
+Inbound only ·	受信のみ・
+Disconnecting...	接続解除中…
+Disconnect	接続を解除
+Syncing…	同期中…
+Sync	同期
+Connect Gmail Account	Gmailアカウントを接続
+Connect IMAP Account	IMAPアカウントを接続
+App Password (16 characters)	アプリパスワード（16文字）
+Discovering…	確認中…
+Discover folders	フォルダを取得
+Testing…	テスト中…
+Test Connection	接続をテスト
+Save photo	写真を保存
+Copy MCP Config	MCP設定をコピー
+Untitled	無題
+Everything you need to know about tasks	タスクの情報を確認します
+Select language	言語を選択
+Edit Activity	活動を編集
+Log Activity	活動を記録
+Continue	続ける
+Drop file here	ここにファイルをドロップ
+Drag & drop or click to upload	ファイルをドロップ、またはクリックして選択
+You have been invited to cooperate on something special	チームへの招待が届きました
+Byl(a) jste pozván(a) ke spolupráci na něčem úžasném	チームへの招待が届きました
+has invited you to the	さんから招待が届きました：
+Vás pozval ke spolupráci na	さんから招待が届きました：
+To accept this invitation, click the button below and sign in with your email address.	招待を受けるには、下のボタンからメールアドレスでログインしてください。
+Pro přijetí této pozvánky klikněte na tlačítko níže a přihlaste se pomocí své e-mailové adresy.	招待を受けるには、下のボタンからメールアドレスでログインしてください。
+Join the team	チームに参加
+Připojit se	チームに参加
+or copy and paste this URL into your browser:	または、次のURLをブラウザで開いてください：
+nebo zkopírujte a vložte tento odkaz do svého prohlížeče:	または、次のURLをブラウザで開いてください：
+This invitation was intended for	この招待の宛先：
+Toto pozvání bylo určeno pro	この招待の宛先：
+If you were not expecting this invitation, you can ignore this email. If you are concerned about your account's safety, please reply to this email to get in touch with us.	この招待に心当たりがない場合は、メールを破棄してください。不明な点はCRMの管理者にお問い合わせください。
+Pokud jste toto pozvání neočekávali, můžete tento e-mail ignorovat. Pokud se obáváte o bezpečnost svého účtu, odpovězte na tento e-mail, abyste se s námi spojili.	この招待に心当たりがない場合は、メールを破棄してください。不明な点はCRMの管理者にお問い合わせください。
+This email was sent from	このメールの送信元：
+Tento e-mail byl odeslan z	このメールの送信元：
+There is new comment on task you are watching	通知を受け取るタスクに新しいコメントがあります
+Na úkolu, který sledujete, je nový komentář	通知を受け取るタスクに新しいコメントがあります
+has leave a comment in Project - (Board) you are watching.	さんが、通知を受け取るプロジェクトにコメントしました。
+zanechal(a) komentář v Projektu - (Boardu), který sledujete.	さんが、通知を受け取るプロジェクトにコメントしました。
+Comment:	コメント：
+Komentář:	コメント：
+Details you can find here:	詳細はこちら：
+Podrobnosti najdete zde:	詳細はこちら：
+View task detail	タスクの詳細を見る
+Zobrazit úkol	タスクの詳細を見る
+This message was intended for -	このメッセージの宛先：
+Tato zpráva byla určeno pro -	このメッセージの宛先：
+If you were not expecting this message, you can ignore this email. If you are concerned about your account&apos;s safety, please reply to this email to get in touch with us.	このメールに心当たりがない場合は、破棄してください。不明な点はCRMの管理者にお問い合わせください。
+Pokud jste tuto zprávu neočekávali, můžete tento e-mail ignorovat. Pokud se obáváte o bezpečnost svého účtu, odpovězte na tento e-mail, abyste se s námi spojili.	このメールに心当たりがない場合は、破棄してください。不明な点はCRMの管理者にお問い合わせください。
+There is new task from CRM module	営業管理に新しいタスクがあります
+Nový úkol z modulu CRM	営業管理に新しいタスクがあります
+has created a task and assign them to you.	さんがタスクを作成し、あなたに割り当てました。
+vytvořil úkol a přiřadil vás k němu.	さんがタスクを作成し、あなたに割り当てました。
+There is new task in CRM - Account where you are watcher	通知を受け取る取引先に新しいタスクがあります
+Nový úkol v modulu CRM - Accounts, kde jste pozorovatel	通知を受け取る取引先に新しいタスクがあります
+has created a task and we are notify you about that, because you are Account watcher.	さんがタスクを作成しました。取引先の更新通知を受け取る設定のため、お知らせしています。
+vytvořil úkol a my vás o tom informujeme protože sledujete tento Account.	さんがタスクを作成しました。取引先の更新通知を受け取る設定のため、お知らせしています。
+has updated a task and assigned to you.	さんがタスクを更新し、あなたに割り当てました。
+aktualizoval úkol a přiřadil vás k němu.	さんがタスクを更新し、あなたに割り当てました。
+Invalid or expired code.	確認コードが無効か、有効期限が切れています。
+not enabled	未設定
+Failed to save Calendly settings	予約連携の設定を保存できませんでした
+Calendly request failed	予約サービスへの接続に失敗しました
+Failed to save Calendly settings.	予約連携の設定を保存できませんでした。
+Webhook subscribed.	通知の受信を設定しました。
+Failed.	処理に失敗しました。
+Failed to add	追加できませんでした
+Failed to delete	削除できませんでした
+Reassign & Delete	割り当てを変更して削除
+Failed to update	更新できませんでした
+Failed to add currency	通貨を追加できませんでした
+Series updated	採番系列を更新しました
+Series created	採番系列を作成しました
+Tax rate updated	税率を更新しました
+Tax rate created	税率を作成しました
+Invite user	ユーザーを招待
+Partner account saved.	パートナーの取引先を保存しました。
+Partner account cleared.	パートナーの取引先を解除しました。
+user	ユーザー
+Generation failed	生成できませんでした
+No contact info	連絡先情報がありません
+No target lists found	対象リストがありません
+Failed to apply enrichment	補完した情報を適用できませんでした
+Failed to add contact	連絡先を追加できませんでした
+Failed to start bulk enrichment	一括情報補完を開始できませんでした
+Create target	対象顧客を作成
+No targets found	対象顧客がありません
+Update target	対象顧客を更新
+Failed to retry	再試行できませんでした
+No templates found	テンプレートがありません
+AI generation failed	AI生成に失敗しました
+Failed to save template	テンプレートを保存できませんでした
+Update Template	テンプレートを更新
+Save Template	テンプレートを保存
+Emails	メール
+No products assigned to this account	この取引先に割り当てられた商品はありません
+Unknown	不明
+Assign	割り当て
+Something went wrong while creating the task	タスクの作成中に問題が発生しました
+No assigned tasks found	割り当てられたタスクはありません
+Quote approved	見積もりを承認しました
+Quote rejected	見積もりを却下しました
+No assigned documents found	関連する文書はありません
+No assigned invoices found	関連する請求書はありません
+No products found. Create your first product to get started.	商品はまだありません。商品を登録してください。
+Save Changes	変更を保存
+Copy	コピー
+Upload failed	アップロードに失敗しました
+OTHER	その他
+Send failed	送信できませんでした
+New Email	メールを作成
+(unknown)	（不明）
+(no subject)	（件名なし）
+(No content)	（本文なし）
+DRAFT	下書き
+Invoice updated	請求書を更新しました
+Invoice created	請求書を作成しました
+Failed to save invoice	請求書を保存できませんでした
+Update Draft	下書きを更新
+Disc %	値引率（%）
+Failed to load connections	連携設定を読み込めませんでした
+Waiting for first sync	初回同期を待っています
+User avatar	プロフィール画像
+Activity updated	活動を更新しました
+Activity logged	活動を記録しました
+Save changes	変更を保存
+Payment deleted	入金を削除しました
+Status changed	状態を変更しました
+Failed to create account	取引先を作成できませんでした
+Failed to update account	取引先を更新できませんでした
+Failed to delete account	取引先を削除できませんでした
+Failed to restore account	取引先を復元できませんでした
+Failed to fetch account	取引先を取得できませんでした
+Failed to search account	取引先を検索できませんでした
+Failed to activate account	取引先を有効化できませんでした
+Failed to deactivate account	取引先を無効化できませんでした
+Failed to invite account	取引先を招待できませんでした
+Failed to revoke account	取引先を失効できませんでした
+Failed to add account	取引先を追加できませんでした
+Failed to remove account	取引先を削除できませんでした
+Failed to copy account	取引先をコピーできませんでした
+Failed to reorder account	取引先を並べ替えできませんでした
+Failed to cancel account	取引先を取り消しできませんでした
+Failed to assign account	取引先を割り当てできませんでした
+Failed to watch account	取引先を更新通知の登録できませんでした
+Failed to unwatch account	取引先を更新通知の解除できませんでした
+Failed to set account	取引先を設定できませんでした
+Failed to send account	取引先を送信できませんでした
+Failed to save account	取引先を保存できませんでした
+Failed to create accounts	取引先を作成できませんでした
+Failed to update accounts	取引先を更新できませんでした
+Failed to delete accounts	取引先を削除できませんでした
+Failed to restore accounts	取引先を復元できませんでした
+Failed to fetch accounts	取引先を取得できませんでした
+Failed to search accounts	取引先を検索できませんでした
+Failed to activate accounts	取引先を有効化できませんでした
+Failed to deactivate accounts	取引先を無効化できませんでした
+Failed to invite accounts	取引先を招待できませんでした
+Failed to revoke accounts	取引先を失効できませんでした
+Failed to add accounts	取引先を追加できませんでした
+Failed to remove accounts	取引先を削除できませんでした
+Failed to copy accounts	取引先をコピーできませんでした
+Failed to reorder accounts	取引先を並べ替えできませんでした
+Failed to cancel accounts	取引先を取り消しできませんでした
+Failed to assign accounts	取引先を割り当てできませんでした
+Failed to watch accounts	取引先を更新通知の登録できませんでした
+Failed to unwatch accounts	取引先を更新通知の解除できませんでした
+Failed to set accounts	取引先を設定できませんでした
+Failed to send accounts	取引先を送信できませんでした
+Failed to save accounts	取引先を保存できませんでした
+Accounts not found	取引先が見つかりません
+Failed to create contact	連絡先を作成できませんでした
+Failed to update contact	連絡先を更新できませんでした
+Failed to delete contact	連絡先を削除できませんでした
+Failed to restore contact	連絡先を復元できませんでした
+Failed to fetch contact	連絡先を取得できませんでした
+Failed to search contact	連絡先を検索できませんでした
+Failed to activate contact	連絡先を有効化できませんでした
+Failed to deactivate contact	連絡先を無効化できませんでした
+Failed to invite contact	連絡先を招待できませんでした
+Failed to revoke contact	連絡先を失効できませんでした
+Failed to remove contact	連絡先を削除できませんでした
+Failed to copy contact	連絡先をコピーできませんでした
+Failed to reorder contact	連絡先を並べ替えできませんでした
+Failed to cancel contact	連絡先を取り消しできませんでした
+Failed to assign contact	連絡先を割り当てできませんでした
+Failed to watch contact	連絡先を更新通知の登録できませんでした
+Failed to unwatch contact	連絡先を更新通知の解除できませんでした
+Failed to set contact	連絡先を設定できませんでした
+Failed to send contact	連絡先を送信できませんでした
+Failed to save contact	連絡先を保存できませんでした
+Failed to create contacts	連絡先を作成できませんでした
+Failed to update contacts	連絡先を更新できませんでした
+Failed to delete contacts	連絡先を削除できませんでした
+Failed to restore contacts	連絡先を復元できませんでした
+Failed to fetch contacts	連絡先を取得できませんでした
+Failed to search contacts	連絡先を検索できませんでした
+Failed to activate contacts	連絡先を有効化できませんでした
+Failed to deactivate contacts	連絡先を無効化できませんでした
+Failed to invite contacts	連絡先を招待できませんでした
+Failed to revoke contacts	連絡先を失効できませんでした
+Failed to add contacts	連絡先を追加できませんでした
+Failed to remove contacts	連絡先を削除できませんでした
+Failed to copy contacts	連絡先をコピーできませんでした
+Failed to reorder contacts	連絡先を並べ替えできませんでした
+Failed to cancel contacts	連絡先を取り消しできませんでした
+Failed to assign contacts	連絡先を割り当てできませんでした
+Failed to watch contacts	連絡先を更新通知の登録できませんでした
+Failed to unwatch contacts	連絡先を更新通知の解除できませんでした
+Failed to set contacts	連絡先を設定できませんでした
+Failed to send contacts	連絡先を送信できませんでした
+Failed to save contacts	連絡先を保存できませんでした
+Contacts not found	連絡先が見つかりません
+Failed to create lead	見込み客を作成できませんでした
+Failed to update lead	見込み客を更新できませんでした
+Failed to delete lead	見込み客を削除できませんでした
+Failed to restore lead	見込み客を復元できませんでした
+Failed to fetch lead	見込み客を取得できませんでした
+Failed to search lead	見込み客を検索できませんでした
+Failed to activate lead	見込み客を有効化できませんでした
+Failed to deactivate lead	見込み客を無効化できませんでした
+Failed to invite lead	見込み客を招待できませんでした
+Failed to revoke lead	見込み客を失効できませんでした
+Failed to add lead	見込み客を追加できませんでした
+Failed to remove lead	見込み客を削除できませんでした
+Failed to copy lead	見込み客をコピーできませんでした
+Failed to reorder lead	見込み客を並べ替えできませんでした
+Failed to cancel lead	見込み客を取り消しできませんでした
+Failed to assign lead	見込み客を割り当てできませんでした
+Failed to watch lead	見込み客を更新通知の登録できませんでした
+Failed to unwatch lead	見込み客を更新通知の解除できませんでした
+Failed to set lead	見込み客を設定できませんでした
+Failed to send lead	見込み客を送信できませんでした
+Failed to save lead	見込み客を保存できませんでした
+Failed to create leads	見込み客を作成できませんでした
+Failed to update leads	見込み客を更新できませんでした
+Failed to delete leads	見込み客を削除できませんでした
+Failed to restore leads	見込み客を復元できませんでした
+Failed to fetch leads	見込み客を取得できませんでした
+Failed to search leads	見込み客を検索できませんでした
+Failed to activate leads	見込み客を有効化できませんでした
+Failed to deactivate leads	見込み客を無効化できませんでした
+Failed to invite leads	見込み客を招待できませんでした
+Failed to revoke leads	見込み客を失効できませんでした
+Failed to add leads	見込み客を追加できませんでした
+Failed to remove leads	見込み客を削除できませんでした
+Failed to copy leads	見込み客をコピーできませんでした
+Failed to reorder leads	見込み客を並べ替えできませんでした
+Failed to cancel leads	見込み客を取り消しできませんでした
+Failed to assign leads	見込み客を割り当てできませんでした
+Failed to watch leads	見込み客を更新通知の登録できませんでした
+Failed to unwatch leads	見込み客を更新通知の解除できませんでした
+Failed to set leads	見込み客を設定できませんでした
+Failed to send leads	見込み客を送信できませんでした
+Failed to save leads	見込み客を保存できませんでした
+Leads not found	見込み客が見つかりません
+Failed to create opportunity	商談を作成できませんでした
+Failed to update opportunity	商談を更新できませんでした
+Failed to delete opportunity	商談を削除できませんでした
+Failed to restore opportunity	商談を復元できませんでした
+Failed to fetch opportunity	商談を取得できませんでした
+Failed to search opportunity	商談を検索できませんでした
+Failed to activate opportunity	商談を有効化できませんでした
+Failed to deactivate opportunity	商談を無効化できませんでした
+Failed to invite opportunity	商談を招待できませんでした
+Failed to revoke opportunity	商談を失効できませんでした
+Failed to add opportunity	商談を追加できませんでした
+Failed to remove opportunity	商談を削除できませんでした
+Failed to copy opportunity	商談をコピーできませんでした
+Failed to reorder opportunity	商談を並べ替えできませんでした
+Failed to cancel opportunity	商談を取り消しできませんでした
+Failed to assign opportunity	商談を割り当てできませんでした
+Failed to watch opportunity	商談を更新通知の登録できませんでした
+Failed to unwatch opportunity	商談を更新通知の解除できませんでした
+Failed to set opportunity	商談を設定できませんでした
+Failed to send opportunity	商談を送信できませんでした
+Failed to save opportunity	商談を保存できませんでした
+Failed to create opportunities	商談を作成できませんでした
+Failed to update opportunities	商談を更新できませんでした
+Failed to delete opportunities	商談を削除できませんでした
+Failed to restore opportunities	商談を復元できませんでした
+Failed to fetch opportunities	商談を取得できませんでした
+Failed to search opportunities	商談を検索できませんでした
+Failed to activate opportunities	商談を有効化できませんでした
+Failed to deactivate opportunities	商談を無効化できませんでした
+Failed to invite opportunities	商談を招待できませんでした
+Failed to revoke opportunities	商談を失効できませんでした
+Failed to add opportunities	商談を追加できませんでした
+Failed to remove opportunities	商談を削除できませんでした
+Failed to copy opportunities	商談をコピーできませんでした
+Failed to reorder opportunities	商談を並べ替えできませんでした
+Failed to cancel opportunities	商談を取り消しできませんでした
+Failed to assign opportunities	商談を割り当てできませんでした
+Failed to watch opportunities	商談を更新通知の登録できませんでした
+Failed to unwatch opportunities	商談を更新通知の解除できませんでした
+Failed to set opportunities	商談を設定できませんでした
+Failed to send opportunities	商談を送信できませんでした
+Failed to save opportunities	商談を保存できませんでした
+Opportunities not found	商談が見つかりません
+Failed to create contract	契約を作成できませんでした
+Failed to update contract	契約を更新できませんでした
+Failed to delete contract	契約を削除できませんでした
+Failed to restore contract	契約を復元できませんでした
+Failed to fetch contract	契約を取得できませんでした
+Failed to search contract	契約を検索できませんでした
+Failed to activate contract	契約を有効化できませんでした
+Failed to deactivate contract	契約を無効化できませんでした
+Failed to invite contract	契約を招待できませんでした
+Failed to revoke contract	契約を失効できませんでした
+Failed to add contract	契約を追加できませんでした
+Failed to remove contract	契約を削除できませんでした
+Failed to copy contract	契約をコピーできませんでした
+Failed to reorder contract	契約を並べ替えできませんでした
+Failed to cancel contract	契約を取り消しできませんでした
+Failed to assign contract	契約を割り当てできませんでした
+Failed to watch contract	契約を更新通知の登録できませんでした
+Failed to unwatch contract	契約を更新通知の解除できませんでした
+Failed to set contract	契約を設定できませんでした
+Failed to send contract	契約を送信できませんでした
+Failed to save contract	契約を保存できませんでした
+Failed to create product	商品を作成できませんでした
+Failed to update product	商品を更新できませんでした
+Failed to delete product	商品を削除できませんでした
+Failed to restore product	商品を復元できませんでした
+Failed to fetch product	商品を取得できませんでした
+Failed to search product	商品を検索できませんでした
+Failed to activate product	商品を有効化できませんでした
+Failed to deactivate product	商品を無効化できませんでした
+Failed to invite product	商品を招待できませんでした
+Failed to revoke product	商品を失効できませんでした
+Failed to add product	商品を追加できませんでした
+Failed to remove product	商品を削除できませんでした
+Failed to copy product	商品をコピーできませんでした
+Failed to reorder product	商品を並べ替えできませんでした
+Failed to cancel product	商品を取り消しできませんでした
+Failed to assign product	商品を割り当てできませんでした
+Failed to watch product	商品を更新通知の登録できませんでした
+Failed to unwatch product	商品を更新通知の解除できませんでした
+Failed to set product	商品を設定できませんでした
+Failed to send product	商品を送信できませんでした
+Failed to save product	商品を保存できませんでした
+Failed to create products	商品を作成できませんでした
+Failed to update products	商品を更新できませんでした
+Failed to delete products	商品を削除できませんでした
+Failed to restore products	商品を復元できませんでした
+Failed to fetch products	商品を取得できませんでした
+Failed to search products	商品を検索できませんでした
+Failed to activate products	商品を有効化できませんでした
+Failed to deactivate products	商品を無効化できませんでした
+Failed to invite products	商品を招待できませんでした
+Failed to revoke products	商品を失効できませんでした
+Failed to add products	商品を追加できませんでした
+Failed to remove products	商品を削除できませんでした
+Failed to copy products	商品をコピーできませんでした
+Failed to reorder products	商品を並べ替えできませんでした
+Failed to cancel products	商品を取り消しできませんでした
+Failed to assign products	商品を割り当てできませんでした
+Failed to watch products	商品を更新通知の登録できませんでした
+Failed to unwatch products	商品を更新通知の解除できませんでした
+Failed to set products	商品を設定できませんでした
+Failed to send products	商品を送信できませんでした
+Failed to save products	商品を保存できませんでした
+Products not found	商品が見つかりません
+Failed to create task	タスクを作成できませんでした
+Failed to update task	タスクを更新できませんでした
+Failed to delete task	タスクを削除できませんでした
+Failed to restore task	タスクを復元できませんでした
+Failed to fetch task	タスクを取得できませんでした
+Failed to search task	タスクを検索できませんでした
+Failed to activate task	タスクを有効化できませんでした
+Failed to deactivate task	タスクを無効化できませんでした
+Failed to invite task	タスクを招待できませんでした
+Failed to revoke task	タスクを失効できませんでした
+Failed to add task	タスクを追加できませんでした
+Failed to remove task	タスクを削除できませんでした
+Failed to copy task	タスクをコピーできませんでした
+Failed to reorder task	タスクを並べ替えできませんでした
+Failed to cancel task	タスクを取り消しできませんでした
+Failed to assign task	タスクを割り当てできませんでした
+Failed to watch task	タスクを更新通知の登録できませんでした
+Failed to unwatch task	タスクを更新通知の解除できませんでした
+Failed to set task	タスクを設定できませんでした
+Failed to send task	タスクを送信できませんでした
+Failed to save task	タスクを保存できませんでした
+Task not found	タスクが見つかりません
+Failed to create tasks	タスクを作成できませんでした
+Failed to update tasks	タスクを更新できませんでした
+Failed to delete tasks	タスクを削除できませんでした
+Failed to restore tasks	タスクを復元できませんでした
+Failed to fetch tasks	タスクを取得できませんでした
+Failed to search tasks	タスクを検索できませんでした
+Failed to activate tasks	タスクを有効化できませんでした
+Failed to deactivate tasks	タスクを無効化できませんでした
+Failed to invite tasks	タスクを招待できませんでした
+Failed to revoke tasks	タスクを失効できませんでした
+Failed to add tasks	タスクを追加できませんでした
+Failed to remove tasks	タスクを削除できませんでした
+Failed to copy tasks	タスクをコピーできませんでした
+Failed to reorder tasks	タスクを並べ替えできませんでした
+Failed to cancel tasks	タスクを取り消しできませんでした
+Failed to assign tasks	タスクを割り当てできませんでした
+Failed to watch tasks	タスクを更新通知の登録できませんでした
+Failed to unwatch tasks	タスクを更新通知の解除できませんでした
+Failed to set tasks	タスクを設定できませんでした
+Failed to send tasks	タスクを送信できませんでした
+Failed to save tasks	タスクを保存できませんでした
+Tasks not found	タスクが見つかりません
+Failed to create project	プロジェクトを作成できませんでした
+Failed to update project	プロジェクトを更新できませんでした
+Failed to delete project	プロジェクトを削除できませんでした
+Failed to restore project	プロジェクトを復元できませんでした
+Failed to fetch project	プロジェクトを取得できませんでした
+Failed to search project	プロジェクトを検索できませんでした
+Failed to activate project	プロジェクトを有効化できませんでした
+Failed to deactivate project	プロジェクトを無効化できませんでした
+Failed to invite project	プロジェクトを招待できませんでした
+Failed to revoke project	プロジェクトを失効できませんでした
+Failed to add project	プロジェクトを追加できませんでした
+Failed to remove project	プロジェクトを削除できませんでした
+Failed to copy project	プロジェクトをコピーできませんでした
+Failed to reorder project	プロジェクトを並べ替えできませんでした
+Failed to cancel project	プロジェクトを取り消しできませんでした
+Failed to assign project	プロジェクトを割り当てできませんでした
+Failed to watch project	プロジェクトを更新通知の登録できませんでした
+Failed to unwatch project	プロジェクトを更新通知の解除できませんでした
+Failed to set project	プロジェクトを設定できませんでした
+Failed to send project	プロジェクトを送信できませんでした
+Failed to save project	プロジェクトを保存できませんでした
+Project not found	プロジェクトが見つかりません
+Failed to create section	セクションを作成できませんでした
+Failed to update section	セクションを更新できませんでした
+Failed to delete section	セクションを削除できませんでした
+Failed to restore section	セクションを復元できませんでした
+Failed to fetch section	セクションを取得できませんでした
+Failed to search section	セクションを検索できませんでした
+Failed to activate section	セクションを有効化できませんでした
+Failed to deactivate section	セクションを無効化できませんでした
+Failed to invite section	セクションを招待できませんでした
+Failed to revoke section	セクションを失効できませんでした
+Failed to add section	セクションを追加できませんでした
+Failed to remove section	セクションを削除できませんでした
+Failed to copy section	セクションをコピーできませんでした
+Failed to reorder section	セクションを並べ替えできませんでした
+Failed to cancel section	セクションを取り消しできませんでした
+Failed to assign section	セクションを割り当てできませんでした
+Failed to watch section	セクションを更新通知の登録できませんでした
+Failed to unwatch section	セクションを更新通知の解除できませんでした
+Failed to set section	セクションを設定できませんでした
+Failed to send section	セクションを送信できませんでした
+Failed to save section	セクションを保存できませんでした
+Section not found	セクションが見つかりません
+Failed to create activity	活動を作成できませんでした
+Failed to update activity	活動を更新できませんでした
+Failed to delete activity	活動を削除できませんでした
+Failed to restore activity	活動を復元できませんでした
+Failed to fetch activity	活動を取得できませんでした
+Failed to search activity	活動を検索できませんでした
+Failed to activate activity	活動を有効化できませんでした
+Failed to deactivate activity	活動を無効化できませんでした
+Failed to invite activity	活動を招待できませんでした
+Failed to revoke activity	活動を失効できませんでした
+Failed to add activity	活動を追加できませんでした
+Failed to remove activity	活動を削除できませんでした
+Failed to copy activity	活動をコピーできませんでした
+Failed to reorder activity	活動を並べ替えできませんでした
+Failed to cancel activity	活動を取り消しできませんでした
+Failed to assign activity	活動を割り当てできませんでした
+Failed to watch activity	活動を更新通知の登録できませんでした
+Failed to unwatch activity	活動を更新通知の解除できませんでした
+Failed to set activity	活動を設定できませんでした
+Failed to send activity	活動を送信できませんでした
+Failed to save activity	活動を保存できませんでした
+Activity not found	活動が見つかりません
+Failed to create assignment	割り当てを作成できませんでした
+Failed to update assignment	割り当てを更新できませんでした
+Failed to delete assignment	割り当てを削除できませんでした
+Failed to restore assignment	割り当てを復元できませんでした
+Failed to fetch assignment	割り当てを取得できませんでした
+Failed to search assignment	割り当てを検索できませんでした
+Failed to activate assignment	割り当てを有効化できませんでした
+Failed to deactivate assignment	割り当てを無効化できませんでした
+Failed to invite assignment	割り当てを招待できませんでした
+Failed to revoke assignment	割り当てを失効できませんでした
+Failed to add assignment	割り当てを追加できませんでした
+Failed to remove assignment	割り当てを削除できませんでした
+Failed to copy assignment	割り当てをコピーできませんでした
+Failed to reorder assignment	割り当てを並べ替えできませんでした
+Failed to cancel assignment	割り当てを取り消しできませんでした
+Failed to assign assignment	割り当てを割り当てできませんでした
+Failed to watch assignment	割り当てを更新通知の登録できませんでした
+Failed to unwatch assignment	割り当てを更新通知の解除できませんでした
+Failed to set assignment	割り当てを設定できませんでした
+Failed to send assignment	割り当てを送信できませんでした
+Failed to save assignment	割り当てを保存できませんでした
+Assignment not found	割り当てが見つかりません
+Failed to create user	ユーザーを作成できませんでした
+Failed to update user	ユーザーを更新できませんでした
+Failed to delete user	ユーザーを削除できませんでした
+Failed to restore user	ユーザーを復元できませんでした
+Failed to fetch user	ユーザーを取得できませんでした
+Failed to search user	ユーザーを検索できませんでした
+Failed to activate user	ユーザーを有効化できませんでした
+Failed to deactivate user	ユーザーを無効化できませんでした
+Failed to invite user	ユーザーを招待できませんでした
+Failed to revoke user	ユーザーを失効できませんでした
+Failed to add user	ユーザーを追加できませんでした
+Failed to remove user	ユーザーを削除できませんでした
+Failed to copy user	ユーザーをコピーできませんでした
+Failed to reorder user	ユーザーを並べ替えできませんでした
+Failed to cancel user	ユーザーを取り消しできませんでした
+Failed to assign user	ユーザーを割り当てできませんでした
+Failed to watch user	ユーザーを更新通知の登録できませんでした
+Failed to unwatch user	ユーザーを更新通知の解除できませんでした
+Failed to set user	ユーザーを設定できませんでした
+Failed to send user	ユーザーを送信できませんでした
+Failed to save user	ユーザーを保存できませんでした
+User not found	ユーザーが見つかりません
+Failed to create tokens	トークンを作成できませんでした
+Failed to update tokens	トークンを更新できませんでした
+Failed to delete tokens	トークンを削除できませんでした
+Failed to restore tokens	トークンを復元できませんでした
+Failed to fetch tokens	トークンを取得できませんでした
+Failed to search tokens	トークンを検索できませんでした
+Failed to activate tokens	トークンを有効化できませんでした
+Failed to deactivate tokens	トークンを無効化できませんでした
+Failed to invite tokens	トークンを招待できませんでした
+Failed to revoke tokens	トークンを失効できませんでした
+Failed to add tokens	トークンを追加できませんでした
+Failed to remove tokens	トークンを削除できませんでした
+Failed to copy tokens	トークンをコピーできませんでした
+Failed to reorder tokens	トークンを並べ替えできませんでした
+Failed to cancel tokens	トークンを取り消しできませんでした
+Failed to assign tokens	トークンを割り当てできませんでした
+Failed to watch tokens	トークンを更新通知の登録できませんでした
+Failed to unwatch tokens	トークンを更新通知の解除できませんでした
+Failed to set tokens	トークンを設定できませんでした
+Failed to send tokens	トークンを送信できませんでした
+Failed to save tokens	トークンを保存できませんでした
+Tokens not found	トークンが見つかりません
+Failed to create API tokens	APIトークンを作成できませんでした
+Failed to update API tokens	APIトークンを更新できませんでした
+Failed to delete API tokens	APIトークンを削除できませんでした
+Failed to restore API tokens	APIトークンを復元できませんでした
+Failed to fetch API tokens	APIトークンを取得できませんでした
+Failed to search API tokens	APIトークンを検索できませんでした
+Failed to activate API tokens	APIトークンを有効化できませんでした
+Failed to deactivate API tokens	APIトークンを無効化できませんでした
+Failed to invite API tokens	APIトークンを招待できませんでした
+Failed to revoke API tokens	APIトークンを失効できませんでした
+Failed to add API tokens	APIトークンを追加できませんでした
+Failed to remove API tokens	APIトークンを削除できませんでした
+Failed to copy API tokens	APIトークンをコピーできませんでした
+Failed to reorder API tokens	APIトークンを並べ替えできませんでした
+Failed to cancel API tokens	APIトークンを取り消しできませんでした
+Failed to assign API tokens	APIトークンを割り当てできませんでした
+Failed to watch API tokens	APIトークンを更新通知の登録できませんでした
+Failed to unwatch API tokens	APIトークンを更新通知の解除できませんでした
+Failed to set API tokens	APIトークンを設定できませんでした
+Failed to send API tokens	APIトークンを送信できませんでした
+Failed to save API tokens	APIトークンを保存できませんでした
+Api tokens not found	APIトークンが見つかりません
+Failed to create partner account	パートナーの取引先を作成できませんでした
+Failed to update partner account	パートナーの取引先を更新できませんでした
+Failed to delete partner account	パートナーの取引先を削除できませんでした
+Failed to restore partner account	パートナーの取引先を復元できませんでした
+Failed to fetch partner account	パートナーの取引先を取得できませんでした
+Failed to search partner account	パートナーの取引先を検索できませんでした
+Failed to activate partner account	パートナーの取引先を有効化できませんでした
+Failed to deactivate partner account	パートナーの取引先を無効化できませんでした
+Failed to invite partner account	パートナーの取引先を招待できませんでした
+Failed to revoke partner account	パートナーの取引先を失効できませんでした
+Failed to add partner account	パートナーの取引先を追加できませんでした
+Failed to remove partner account	パートナーの取引先を削除できませんでした
+Failed to copy partner account	パートナーの取引先をコピーできませんでした
+Failed to reorder partner account	パートナーの取引先を並べ替えできませんでした
+Failed to cancel partner account	パートナーの取引先を取り消しできませんでした
+Failed to assign partner account	パートナーの取引先を割り当てできませんでした
+Failed to watch partner account	パートナーの取引先を更新通知の登録できませんでした
+Failed to unwatch partner account	パートナーの取引先を更新通知の解除できませんでした
+Failed to set partner account	パートナーの取引先を設定できませんでした
+Failed to send partner account	パートナーの取引先を送信できませんでした
+Failed to save partner account	パートナーの取引先を保存できませんでした
+Partner account not found	パートナーの取引先が見つかりません
+Failed to create account partner	取引先のパートナー設定を作成できませんでした
+Failed to update account partner	取引先のパートナー設定を更新できませんでした
+Failed to delete account partner	取引先のパートナー設定を削除できませんでした
+Failed to restore account partner	取引先のパートナー設定を復元できませんでした
+Failed to fetch account partner	取引先のパートナー設定を取得できませんでした
+Failed to search account partner	取引先のパートナー設定を検索できませんでした
+Failed to activate account partner	取引先のパートナー設定を有効化できませんでした
+Failed to deactivate account partner	取引先のパートナー設定を無効化できませんでした
+Failed to invite account partner	取引先のパートナー設定を招待できませんでした
+Failed to revoke account partner	取引先のパートナー設定を失効できませんでした
+Failed to add account partner	取引先のパートナー設定を追加できませんでした
+Failed to remove account partner	取引先のパートナー設定を削除できませんでした
+Failed to copy account partner	取引先のパートナー設定をコピーできませんでした
+Failed to reorder account partner	取引先のパートナー設定を並べ替えできませんでした
+Failed to cancel account partner	取引先のパートナー設定を取り消しできませんでした
+Failed to assign account partner	取引先のパートナー設定を割り当てできませんでした
+Failed to watch account partner	取引先のパートナー設定を更新通知の登録できませんでした
+Failed to unwatch account partner	取引先のパートナー設定を更新通知の解除できませんでした
+Failed to set account partner	取引先のパートナー設定を設定できませんでした
+Failed to send account partner	取引先のパートナー設定を送信できませんでした
+Failed to save account partner	取引先のパートナー設定を保存できませんでした
+Account partner not found	取引先のパートナー設定が見つかりません
+Failed to create user role	ユーザーの役割を作成できませんでした
+Failed to update user role	ユーザーの役割を更新できませんでした
+Failed to delete user role	ユーザーの役割を削除できませんでした
+Failed to restore user role	ユーザーの役割を復元できませんでした
+Failed to fetch user role	ユーザーの役割を取得できませんでした
+Failed to search user role	ユーザーの役割を検索できませんでした
+Failed to activate user role	ユーザーの役割を有効化できませんでした
+Failed to deactivate user role	ユーザーの役割を無効化できませんでした
+Failed to invite user role	ユーザーの役割を招待できませんでした
+Failed to revoke user role	ユーザーの役割を失効できませんでした
+Failed to add user role	ユーザーの役割を追加できませんでした
+Failed to remove user role	ユーザーの役割を削除できませんでした
+Failed to copy user role	ユーザーの役割をコピーできませんでした
+Failed to reorder user role	ユーザーの役割を並べ替えできませんでした
+Failed to cancel user role	ユーザーの役割を取り消しできませんでした
+Failed to assign user role	ユーザーの役割を割り当てできませんでした
+Failed to watch user role	ユーザーの役割を更新通知の登録できませんでした
+Failed to unwatch user role	ユーザーの役割を更新通知の解除できませんでした
+Failed to set user role	ユーザーの役割を設定できませんでした
+Failed to send user role	ユーザーの役割を送信できませんでした
+Failed to save user role	ユーザーの役割を保存できませんでした
+User role not found	ユーザーの役割が見つかりません
+Failed to create currencies	通貨を作成できませんでした
+Failed to update currencies	通貨を更新できませんでした
+Failed to delete currencies	通貨を削除できませんでした
+Failed to restore currencies	通貨を復元できませんでした
+Failed to fetch currencies	通貨を取得できませんでした
+Failed to search currencies	通貨を検索できませんでした
+Failed to activate currencies	通貨を有効化できませんでした
+Failed to deactivate currencies	通貨を無効化できませんでした
+Failed to invite currencies	通貨を招待できませんでした
+Failed to revoke currencies	通貨を失効できませんでした
+Failed to add currencies	通貨を追加できませんでした
+Failed to remove currencies	通貨を削除できませんでした
+Failed to copy currencies	通貨をコピーできませんでした
+Failed to reorder currencies	通貨を並べ替えできませんでした
+Failed to cancel currencies	通貨を取り消しできませんでした
+Failed to assign currencies	通貨を割り当てできませんでした
+Failed to watch currencies	通貨を更新通知の登録できませんでした
+Failed to unwatch currencies	通貨を更新通知の解除できませんでした
+Failed to set currencies	通貨を設定できませんでした
+Failed to send currencies	通貨を送信できませんでした
+Failed to save currencies	通貨を保存できませんでした
+Currencies not found	通貨が見つかりません
+Failed to create similar accounts	類似する取引先を作成できませんでした
+Failed to update similar accounts	類似する取引先を更新できませんでした
+Failed to delete similar accounts	類似する取引先を削除できませんでした
+Failed to restore similar accounts	類似する取引先を復元できませんでした
+Failed to fetch similar accounts	類似する取引先を取得できませんでした
+Failed to search similar accounts	類似する取引先を検索できませんでした
+Failed to activate similar accounts	類似する取引先を有効化できませんでした
+Failed to deactivate similar accounts	類似する取引先を無効化できませんでした
+Failed to invite similar accounts	類似する取引先を招待できませんでした
+Failed to revoke similar accounts	類似する取引先を失効できませんでした
+Failed to add similar accounts	類似する取引先を追加できませんでした
+Failed to remove similar accounts	類似する取引先を削除できませんでした
+Failed to copy similar accounts	類似する取引先をコピーできませんでした
+Failed to reorder similar accounts	類似する取引先を並べ替えできませんでした
+Failed to cancel similar accounts	類似する取引先を取り消しできませんでした
+Failed to assign similar accounts	類似する取引先を割り当てできませんでした
+Failed to watch similar accounts	類似する取引先を更新通知の登録できませんでした
+Failed to unwatch similar accounts	類似する取引先を更新通知の解除できませんでした
+Failed to set similar accounts	類似する取引先を設定できませんでした
+Failed to send similar accounts	類似する取引先を送信できませんでした
+Failed to save similar accounts	類似する取引先を保存できませんでした
+Similar accounts not found	類似する取引先が見つかりません
+Failed to create similar contacts	類似する連絡先を作成できませんでした
+Failed to update similar contacts	類似する連絡先を更新できませんでした
+Failed to delete similar contacts	類似する連絡先を削除できませんでした
+Failed to restore similar contacts	類似する連絡先を復元できませんでした
+Failed to fetch similar contacts	類似する連絡先を取得できませんでした
+Failed to search similar contacts	類似する連絡先を検索できませんでした
+Failed to activate similar contacts	類似する連絡先を有効化できませんでした
+Failed to deactivate similar contacts	類似する連絡先を無効化できませんでした
+Failed to invite similar contacts	類似する連絡先を招待できませんでした
+Failed to revoke similar contacts	類似する連絡先を失効できませんでした
+Failed to add similar contacts	類似する連絡先を追加できませんでした
+Failed to remove similar contacts	類似する連絡先を削除できませんでした
+Failed to copy similar contacts	類似する連絡先をコピーできませんでした
+Failed to reorder similar contacts	類似する連絡先を並べ替えできませんでした
+Failed to cancel similar contacts	類似する連絡先を取り消しできませんでした
+Failed to assign similar contacts	類似する連絡先を割り当てできませんでした
+Failed to watch similar contacts	類似する連絡先を更新通知の登録できませんでした
+Failed to unwatch similar contacts	類似する連絡先を更新通知の解除できませんでした
+Failed to set similar contacts	類似する連絡先を設定できませんでした
+Failed to send similar contacts	類似する連絡先を送信できませんでした
+Failed to save similar contacts	類似する連絡先を保存できませんでした
+Similar contacts not found	類似する連絡先が見つかりません
+Failed to create similar leads	類似する見込み客を作成できませんでした
+Failed to update similar leads	類似する見込み客を更新できませんでした
+Failed to delete similar leads	類似する見込み客を削除できませんでした
+Failed to restore similar leads	類似する見込み客を復元できませんでした
+Failed to fetch similar leads	類似する見込み客を取得できませんでした
+Failed to search similar leads	類似する見込み客を検索できませんでした
+Failed to activate similar leads	類似する見込み客を有効化できませんでした
+Failed to deactivate similar leads	類似する見込み客を無効化できませんでした
+Failed to invite similar leads	類似する見込み客を招待できませんでした
+Failed to revoke similar leads	類似する見込み客を失効できませんでした
+Failed to add similar leads	類似する見込み客を追加できませんでした
+Failed to remove similar leads	類似する見込み客を削除できませんでした
+Failed to copy similar leads	類似する見込み客をコピーできませんでした
+Failed to reorder similar leads	類似する見込み客を並べ替えできませんでした
+Failed to cancel similar leads	類似する見込み客を取り消しできませんでした
+Failed to assign similar leads	類似する見込み客を割り当てできませんでした
+Failed to watch similar leads	類似する見込み客を更新通知の登録できませんでした
+Failed to unwatch similar leads	類似する見込み客を更新通知の解除できませんでした
+Failed to set similar leads	類似する見込み客を設定できませんでした
+Failed to send similar leads	類似する見込み客を送信できませんでした
+Failed to save similar leads	類似する見込み客を保存できませんでした
+Similar leads not found	類似する見込み客が見つかりません
+Failed to create similar opportunities	類似する商談を作成できませんでした
+Failed to update similar opportunities	類似する商談を更新できませんでした
+Failed to delete similar opportunities	類似する商談を削除できませんでした
+Failed to restore similar opportunities	類似する商談を復元できませんでした
+Failed to fetch similar opportunities	類似する商談を取得できませんでした
+Failed to search similar opportunities	類似する商談を検索できませんでした
+Failed to activate similar opportunities	類似する商談を有効化できませんでした
+Failed to deactivate similar opportunities	類似する商談を無効化できませんでした
+Failed to invite similar opportunities	類似する商談を招待できませんでした
+Failed to revoke similar opportunities	類似する商談を失効できませんでした
+Failed to add similar opportunities	類似する商談を追加できませんでした
+Failed to remove similar opportunities	類似する商談を削除できませんでした
+Failed to copy similar opportunities	類似する商談をコピーできませんでした
+Failed to reorder similar opportunities	類似する商談を並べ替えできませんでした
+Failed to cancel similar opportunities	類似する商談を取り消しできませんでした
+Failed to assign similar opportunities	類似する商談を割り当てできませんでした
+Failed to watch similar opportunities	類似する商談を更新通知の登録できませんでした
+Failed to unwatch similar opportunities	類似する商談を更新通知の解除できませんでした
+Failed to set similar opportunities	類似する商談を設定できませんでした
+Failed to send similar opportunities	類似する商談を送信できませんでした
+Failed to save similar opportunities	類似する商談を保存できませんでした
+Similar opportunities not found	類似する商談が見つかりません
+Failed to create target	対象顧客を作成できませんでした
+Failed to update target	対象顧客を更新できませんでした
+Failed to delete target	対象顧客を削除できませんでした
+Failed to restore target	対象顧客を復元できませんでした
+Failed to fetch target	対象顧客を取得できませんでした
+Failed to search target	対象顧客を検索できませんでした
+Failed to activate target	対象顧客を有効化できませんでした
+Failed to deactivate target	対象顧客を無効化できませんでした
+Failed to invite target	対象顧客を招待できませんでした
+Failed to revoke target	対象顧客を失効できませんでした
+Failed to add target	対象顧客を追加できませんでした
+Failed to remove target	対象顧客を削除できませんでした
+Failed to copy target	対象顧客をコピーできませんでした
+Failed to reorder target	対象顧客を並べ替えできませんでした
+Failed to cancel target	対象顧客を取り消しできませんでした
+Failed to assign target	対象顧客を割り当てできませんでした
+Failed to watch target	対象顧客を更新通知の登録できませんでした
+Failed to unwatch target	対象顧客を更新通知の解除できませんでした
+Failed to set target	対象顧客を設定できませんでした
+Failed to send target	対象顧客を送信できませんでした
+Failed to save target	対象顧客を保存できませんでした
+Failed to create target list	対象リストを作成できませんでした
+Failed to update target list	対象リストを更新できませんでした
+Failed to delete target list	対象リストを削除できませんでした
+Failed to restore target list	対象リストを復元できませんでした
+Failed to fetch target list	対象リストを取得できませんでした
+Failed to search target list	対象リストを検索できませんでした
+Failed to activate target list	対象リストを有効化できませんでした
+Failed to deactivate target list	対象リストを無効化できませんでした
+Failed to invite target list	対象リストを招待できませんでした
+Failed to revoke target list	対象リストを失効できませんでした
+Failed to add target list	対象リストを追加できませんでした
+Failed to remove target list	対象リストを削除できませんでした
+Failed to copy target list	対象リストをコピーできませんでした
+Failed to reorder target list	対象リストを並べ替えできませんでした
+Failed to cancel target list	対象リストを取り消しできませんでした
+Failed to assign target list	対象リストを割り当てできませんでした
+Failed to watch target list	対象リストを更新通知の登録できませんでした
+Failed to unwatch target list	対象リストを更新通知の解除できませんでした
+Failed to set target list	対象リストを設定できませんでした
+Failed to send target list	対象リストを送信できませんでした
+Failed to save target list	対象リストを保存できませんでした
+Failed to create template	テンプレートを作成できませんでした
+Failed to update template	テンプレートを更新できませんでした
+Failed to delete template	テンプレートを削除できませんでした
+Failed to restore template	テンプレートを復元できませんでした
+Failed to fetch template	テンプレートを取得できませんでした
+Failed to search template	テンプレートを検索できませんでした
+Failed to activate template	テンプレートを有効化できませんでした
+Failed to deactivate template	テンプレートを無効化できませんでした
+Failed to invite template	テンプレートを招待できませんでした
+Failed to revoke template	テンプレートを失効できませんでした
+Failed to add template	テンプレートを追加できませんでした
+Failed to remove template	テンプレートを削除できませんでした
+Failed to copy template	テンプレートをコピーできませんでした
+Failed to reorder template	テンプレートを並べ替えできませんでした
+Failed to cancel template	テンプレートを取り消しできませんでした
+Failed to assign template	テンプレートを割り当てできませんでした
+Failed to watch template	テンプレートを更新通知の登録できませんでした
+Failed to unwatch template	テンプレートを更新通知の解除できませんでした
+Failed to set template	テンプレートを設定できませんでした
+Failed to send template	テンプレートを送信できませんでした
+Template not found	テンプレートが見つかりません
+Failed to create invoice	請求書を作成できませんでした
+Failed to update invoice	請求書を更新できませんでした
+Failed to delete invoice	請求書を削除できませんでした
+Failed to restore invoice	請求書を復元できませんでした
+Failed to fetch invoice	請求書を取得できませんでした
+Failed to search invoice	請求書を検索できませんでした
+Failed to activate invoice	請求書を有効化できませんでした
+Failed to deactivate invoice	請求書を無効化できませんでした
+Failed to invite invoice	請求書を招待できませんでした
+Failed to revoke invoice	請求書を失効できませんでした
+Failed to add invoice	請求書を追加できませんでした
+Failed to remove invoice	請求書を削除できませんでした
+Failed to copy invoice	請求書をコピーできませんでした
+Failed to reorder invoice	請求書を並べ替えできませんでした
+Failed to cancel invoice	請求書を取り消しできませんでした
+Failed to assign invoice	請求書を割り当てできませんでした
+Failed to watch invoice	請求書を更新通知の登録できませんでした
+Failed to unwatch invoice	請求書を更新通知の解除できませんでした
+Failed to set invoice	請求書を設定できませんでした
+Failed to send invoice	請求書を送信できませんでした
+Invoice not found	請求書が見つかりません
+Failed to create line item	明細を作成できませんでした
+Failed to update line item	明細を更新できませんでした
+Failed to delete line item	明細を削除できませんでした
+Failed to restore line item	明細を復元できませんでした
+Failed to fetch line item	明細を取得できませんでした
+Failed to search line item	明細を検索できませんでした
+Failed to activate line item	明細を有効化できませんでした
+Failed to deactivate line item	明細を無効化できませんでした
+Failed to invite line item	明細を招待できませんでした
+Failed to revoke line item	明細を失効できませんでした
+Failed to add line item	明細を追加できませんでした
+Failed to remove line item	明細を削除できませんでした
+Failed to copy line item	明細をコピーできませんでした
+Failed to reorder line item	明細を並べ替えできませんでした
+Failed to cancel line item	明細を取り消しできませんでした
+Failed to assign line item	明細を割り当てできませんでした
+Failed to watch line item	明細を更新通知の登録できませんでした
+Failed to unwatch line item	明細を更新通知の解除できませんでした
+Failed to set line item	明細を設定できませんでした
+Failed to send line item	明細を送信できませんでした
+Failed to save line item	明細を保存できませんでした
+Line item not found	明細が見つかりません
+Failed to create line items	明細を作成できませんでした
+Failed to update line items	明細を更新できませんでした
+Failed to delete line items	明細を削除できませんでした
+Failed to restore line items	明細を復元できませんでした
+Failed to fetch line items	明細を取得できませんでした
+Failed to search line items	明細を検索できませんでした
+Failed to activate line items	明細を有効化できませんでした
+Failed to deactivate line items	明細を無効化できませんでした
+Failed to invite line items	明細を招待できませんでした
+Failed to revoke line items	明細を失効できませんでした
+Failed to add line items	明細を追加できませんでした
+Failed to remove line items	明細を削除できませんでした
+Failed to copy line items	明細をコピーできませんでした
+Failed to reorder line items	明細を並べ替えできませんでした
+Failed to cancel line items	明細を取り消しできませんでした
+Failed to assign line items	明細を割り当てできませんでした
+Failed to watch line items	明細を更新通知の登録できませんでした
+Failed to unwatch line items	明細を更新通知の解除できませんでした
+Failed to set line items	明細を設定できませんでした
+Failed to send line items	明細を送信できませんでした
+Failed to save line items	明細を保存できませんでした
+Line items not found	明細が見つかりません
+Failed to create comment	コメントを作成できませんでした
+Failed to update comment	コメントを更新できませんでした
+Failed to delete comment	コメントを削除できませんでした
+Failed to restore comment	コメントを復元できませんでした
+Failed to fetch comment	コメントを取得できませんでした
+Failed to search comment	コメントを検索できませんでした
+Failed to activate comment	コメントを有効化できませんでした
+Failed to deactivate comment	コメントを無効化できませんでした
+Failed to invite comment	コメントを招待できませんでした
+Failed to revoke comment	コメントを失効できませんでした
+Failed to add comment	コメントを追加できませんでした
+Failed to remove comment	コメントを削除できませんでした
+Failed to copy comment	コメントをコピーできませんでした
+Failed to reorder comment	コメントを並べ替えできませんでした
+Failed to cancel comment	コメントを取り消しできませんでした
+Failed to assign comment	コメントを割り当てできませんでした
+Failed to watch comment	コメントを更新通知の登録できませんでした
+Failed to unwatch comment	コメントを更新通知の解除できませんでした
+Failed to set comment	コメントを設定できませんでした
+Failed to send comment	コメントを送信できませんでした
+Failed to save comment	コメントを保存できませんでした
+Comment not found	コメントが見つかりません
+Failed to create feedback	ご意見・ご要望を作成できませんでした
+Failed to update feedback	ご意見・ご要望を更新できませんでした
+Failed to delete feedback	ご意見・ご要望を削除できませんでした
+Failed to restore feedback	ご意見・ご要望を復元できませんでした
+Failed to fetch feedback	ご意見・ご要望を取得できませんでした
+Failed to search feedback	ご意見・ご要望を検索できませんでした
+Failed to activate feedback	ご意見・ご要望を有効化できませんでした
+Failed to deactivate feedback	ご意見・ご要望を無効化できませんでした
+Failed to invite feedback	ご意見・ご要望を招待できませんでした
+Failed to revoke feedback	ご意見・ご要望を失効できませんでした
+Failed to add feedback	ご意見・ご要望を追加できませんでした
+Failed to remove feedback	ご意見・ご要望を削除できませんでした
+Failed to copy feedback	ご意見・ご要望をコピーできませんでした
+Failed to reorder feedback	ご意見・ご要望を並べ替えできませんでした
+Failed to cancel feedback	ご意見・ご要望を取り消しできませんでした
+Failed to assign feedback	ご意見・ご要望を割り当てできませんでした
+Failed to watch feedback	ご意見・ご要望を更新通知の登録できませんでした
+Failed to unwatch feedback	ご意見・ご要望を更新通知の解除できませんでした
+Failed to set feedback	ご意見・ご要望を設定できませんでした
+Failed to send feedback	ご意見・ご要望を送信できませんでした
+Failed to save feedback	ご意見・ご要望を保存できませんでした
+Feedback not found	ご意見・ご要望が見つかりません
+Failed to create language	言語を作成できませんでした
+Failed to update language	言語を更新できませんでした
+Failed to delete language	言語を削除できませんでした
+Failed to restore language	言語を復元できませんでした
+Failed to fetch language	言語を取得できませんでした
+Failed to search language	言語を検索できませんでした
+Failed to activate language	言語を有効化できませんでした
+Failed to deactivate language	言語を無効化できませんでした
+Failed to invite language	言語を招待できませんでした
+Failed to revoke language	言語を失効できませんでした
+Failed to add language	言語を追加できませんでした
+Failed to remove language	言語を削除できませんでした
+Failed to copy language	言語をコピーできませんでした
+Failed to reorder language	言語を並べ替えできませんでした
+Failed to cancel language	言語を取り消しできませんでした
+Failed to assign language	言語を割り当てできませんでした
+Failed to watch language	言語を更新通知の登録できませんでした
+Failed to unwatch language	言語を更新通知の解除できませんでした
+Failed to set language	言語を設定できませんでした
+Failed to send language	言語を送信できませんでした
+Failed to save language	言語を保存できませんでした
+Language not found	言語が見つかりません
+Failed to create profile	プロフィールを作成できませんでした
+Failed to update profile	プロフィールを更新できませんでした
+Failed to delete profile	プロフィールを削除できませんでした
+Failed to restore profile	プロフィールを復元できませんでした
+Failed to fetch profile	プロフィールを取得できませんでした
+Failed to search profile	プロフィールを検索できませんでした
+Failed to activate profile	プロフィールを有効化できませんでした
+Failed to deactivate profile	プロフィールを無効化できませんでした
+Failed to invite profile	プロフィールを招待できませんでした
+Failed to revoke profile	プロフィールを失効できませんでした
+Failed to add profile	プロフィールを追加できませんでした
+Failed to remove profile	プロフィールを削除できませんでした
+Failed to copy profile	プロフィールをコピーできませんでした
+Failed to reorder profile	プロフィールを並べ替えできませんでした
+Failed to cancel profile	プロフィールを取り消しできませんでした
+Failed to assign profile	プロフィールを割り当てできませんでした
+Failed to watch profile	プロフィールを更新通知の登録できませんでした
+Failed to unwatch profile	プロフィールを更新通知の解除できませんでした
+Failed to set profile	プロフィールを設定できませんでした
+Failed to send profile	プロフィールを送信できませんでした
+Failed to save profile	プロフィールを保存できませんでした
+Profile not found	プロフィールが見つかりません
+Failed to create connections	連携設定を作成できませんでした
+Failed to update connections	連携設定を更新できませんでした
+Failed to delete connections	連携設定を削除できませんでした
+Failed to restore connections	連携設定を復元できませんでした
+Failed to fetch connections	連携設定を取得できませんでした
+Failed to search connections	連携設定を検索できませんでした
+Failed to activate connections	連携設定を有効化できませんでした
+Failed to deactivate connections	連携設定を無効化できませんでした
+Failed to invite connections	連携設定を招待できませんでした
+Failed to revoke connections	連携設定を失効できませんでした
+Failed to add connections	連携設定を追加できませんでした
+Failed to remove connections	連携設定を削除できませんでした
+Failed to copy connections	連携設定をコピーできませんでした
+Failed to reorder connections	連携設定を並べ替えできませんでした
+Failed to cancel connections	連携設定を取り消しできませんでした
+Failed to assign connections	連携設定を割り当てできませんでした
+Failed to watch connections	連携設定を更新通知の登録できませんでした
+Failed to unwatch connections	連携設定を更新通知の解除できませんでした
+Failed to set connections	連携設定を設定できませんでした
+Failed to send connections	連携設定を送信できませんでした
+Failed to save connections	連携設定を保存できませんでした
+Connections not found	連携設定が見つかりません
+Failed to create task positions	タスクの位置を作成できませんでした
+Failed to update task positions	タスクの位置を更新できませんでした
+Failed to delete task positions	タスクの位置を削除できませんでした
+Failed to restore task positions	タスクの位置を復元できませんでした
+Failed to fetch task positions	タスクの位置を取得できませんでした
+Failed to search task positions	タスクの位置を検索できませんでした
+Failed to activate task positions	タスクの位置を有効化できませんでした
+Failed to deactivate task positions	タスクの位置を無効化できませんでした
+Failed to invite task positions	タスクの位置を招待できませんでした
+Failed to revoke task positions	タスクの位置を失効できませんでした
+Failed to add task positions	タスクの位置を追加できませんでした
+Failed to remove task positions	タスクの位置を削除できませんでした
+Failed to copy task positions	タスクの位置をコピーできませんでした
+Failed to reorder task positions	タスクの位置を並べ替えできませんでした
+Failed to cancel task positions	タスクの位置を取り消しできませんでした
+Failed to assign task positions	タスクの位置を割り当てできませんでした
+Failed to watch task positions	タスクの位置を更新通知の登録できませんでした
+Failed to unwatch task positions	タスクの位置を更新通知の解除できませんでした
+Failed to set task positions	タスクの位置を設定できませんでした
+Failed to send task positions	タスクの位置を送信できませんでした
+Failed to save task positions	タスクの位置を保存できませんでした
+Task positions not found	タスクの位置が見つかりません
+Failed to create section title	セクション名を作成できませんでした
+Failed to update section title	セクション名を更新できませんでした
+Failed to delete section title	セクション名を削除できませんでした
+Failed to restore section title	セクション名を復元できませんでした
+Failed to fetch section title	セクション名を取得できませんでした
+Failed to search section title	セクション名を検索できませんでした
+Failed to activate section title	セクション名を有効化できませんでした
+Failed to deactivate section title	セクション名を無効化できませんでした
+Failed to invite section title	セクション名を招待できませんでした
+Failed to revoke section title	セクション名を失効できませんでした
+Failed to add section title	セクション名を追加できませんでした
+Failed to remove section title	セクション名を削除できませんでした
+Failed to copy section title	セクション名をコピーできませんでした
+Failed to reorder section title	セクション名を並べ替えできませんでした
+Failed to cancel section title	セクション名を取り消しできませんでした
+Failed to assign section title	セクション名を割り当てできませんでした
+Failed to watch section title	セクション名を更新通知の登録できませんでした
+Failed to unwatch section title	セクション名を更新通知の解除できませんでした
+Failed to set section title	セクション名を設定できませんでした
+Failed to send section title	セクション名を送信できませんでした
+Failed to save section title	セクション名を保存できませんでした
+Section title not found	セクション名が見つかりません
+name is required	名前を入力してください
+userId is required	ユーザーIDを入力してください
+accountId is required	取引先IDを入力してください
+contactId is required	連絡先IDを入力してください
+opportunityId is required	商談IDを入力してください
+contractId is required	契約IDを入力してください
+leadId is required	見込み客IDを入力してください
+targetListId is required	対象リストIDを入力してください
+targetId is required	対象顧客IDを入力してください
+taskId is required	タスクIDを入力してください
+comment is required	コメントを入力してください
+language is required	言語を入力してください
+You must be authenticated.	ログインしてください。
+You are not authorized to perform this action.	この操作をする権限がありません。
+User already exists!	このユーザーは既に登録されています。
+User not created	ユーザーを作成できませんでした
+Cannot deactivate yourself	自分自身を無効にすることはできません
+Cannot delete yourself	自分自身を削除することはできません
+Invalid role	役割が正しくありません
+Cannot remove your own admin role	自分自身の管理者権限は解除できません
+Not found or unauthorized	対象が見つからないか、アクセス権限がありません
+Invalid input	入力内容を確認してください
+Invalid request	リクエストが正しくありません
+Missing required fields	必須項目を入力してください
+Please fill in all the required fields.	すべての必須項目を入力してください。
+User not logged in.	ログインしてください。
+End date must be after start date	終了日は開始日より後の日付にしてください
+Renewal date must be after start date	更新日は開始日より後の日付にしてください
+Percentage discount cannot exceed 100%	値引率は100%以下にしてください
+Currency is not enabled	この通貨は有効になっていません
+Managed by an external system	外部システムで管理されています
+Query must be at least 2 characters	検索語は2文字以上で入力してください
+Search failed	検索に失敗しました
+Draft invoices don't have PDFs — issue the invoice first	PDFを保存するには、先に請求書を発行してください
+Invoice is missing number or issue date	請求書番号または発行日がありません
+Backlog	未着手
+New task	新しいタスク
+Cannot issue this invoice	この請求書は発行できません
+Invoice must have at least one line item	明細を1行以上追加してください
+Invoice settings not configured. Please configure in Admin > Invoices.	管理設定の「請求書」で初期設定を行ってください。
+No invoice series configured	請求書の採番系列を設定してください
+Description is required	品名・内容を入力してください
+Quantity must be positive	数量は0より大きい値にしてください
+Unit price must be >= 0	単価は0以上にしてください
+Invalid account ID	取引先を選び直してください
+Currency must be a 3-letter code	通貨は3文字のコードで指定してください
+Payment amount must be positive	入金額は0より大きい値にしてください
+Payment method is required	入金方法を選択してください
+Message to all users from:	全ユーザーへのお知らせ：

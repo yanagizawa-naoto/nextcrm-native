@@ -1,0 +1,404 @@
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useLocale } from "next-intl";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { LineItemsEditor, LineItemRow } from "./line-items-editor";
+import { TotalsPanel } from "./totals-panel";
+import { AccountSearchCombobox } from "@/components/ui/account-search-combobox";
+import { INVOICE_TYPES, INVOICE_TYPE_LABELS } from "@/types/invoice";
+import { createInvoice } from "@/actions/invoices/create-invoice";
+import { updateInvoice } from "@/actions/invoices/update-invoice";
+
+interface Product {
+  id: string;
+  name: string;
+}
+
+interface TaxRate {
+  id: string;
+  name: string;
+  rate: string;
+}
+
+interface Series {
+  id: string;
+  name: string;
+}
+
+interface Currency {
+  code: string;
+  name: string;
+}
+
+interface Settings {
+  baseCurrency: string;
+  defaultSeriesId: string | null;
+  defaultTaxRateId: string | null;
+  defaultDueDays: number;
+  bankName: string | null;
+  iban: string | null;
+  swift: string | null;
+}
+
+interface InvoiceFormProps {
+  products: Product[];
+  taxRates: TaxRate[];
+  series: Series[];
+  currencies: Currency[];
+  settings: Settings | null;
+  labels?: Record<string, string>;
+  /** Existing invoice data for edit mode */
+  initialData?: {
+    id: string;
+    type: string;
+    accountId: string;
+    seriesId: string | null;
+    currency: string;
+    dueDate: string | null;
+    bankName: string | null;
+    iban: string | null;
+    swift: string | null;
+    variableSymbol: string | null;
+    publicNotes: string | null;
+    internalNotes: string | null;
+    lineItems: Array<{
+      productId: string | null;
+      description: string;
+      quantity: string;
+      unitPrice: string;
+      discountPercent: string;
+      taxRateId: string | null;
+    }>;
+  };
+}
+
+export function InvoiceForm({
+  products,
+  taxRates,
+  series,
+  currencies,
+  settings,
+  labels,
+  initialData,
+}: InvoiceFormProps) {
+  const router = useRouter();
+  const locale = useLocale();
+  const [saving, setSaving] = useState(false);
+  const isEdit = !!initialData;
+
+  const [type, setType] = useState(initialData?.type ?? "INVOICE");
+  const [accountId, setAccountId] = useState(initialData?.accountId ?? "");
+  const [seriesId, setSeriesId] = useState(
+    initialData?.seriesId ?? settings?.defaultSeriesId ?? ""
+  );
+  const [currency, setCurrency] = useState(
+    initialData?.currency ?? settings?.baseCurrency ?? "CZK"
+  );
+  const [dueDate, setDueDate] = useState(() => {
+    if (initialData?.dueDate) {
+      return new Date(initialData.dueDate).toISOString().split("T")[0];
+    }
+    if (settings?.defaultDueDays) {
+      const d = new Date();
+      d.setDate(d.getDate() + settings.defaultDueDays);
+      return d.toISOString().split("T")[0];
+    }
+    return "";
+  });
+  const [bankName, setBankName] = useState(
+    initialData?.bankName ?? settings?.bankName ?? ""
+  );
+  const [iban, setIban] = useState(
+    initialData?.iban ?? settings?.iban ?? ""
+  );
+  const [swift, setSwift] = useState(
+    initialData?.swift ?? settings?.swift ?? ""
+  );
+  const [variableSymbol, setVariableSymbol] = useState(
+    initialData?.variableSymbol ?? ""
+  );
+  const [publicNotes, setPublicNotes] = useState(
+    initialData?.publicNotes ?? ""
+  );
+  const [internalNotes, setInternalNotes] = useState(
+    initialData?.internalNotes ?? ""
+  );
+
+  const defaultTaxRateId = settings?.defaultTaxRateId ?? "";
+
+  const [lineItems, setLineItems] = useState<LineItemRow[]>(() => {
+    if (initialData?.lineItems?.length) {
+      return initialData.lineItems.map((li) => ({
+        productId: li.productId ?? "",
+        description: li.description,
+        quantity: parseFloat(li.quantity) || 1,
+        unitPrice: parseFloat(li.unitPrice) || 0,
+        discountPercent: parseFloat(li.discountPercent) || 0,
+        taxRateId: li.taxRateId ?? "",
+      }));
+    }
+    return [
+      {
+        productId: "",
+        description: "",
+        quantity: 1,
+        unitPrice: 0,
+        discountPercent: 0,
+        taxRateId: defaultTaxRateId,
+      },
+    ];
+  });
+
+  const getTaxRateValue = (taxRateId: string) => {
+    const tr = taxRates.find((t) => t.id === taxRateId);
+    return tr ? parseFloat(tr.rate) : 0;
+  };
+
+  const totalsInput = lineItems.map((li) => ({
+    quantity: li.quantity,
+    unitPrice: li.unitPrice,
+    discountPercent: li.discountPercent,
+    taxRate: getTaxRateValue(li.taxRateId),
+  }));
+
+  const handleSubmit = async () => {
+    if (!accountId) {
+      toast.error("取引先を選択してください");
+      return;
+    }
+    if (lineItems.length === 0 || !lineItems.some((l) => l.description)) {
+      toast.error("明細を1行以上追加してください");
+      return;
+    }
+
+    setSaving(true);
+    try {
+      const body = {
+        type,
+        accountId,
+        seriesId: seriesId || null,
+        currency,
+        dueDate: dueDate ? new Date(dueDate).toISOString() : null,
+        bankName: bankName || null,
+        iban: iban || null,
+        swift: swift || null,
+        variableSymbol: variableSymbol || null,
+        publicNotes: publicNotes || null,
+        internalNotes: internalNotes || null,
+        lineItems: lineItems
+          .filter((l) => l.description)
+          .map((l, i) => ({
+            position: i,
+            productId: l.productId || null,
+            description: l.description,
+            quantity: l.quantity,
+            unitPrice: l.unitPrice,
+            discountPercent: l.discountPercent,
+            taxRateId: l.taxRateId || null,
+          })),
+      };
+
+      const result = isEdit
+        ? await updateInvoice(initialData.id, body)
+        : await createInvoice(body);
+
+      toast.success(isEdit ? "請求書を更新しました" : "請求書を作成しました");
+      router.push(`/invoices/${result.id}`);
+    } catch (err) {
+      toast.error(
+        err instanceof Error ? err.message : "請求書を保存できませんでした"
+      );
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const l = labels ?? {};
+
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-6">
+      <div className="space-y-6">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+          <div className="space-y-2">
+            <Label>{l.type ?? "種別"}</Label>
+            <Select value={type} onValueChange={setType}>
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {INVOICE_TYPES.map((t) => (
+                  <SelectItem key={t} value={t}>
+                    {INVOICE_TYPE_LABELS[t]}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-2">
+            <Label>{l.account ?? "取引先"}</Label>
+            <AccountSearchCombobox
+              value={accountId}
+              onChange={setAccountId}
+              placeholder="取引先を選択…"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label>{l.series ?? "採番系列"}</Label>
+            <Select
+              value={seriesId || "none"}
+              onValueChange={(v) => setSeriesId(v === "none" ? "" : v)}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="採番系列を選択…" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="none">-</SelectItem>
+                {series.map((s) => (
+                  <SelectItem key={s.id} value={s.id}>
+                    {s.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+          <div className="space-y-2">
+            <Label>{l.currency ?? "通貨"}</Label>
+            <Select value={currency} onValueChange={setCurrency}>
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {currencies.map((c) => (
+                  <SelectItem key={c.code} value={c.code}>
+                    {c.code} - {c.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-2">
+            <Label>{l.dueDate ?? "支払期限"}</Label>
+            <Input
+              type="date"
+              value={dueDate}
+              onChange={(e) => setDueDate(e.target.value)}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label>{l.variableSymbol ?? "振込参照番号"}</Label>
+            <Input
+              value={variableSymbol}
+              onChange={(e) => setVariableSymbol(e.target.value)}
+              placeholder="振込参照番号"
+            />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-3 gap-4">
+          <div className="space-y-2">
+            <Label>{l.bankName ?? "金融機関名"}</Label>
+            <Input
+              value={bankName}
+              onChange={(e) => setBankName(e.target.value)}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>{l.iban ?? "IBAN（国際銀行口座番号）"}</Label>
+            <Input
+              value={iban}
+              onChange={(e) => setIban(e.target.value)}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>{l.swift ?? "SWIFTコード"}</Label>
+            <Input
+              value={swift}
+              onChange={(e) => setSwift(e.target.value)}
+            />
+          </div>
+        </div>
+
+        <div>
+          <Label className="mb-3 block">
+            {l.lineItems ?? "明細"}
+          </Label>
+          <LineItemsEditor
+            items={lineItems}
+            onChange={setLineItems}
+            products={products}
+            taxRates={taxRates}
+            labels={{
+              product: l.product,
+              description: l.description,
+              quantity: l.quantity,
+              unitPrice: l.unitPrice,
+              discount: l.discount,
+              taxRate: l.taxRate,
+              total: l.total,
+              addLine: l.addLine,
+            }}
+          />
+        </div>
+
+        <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label>{l.publicNotes ?? "備考（請求書に表示）"}</Label>
+            <Textarea
+              value={publicNotes}
+              onChange={(e) => setPublicNotes(e.target.value)}
+              rows={3}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>{l.internalNotes ?? "社内メモ"}</Label>
+            <Textarea
+              value={internalNotes}
+              onChange={(e) => setInternalNotes(e.target.value)}
+              rows={3}
+            />
+          </div>
+        </div>
+
+        <div className="flex gap-3">
+          <Button onClick={handleSubmit} disabled={saving}>
+            {saving
+              ? "保存中…"
+              : isEdit
+                ? "下書きを更新"
+                : (l.save ?? "下書きを保存")}
+          </Button>
+          <Button
+            variant="outline"
+            onClick={() => router.back()}
+            disabled={saving}
+          >
+            {"取消"}</Button>
+        </div>
+      </div>
+
+      <div className="space-y-4">
+        <TotalsPanel lineItems={totalsInput} currency={currency} locale={locale} />
+      </div>
+    </div>
+  );
+}
