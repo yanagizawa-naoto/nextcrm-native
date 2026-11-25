@@ -29,6 +29,11 @@ jobs:
         run: pnpm install --frozen-lockfile --ignore-scripts
       - name: Verify public sources and memory units
         run: python3 scripts/verify-publication.py
+      - name: Record Apple toolchain
+        run: |
+          swiftc --version
+          xcrun --sdk macosx --show-sdk-version
+          xcode-select -p
       - name: SQLite smoke tests with isolated data
         run: zsh desktop/native/smoke-test.sh
       - name: Restored provider review regression (433 checks)

@@ -119,7 +119,13 @@ def main():
         phases.append(phase)
         print(json.dumps(phase), flush=True)
         if code:
-            print('\n'.join(log.read_text(errors='replace').splitlines()[-12:]), flush=True)
+            lines = log.read_text(errors='replace').splitlines()
+            errors = [i for i, line in enumerate(lines) if 'error:' in line.lower() or 'fatal error' in line.lower()]
+            if errors:
+                indexes = sorted({j for i in errors[:12] for j in range(max(0, i - 2), min(len(lines), i + 7))})
+                print('\n'.join(lines[i] for i in indexes), flush=True)
+            else:
+                print('\n'.join(lines[-30:]), flush=True)
             raise RuntimeError(label + ' failed; see ' + str(log.relative_to(REPOSITORY)))
 
     try:
