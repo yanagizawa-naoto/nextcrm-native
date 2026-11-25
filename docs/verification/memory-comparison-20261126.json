@@ -1,0 +1,765 @@
+{
+  "schemaVersion": 1,
+  "measurementDate": "2026-11-26",
+  "dateTimezone": "Asia/Tokyo",
+  "metric": "macOS physical footprint, one aggregate footprint invocation for all attributed dedicated processes",
+  "units": {
+    "MB": 1000000,
+    "MiB": 1048576
+  },
+  "hardware": {
+    "chip": "Apple M2",
+    "memoryBytes": 17179869184,
+    "macOS": "26.6.2"
+  },
+  "dataset": {
+    "synthetic": true,
+    "targetCount": 10000,
+    "targetScalarFieldsIncludingID": 36,
+    "sameIDsAndValues": true,
+    "targetCanonicalSHA256": "3ca34e07f52dfcd07c081acf76b11573bfac5c09c34ceef98eeb8441a51ee9ba",
+    "ownerCanonicalSHA256": "97c978c25e04d91eecb236132cfd5d3c57d9a6eeb5f0ff81dc582f51a061aac6",
+    "postMeasurementHashesMatch": true
+  },
+  "implementations": {
+    "native": {
+      "swiftSourceCount": 453,
+      "storage": "SQLite",
+      "pageRows": 100,
+      "build": "Optimized isolated QA build using the final native application sources"
+    },
+    "web": {
+      "storage": "PostgreSQL",
+      "pageRows": 10,
+      "build": "Preserved locally optimized Web desktop runtime; not an unmodified upstream baseline",
+      "serverBuildID": "rDrHRWu2i6x1njBSDMJEw"
+    }
+  },
+  "conditions": {
+    "contentSizePoints": [
+      1280,
+      760
+    ],
+    "displayScale": 2,
+    "outerSizePoints": {
+      "native": [
+        1280,
+        788
+      ],
+      "web": [
+        1280,
+        792
+      ]
+    },
+    "preconditioning": "Enter fullscreen and return to the declared content size before measurement",
+    "waitAfterUIReadySeconds": 30,
+    "samplesPerLaunch": 5,
+    "targetSampleSpacingSeconds": 10,
+    "launchesPerVariantPerMode": 3,
+    "restartDedicatedStackBetweenLaunches": true,
+    "systemCacheFlushed": false,
+    "otherUserApplicationsClosed": false,
+    "realExternalProviders": false,
+    "excluded": [
+      "Shared WindowServer and unrelated system/user applications"
+    ],
+    "statistic": "Median of five samples per launch, then median of three launch medians",
+    "invalidSamplePolicy": "Invalidate the entire five-sample scene on attribution failure; retain raw records and repeat all five points after another 30 seconds at the same UI. Never retain a favorable subset."
+  },
+  "limitations": [
+    "Reference comparison: preserved Web Inngest rejects an internal self-send authentication key; UI list/search/detail work, but healthy background jobs are not established.",
+    "Product paging defaults differ: native 100 rows, Web 10 rows; 10000 stored records are not rendered simultaneously.",
+    "Background and foreground experiments took place at different times; their difference does not isolate the effect of foregrounding.",
+    "Short idle-list measurements do not establish an always-below-100-MB bound or operation peaks.",
+    "Background protocol was amended after attribution failures; the original native pilot lacked matched fullscreen preparation and was excluded. See MEMORY.md for retained-run and retry policy."
+  ],
+  "evidence": "Sanitized accepted sample values, timestamps, process counts and SHA-256 digests of locally retained raw footprint JSON; raw files and private runtime configuration are not included. Digests identify artifacts, not an independent verification of their contents.",
+  "experiments": [
+    {
+      "mode": "background",
+      "displayCondition": "Both applications hidden using the macOS Hide command after UI readiness",
+      "acceptedRunOrder": [
+        "web",
+        "web",
+        "native",
+        "native",
+        "web",
+        "native"
+      ],
+      "trials": [
+        {
+          "id": "02-web",
+          "variant": "web",
+          "uiReadyUTC": "2026-11-25T16:57:14.593231+00:00",
+          "medianBytes": 560240536,
+          "samples": [
+            {
+              "index": 1,
+              "bytes": 559552408,
+              "startUTC": "2026-11-25T16:57:47.125857+00:00",
+              "durationSeconds": 4.928239,
+              "processCount": 15,
+              "rawSHA256": "4e85e008ffb17b68f895e184024bdd18897fd4baa06178f7865a582f0d5eab28"
+            },
+            {
+              "index": 2,
+              "bytes": 560240536,
+              "startUTC": "2026-11-25T16:57:57.054747+00:00",
+              "durationSeconds": 5.111239,
+              "processCount": 15,
+              "rawSHA256": "df840a623856b59d3c11f527154eb40f318d5147dc0323eb0a88bf88915dc907"
+            },
+            {
+              "index": 3,
+              "bytes": 560240536,
+              "startUTC": "2026-11-25T16:58:07.578764+00:00",
+              "durationSeconds": 5.595978,
+              "processCount": 15,
+              "rawSHA256": "f29c0af23363c5eb4cec82bd86e62df6e40f968ddb674bbba952501fe27e89e4"
+            },
+            {
+              "index": 4,
+              "bytes": 560060312,
+              "startUTC": "2026-11-25T16:58:17.997445+00:00",
+              "durationSeconds": 6.427864,
+              "processCount": 15,
+              "rawSHA256": "58b23561ff4e814f08c8a46a5dca8d9708af7e575f9f14c5211e21b44ba1bcaa"
+            },
+            {
+              "index": 5,
+              "bytes": 560568216,
+              "startUTC": "2026-11-25T16:58:27.250833+00:00",
+              "durationSeconds": 5.134218,
+              "processCount": 15,
+              "rawSHA256": "c51b5a9cadb204e6f9def2a5e9517ff6cce3af6d6af1fe589fd70a28e980a81e"
+            }
+          ]
+        },
+        {
+          "id": "03-web",
+          "variant": "web",
+          "uiReadyUTC": "2026-11-25T17:08:24.285762+00:00",
+          "medianBytes": 579900544,
+          "samples": [
+            {
+              "index": 1,
+              "bytes": 579998848,
+              "startUTC": "2026-11-25T17:08:56.968650+00:00",
+              "durationSeconds": 5.382709,
+              "processCount": 15,
+              "rawSHA256": "b143112ba34c8e33edfd11b81c652b098c9d112b2bc17c408f8eb922c567f019"
+            },
+            {
+              "index": 2,
+              "bytes": 579867776,
+              "startUTC": "2026-11-25T17:09:06.938478+00:00",
+              "durationSeconds": 5.669826,
+              "processCount": 15,
+              "rawSHA256": "6be3ce246340c1e303f1683d6606c1fd80776d6b2537efbbb982def3d78f22b5"
+            },
+            {
+              "index": 3,
+              "bytes": 580080768,
+              "startUTC": "2026-11-25T17:09:17.138675+00:00",
+              "durationSeconds": 5.796883,
+              "processCount": 15,
+              "rawSHA256": "f33c50afd8e29f6c7bad86a6bc3fa67db1cb6fa8eeb17d9fb121049a6e1969f0"
+            },
+            {
+              "index": 4,
+              "bytes": 579900544,
+              "startUTC": "2026-11-25T17:09:26.905819+00:00",
+              "durationSeconds": 5.43403,
+              "processCount": 15,
+              "rawSHA256": "4a7df5f784c2d092243e9056d27e6903c25ab88dc0c3ef270c73daaace55895b"
+            },
+            {
+              "index": 5,
+              "bytes": 579884160,
+              "startUTC": "2026-11-25T17:09:37.135405+00:00",
+              "durationSeconds": 5.912804,
+              "processCount": 15,
+              "rawSHA256": "d08a494397127f80366ad49d9ab4db779599af3b86371f7d7f903fab96a64e39"
+            }
+          ]
+        },
+        {
+          "id": "04-native",
+          "variant": "native",
+          "uiReadyUTC": "2026-11-25T17:11:14.653483+00:00",
+          "medianBytes": 67848256,
+          "samples": [
+            {
+              "index": 1,
+              "bytes": 67848256,
+              "startUTC": "2026-11-25T17:11:47.148027+00:00",
+              "durationSeconds": 4.925967,
+              "processCount": 3,
+              "rawSHA256": "0325b81ab6e27efb0ada310789bbdadba01d012fc6ccad703ac26df964ba4a77"
+            },
+            {
+              "index": 2,
+              "bytes": 67815488,
+              "startUTC": "2026-11-25T17:11:57.142658+00:00",
+              "durationSeconds": 4.92989,
+              "processCount": 3,
+              "rawSHA256": "1b2ccbc3c3029f43f5e4cb021d88d426fb42d9945fe0f7814af244359e34de82"
+            },
+            {
+              "index": 3,
+              "bytes": 67848256,
+              "startUTC": "2026-11-25T17:12:07.146054+00:00",
+              "durationSeconds": 4.930861,
+              "processCount": 3,
+              "rawSHA256": "73a068d4147a7aa2c72c2cf2719d8a666a47c46607fa916571dea2d9956db362"
+            },
+            {
+              "index": 4,
+              "bytes": 67881024,
+              "startUTC": "2026-11-25T17:12:17.343245+00:00",
+              "durationSeconds": 5.161071,
+              "processCount": 3,
+              "rawSHA256": "fda082710b38dcd7558a5c4158d53f77b6cd9d81d6982f06819fbc1d06c5465d"
+            },
+            {
+              "index": 5,
+              "bytes": 68126784,
+              "startUTC": "2026-11-25T17:12:27.484505+00:00",
+              "durationSeconds": 5.37631,
+              "processCount": 3,
+              "rawSHA256": "65008f01843aeb377d0849ac5687d7357511fd0d1b72cd9eac8fd40a3270c126"
+            }
+          ]
+        },
+        {
+          "id": "05-native",
+          "variant": "native",
+          "uiReadyUTC": "2026-11-25T17:14:33.241370+00:00",
+          "medianBytes": 68470848,
+          "samples": [
+            {
+              "index": 1,
+              "bytes": 68487232,
+              "startUTC": "2026-11-25T17:15:05.854199+00:00",
+              "durationSeconds": 5.109417,
+              "processCount": 3,
+              "rawSHA256": "e65ef00d2fde614fabdf5decb4d45ed87bbd1cc32335a3aa991c91305dfb7b01"
+            },
+            {
+              "index": 2,
+              "bytes": 68470848,
+              "startUTC": "2026-11-25T17:15:15.767260+00:00",
+              "durationSeconds": 4.985095,
+              "processCount": 3,
+              "rawSHA256": "5dc47a7c5de4ba7ee2f3f2d88d34df13b655b7d287a232d5162101c220d27b14"
+            },
+            {
+              "index": 3,
+              "bytes": 68470848,
+              "startUTC": "2026-11-25T17:15:25.800938+00:00",
+              "durationSeconds": 5.267557,
+              "processCount": 3,
+              "rawSHA256": "dc1d9e5e946f6a1e8b87340739f91921fb5cc4678bcc8dbbeb400f16720bcffc"
+            },
+            {
+              "index": 4,
+              "bytes": 68520000,
+              "startUTC": "2026-11-25T17:15:35.723340+00:00",
+              "durationSeconds": 4.929955,
+              "processCount": 3,
+              "rawSHA256": "7e287be1dd775b417ff4865144822142f21c3c0fc20d069e7caa2f5ce4519ca2"
+            },
+            {
+              "index": 5,
+              "bytes": 68405312,
+              "startUTC": "2026-11-25T17:15:46.631359+00:00",
+              "durationSeconds": 6.622675,
+              "processCount": 3,
+              "rawSHA256": "491c4e7064e15cf107d38a21026c344b1ca82ce70d5f87065c2391eaa6eeb28d"
+            }
+          ]
+        },
+        {
+          "id": "06-web",
+          "variant": "web",
+          "uiReadyUTC": "2026-11-25T17:17:03.634544+00:00",
+          "medianBytes": 556356880,
+          "samples": [
+            {
+              "index": 1,
+              "bytes": 556356880,
+              "startUTC": "2026-11-25T17:17:36.706906+00:00",
+              "durationSeconds": 5.915078,
+              "processCount": 15,
+              "rawSHA256": "8343279906c4824d081ad784c22059f5cee44f6df3c297009fabd0a67022932d"
+            },
+            {
+              "index": 2,
+              "bytes": 556324112,
+              "startUTC": "2026-11-25T17:17:46.824034+00:00",
+              "durationSeconds": 6.328164,
+              "processCount": 15,
+              "rawSHA256": "ec0347933a6fa02b337252c8b65d3181545f3e1c81f3bd8b15dccb10300d8133"
+            },
+            {
+              "index": 3,
+              "bytes": 556291344,
+              "startUTC": "2026-11-25T17:17:56.431971+00:00",
+              "durationSeconds": 5.464945,
+              "processCount": 15,
+              "rawSHA256": "ae76ecf6e310eb91c8b8a7f5bbae90cae095db0231e164303763269f9e97f523"
+            },
+            {
+              "index": 4,
+              "bytes": 556373264,
+              "startUTC": "2026-11-25T17:18:06.305709+00:00",
+              "durationSeconds": 5.361353,
+              "processCount": 15,
+              "rawSHA256": "4f4ee0aaadac7c63741258e38939046585fa989ab32471b0b0ed19e0e295eee2"
+            },
+            {
+              "index": 5,
+              "bytes": 556422416,
+              "startUTC": "2026-11-25T17:18:16.325447+00:00",
+              "durationSeconds": 5.380028,
+              "processCount": 15,
+              "rawSHA256": "d4020bc0de8024806249c62446c933b81e9b1b4c11dfbf6cd37844af065c4d98"
+            }
+          ]
+        },
+        {
+          "id": "07-native",
+          "variant": "native",
+          "uiReadyUTC": "2026-11-25T17:20:44.074711+00:00",
+          "medianBytes": 68519952,
+          "samples": [
+            {
+              "index": 1,
+              "bytes": 68569104,
+              "startUTC": "2026-11-25T17:21:16.810001+00:00",
+              "durationSeconds": 5.354116,
+              "processCount": 3,
+              "rawSHA256": "9af2a043cbb980898c220faaa0904b509113b53c77569c095505e6931e825d03"
+            },
+            {
+              "index": 2,
+              "bytes": 68470800,
+              "startUTC": "2026-11-25T17:21:26.722029+00:00",
+              "durationSeconds": 5.194072,
+              "processCount": 3,
+              "rawSHA256": "1aba88fb14b197f3a581dd88df2993e7c81f7ead39d21a4d75f1eba482e18e67"
+            },
+            {
+              "index": 3,
+              "bytes": 68519952,
+              "startUTC": "2026-11-25T17:21:37.030517+00:00",
+              "durationSeconds": 6.625654,
+              "processCount": 3,
+              "rawSHA256": "0ad88de7e9780c91c7bf7f4d280b7b68d32391c10f9e3f7a16c8eb3c20e81a75"
+            },
+            {
+              "index": 4,
+              "bytes": 68519952,
+              "startUTC": "2026-11-25T17:21:46.737508+00:00",
+              "durationSeconds": 5.334661,
+              "processCount": 3,
+              "rawSHA256": "5a2465b684356b525c8312df6d4837cf554b19154cc1b8d7e9a2ff4a515053b8"
+            },
+            {
+              "index": 5,
+              "bytes": 68569104,
+              "startUTC": "2026-11-25T17:21:57.117337+00:00",
+              "durationSeconds": 5.685544,
+              "processCount": 3,
+              "rawSHA256": "ae3c50a9fa5d10efa40b0c54e97055b1c62254b6f6f3f6b0b45f1f70c23a0abf"
+            }
+          ]
+        }
+      ],
+      "summary": {
+        "native": {
+          "bytes": 68470848,
+          "MB": 68.470848,
+          "MiB": 65.29888916015625,
+          "trialMediansMB": [
+            67.848256,
+            68.470848,
+            68.519952
+          ],
+          "trialMedianRangeMB": [
+            67.848256,
+            68.519952
+          ],
+          "allSampleRangeMB": [
+            67.815488,
+            68.569104
+          ],
+          "samples": 15
+        },
+        "web": {
+          "bytes": 560240536,
+          "MB": 560.240536,
+          "MiB": 534.2870101928711,
+          "trialMediansMB": [
+            560.240536,
+            579.900544,
+            556.35688
+          ],
+          "trialMedianRangeMB": [
+            556.35688,
+            579.900544
+          ],
+          "allSampleRangeMB": [
+            556.291344,
+            580.080768
+          ],
+          "samples": 15
+        },
+        "reductionPercent": 87.77831242114905
+      }
+    },
+    {
+      "mode": "foreground",
+      "displayCondition": "App active, unhidden, frontmost PID matches, main window onscreen before and after every aggregate footprint observation",
+      "acceptedRunOrder": [
+        "native",
+        "web",
+        "web",
+        "native",
+        "native",
+        "web"
+      ],
+      "trials": [
+        {
+          "id": "01-native",
+          "variant": "native",
+          "uiReadyUTC": "2026-11-25T17:36:53.321226+00:00",
+          "medianBytes": 64505896,
+          "samples": [
+            {
+              "index": 1,
+              "bytes": 64505896,
+              "startUTC": "2026-11-25T17:37:25.481100+00:00",
+              "durationSeconds": 4.335291,
+              "processCount": 3,
+              "rawSHA256": "cdb2909e38625bd7ac57d9d6fd8f5d1f054ea55337af9874e105e38ffa1afa46"
+            },
+            {
+              "index": 2,
+              "bytes": 64505896,
+              "startUTC": "2026-11-25T17:37:35.520208+00:00",
+              "durationSeconds": 4.392061,
+              "processCount": 3,
+              "rawSHA256": "7877cd5ff7ce289e3b75895f76c9980693de75bfadddf889c209121db958a8f1"
+            },
+            {
+              "index": 3,
+              "bytes": 64505896,
+              "startUTC": "2026-11-25T17:37:45.510866+00:00",
+              "durationSeconds": 4.387749,
+              "processCount": 3,
+              "rawSHA256": "a60b5be10a40672715fd571c6b613b14ea663c99bfcb9ef53fe7e6c4095db4d8"
+            },
+            {
+              "index": 4,
+              "bytes": 64505896,
+              "startUTC": "2026-11-25T17:37:55.550438+00:00",
+              "durationSeconds": 4.426365,
+              "processCount": 3,
+              "rawSHA256": "9a4f237d86b2e9b59c5299bb52e9be65716a1a5b760b05bc11204745318e652a"
+            },
+            {
+              "index": 5,
+              "bytes": 64538664,
+              "startUTC": "2026-11-25T17:38:05.605334+00:00",
+              "durationSeconds": 4.492514,
+              "processCount": 3,
+              "rawSHA256": "1f16357672feeb4c76897c7f5b28984ae886d92f29804a8b171585e12185f112"
+            }
+          ]
+        },
+        {
+          "id": "02-web",
+          "variant": "web",
+          "uiReadyUTC": "2026-11-25T17:39:35.250084+00:00",
+          "medianBytes": 545739928,
+          "samples": [
+            {
+              "index": 1,
+              "bytes": 589075656,
+              "startUTC": "2026-11-25T17:40:07.507944+00:00",
+              "durationSeconds": 4.581061,
+              "processCount": 15,
+              "rawSHA256": "2c1f0a9aeedc4f572ece4ea35a6270d6c894953b972f5b8118621c2ec08cd8e0"
+            },
+            {
+              "index": 2,
+              "bytes": 545559704,
+              "startUTC": "2026-11-25T17:40:17.517146+00:00",
+              "durationSeconds": 4.607485,
+              "processCount": 15,
+              "rawSHA256": "70cd1ae0b548e59e97993f7ae3463e8c2fe1a43d4753c49068255f3b7243b1a0"
+            },
+            {
+              "index": 3,
+              "bytes": 545576088,
+              "startUTC": "2026-11-25T17:40:27.535347+00:00",
+              "durationSeconds": 4.604213,
+              "processCount": 15,
+              "rawSHA256": "23ccda3ea433a49678130a1517f5bc02802c263e7e4e5837efe34836b4665e21"
+            },
+            {
+              "index": 4,
+              "bytes": 545739928,
+              "startUTC": "2026-11-25T17:40:37.525404+00:00",
+              "durationSeconds": 4.595971,
+              "processCount": 15,
+              "rawSHA256": "616f89f4dc753c8b9cb71a6b971912e8d7bfdfe360c41151eb02d449e9a2aefa"
+            },
+            {
+              "index": 5,
+              "bytes": 545772696,
+              "startUTC": "2026-11-25T17:40:47.532232+00:00",
+              "durationSeconds": 4.603592,
+              "processCount": 15,
+              "rawSHA256": "5ada0a8141a511c020f7de34c6df04c49bda9318624df60bdc59eb481f70db32"
+            }
+          ]
+        },
+        {
+          "id": "03-web",
+          "variant": "web",
+          "uiReadyUTC": "2026-11-25T17:42:13.571702+00:00",
+          "medianBytes": 655890088,
+          "samples": [
+            {
+              "index": 1,
+              "bytes": 725063336,
+              "startUTC": "2026-11-25T17:42:45.834189+00:00",
+              "durationSeconds": 4.596685,
+              "processCount": 15,
+              "rawSHA256": "95a753ceb205719d591f0556dcd15ae17a652e6add562f99e3da45c28b9b7ce4"
+            },
+            {
+              "index": 2,
+              "bytes": 724965032,
+              "startUTC": "2026-11-25T17:42:55.820278+00:00",
+              "durationSeconds": 4.578273,
+              "processCount": 15,
+              "rawSHA256": "1d8056e58b06f03089ce8cfcb108299b466d34e8a18e1053fbe5597fefe94d9c"
+            },
+            {
+              "index": 3,
+              "bytes": 655890088,
+              "startUTC": "2026-11-25T17:43:05.865030+00:00",
+              "durationSeconds": 4.633646,
+              "processCount": 15,
+              "rawSHA256": "2f094a14963b7e7ed608ae99bddb6024c4022fccfcd0b34c0bfb0ed766e4cf7d"
+            },
+            {
+              "index": 4,
+              "bytes": 655873704,
+              "startUTC": "2026-11-25T17:43:15.838701+00:00",
+              "durationSeconds": 4.596666,
+              "processCount": 15,
+              "rawSHA256": "4a956244ac9815c8c6d61d1ab95a35d7896d1f9f1f020d06099561cb68ec83f4"
+            },
+            {
+              "index": 5,
+              "bytes": 655873704,
+              "startUTC": "2026-11-25T17:43:25.857745+00:00",
+              "durationSeconds": 4.615957,
+              "processCount": 15,
+              "rawSHA256": "8fbfc44e34072dadc4a89ea51a64049d805c9a43e67d9db933790442490b503e"
+            }
+          ]
+        },
+        {
+          "id": "04-native",
+          "variant": "native",
+          "uiReadyUTC": "2026-11-25T17:44:39.059924+00:00",
+          "medianBytes": 64505872,
+          "samples": [
+            {
+              "index": 1,
+              "bytes": 64505872,
+              "startUTC": "2026-11-25T17:45:11.216471+00:00",
+              "durationSeconds": 4.330635,
+              "processCount": 3,
+              "rawSHA256": "78184f0e845e553e0cf028cd5877642fc91625b8f18a4ec8129d2e223ff3448e"
+            },
+            {
+              "index": 2,
+              "bytes": 64505872,
+              "startUTC": "2026-11-25T17:45:21.260105+00:00",
+              "durationSeconds": 4.396696,
+              "processCount": 3,
+              "rawSHA256": "6b79dcfeea239dd3d2408fd75fa1f48a5be4cd53ab03a84987805cc338d95b28"
+            },
+            {
+              "index": 3,
+              "bytes": 64505872,
+              "startUTC": "2026-11-25T17:45:31.275549+00:00",
+              "durationSeconds": 4.39832,
+              "processCount": 3,
+              "rawSHA256": "cee8d8098fbf4ee7996885c4a76974b2a98b7dbc9feadb58cbbbc6fba9daca0e"
+            },
+            {
+              "index": 4,
+              "bytes": 64505872,
+              "startUTC": "2026-11-25T17:45:41.263160+00:00",
+              "durationSeconds": 4.393357,
+              "processCount": 3,
+              "rawSHA256": "2ae74190c5d80e5413215659eeccda29d24c837dc21a1fa82fdb460c10c05a48"
+            },
+            {
+              "index": 5,
+              "bytes": 64505872,
+              "startUTC": "2026-11-25T17:45:51.257795+00:00",
+              "durationSeconds": 4.380983,
+              "processCount": 3,
+              "rawSHA256": "6a74b6225b253eb20346d4a3e960697a11077527058bddf5aac58ba397b7ca1a"
+            }
+          ]
+        },
+        {
+          "id": "05-native",
+          "variant": "native",
+          "uiReadyUTC": "2026-11-25T17:47:31.025273+00:00",
+          "medianBytes": 64194600,
+          "samples": [
+            {
+              "index": 1,
+              "bytes": 64210984,
+              "startUTC": "2026-11-25T17:48:03.227091+00:00",
+              "durationSeconds": 4.404899,
+              "processCount": 3,
+              "rawSHA256": "50f3bce0c497dc098aa22012d1884a5a8c72b4094cb1025a1fb0337cd50b8459"
+            },
+            {
+              "index": 2,
+              "bytes": 64194600,
+              "startUTC": "2026-11-25T17:48:13.191144+00:00",
+              "durationSeconds": 4.348726,
+              "processCount": 3,
+              "rawSHA256": "30e4f5524826c05bfc7ed652a2b4852a94b557e942c0e7e31f4c617efaccf1bd"
+            },
+            {
+              "index": 3,
+              "bytes": 64194600,
+              "startUTC": "2026-11-25T17:48:23.208625+00:00",
+              "durationSeconds": 4.367917,
+              "processCount": 3,
+              "rawSHA256": "e4eb024708a47dc033626c0b1023fa15883acc1d6856b5e9419247246793fc0f"
+            },
+            {
+              "index": 4,
+              "bytes": 64194600,
+              "startUTC": "2026-11-25T17:48:33.222496+00:00",
+              "durationSeconds": 4.386585,
+              "processCount": 3,
+              "rawSHA256": "80f6c718365de6a30df37044ea1aeb147ed159d0f2077bf9ff085cc2607caa63"
+            },
+            {
+              "index": 5,
+              "bytes": 64194600,
+              "startUTC": "2026-11-25T17:48:43.227953+00:00",
+              "durationSeconds": 4.386586,
+              "processCount": 3,
+              "rawSHA256": "c2e7608e2374eafe996899a725e569bb995a0c1e074903a0e711b2f13ffc6b31"
+            }
+          ]
+        },
+        {
+          "id": "06-web",
+          "variant": "web",
+          "uiReadyUTC": "2026-11-25T17:50:40.213766+00:00",
+          "medianBytes": 662280208,
+          "samples": [
+            {
+              "index": 1,
+              "bytes": 662280208,
+              "startUTC": "2026-11-25T17:51:12.474918+00:00",
+              "durationSeconds": 4.575839,
+              "processCount": 15,
+              "rawSHA256": "c78148dd914d5388651d585f755fe11fd848513aaee61c6f448be33fc1fd542b"
+            },
+            {
+              "index": 2,
+              "bytes": 662181904,
+              "startUTC": "2026-11-25T17:51:22.477890+00:00",
+              "durationSeconds": 4.589679,
+              "processCount": 15,
+              "rawSHA256": "5d1e162e2ee64570c2b5e63ce2db0ecdea6a408e8065c57f59d48f84f128a1d8"
+            },
+            {
+              "index": 3,
+              "bytes": 662755344,
+              "startUTC": "2026-11-25T17:51:32.472291+00:00",
+              "durationSeconds": 4.588857,
+              "processCount": 15,
+              "rawSHA256": "e82b64d30ed8afe511d572205ff35d2f549bbc7844488e7c0e109cdc19c425a4"
+            },
+            {
+              "index": 4,
+              "bytes": 662738960,
+              "startUTC": "2026-11-25T17:51:42.500212+00:00",
+              "durationSeconds": 4.603149,
+              "processCount": 15,
+              "rawSHA256": "0b948127658155991cb5c52b9396b2667aa6ed8d39786f3a60b41f3df7a84e3a"
+            },
+            {
+              "index": 5,
+              "bytes": 597202936,
+              "startUTC": "2026-11-25T17:51:52.516763+00:00",
+              "durationSeconds": 4.620829,
+              "processCount": 15,
+              "rawSHA256": "f6cc2ca44b9ff4b694bd45c66dd9daaeef699fab464f9572e0d412e5cb7661e4"
+            }
+          ]
+        }
+      ],
+      "summary": {
+        "native": {
+          "bytes": 64505872,
+          "MB": 64.505872,
+          "MiB": 61.51759338378906,
+          "trialMediansMB": [
+            64.505896,
+            64.505872,
+            64.1946
+          ],
+          "trialMedianRangeMB": [
+            64.1946,
+            64.505896
+          ],
+          "allSampleRangeMB": [
+            64.1946,
+            64.538664
+          ],
+          "samples": 15
+        },
+        "web": {
+          "bytes": 655890088,
+          "MB": 655.890088,
+          "MiB": 625.5055313110352,
+          "trialMediansMB": [
+            545.739928,
+            655.890088,
+            662.280208
+          ],
+          "trialMedianRangeMB": [
+            545.739928,
+            662.280208
+          ],
+          "allSampleRangeMB": [
+            545.559704,
+            725.063336
+          ],
+          "samples": 15
+        },
+        "reductionPercent": 90.16513998607645
+      }
+    }
+  ]
+}
