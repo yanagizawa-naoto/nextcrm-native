@@ -31,7 +31,10 @@ struct KeychainNativeMailSecrets: NativeMailSecretStore {
 struct NativeMailCredential: Codable {
     var version = 1
     let password: String
+    var google: GoogleMailStoredGrant? = nil
+    var oauthBearer: String? { google?.grant.accessToken }
     func validate() throws {
+        if let google { guard version == 2, password.isEmpty else { throw GoogleMailFailure.invalid }; try google.validate(); return }
         guard version == 1, !password.isEmpty, password.utf8.count <= 16_384,
               !password.unicodeScalars.contains(where:{$0.value < 32 || $0.value == 127}) else { throw NativeMailFailure.invalid("メールのパスワードを確認してください。") }
     }
@@ -76,16 +79,23 @@ extension CRMService {
     }
     static func mailCredentialID(_ account: NativeRecord) throws -> String {
         let prefix = NativeUserCredentialCleanup.Family.email.prefix, reference = account["passwordEncrypted"].string
-        guard reference.hasPrefix(prefix), UUID(uuidString:String(reference.dropFirst(prefix.count))) != nil else { throw NativeDBError.message("このメールアカウントのパスワードを保存し直してください。") }
+        guard reference.hasPrefix(prefix), UUID(uuidString:String(reference.dropFirst(prefix.count))) != nil else { throw NativeDBError.message("このメールアカウントの認証情報を保存し直してください。") }
         return String(reference.dropFirst(prefix.count))
     }
     func mailCredential(_ expected: NativeRecord,store: NativeMailSecretStore,interactive: Bool = false) throws -> NativeMailCredential {
         let current = try mailAccount(expected["id"].string)
         guard current.revision == expected.revision else { throw NativeDBError.conflict }
-        guard let data = try store.load(id:Self.mailCredentialID(current),interactive:interactive), let value = try? JSONDecoder().decode(NativeMailCredential.self,from:data) else { throw NativeDBError.message("メールのパスワードを保存し直してください。") }
-        try value.validate(); return value
+        guard let data = try store.load(id:Self.mailCredentialID(current),interactive:interactive), let value = try? JSONDecoder().decode(NativeMailCredential.self,from:data) else { throw NativeDBError.message("メールの認証情報を保存し直してください。") }
+        try value.validate()
+        if let google = value.google {
+            guard google.accountID == current["id"].string, google.userID == identity.id,
+                  google.namespace == NativeFreshCredentialPublication.namespace(db),
+                  try db.metadata("mail.auth."+current["id"].string) == "google" else { throw GoogleMailFailure.invalid }
+            try GoogleMailStoredGrant.validate(settings:mailSettings(current),email:google.grant.email)
+        } else if try db.metadata("mail.auth."+current["id"].string) == "google" { throw GoogleMailFailure.invalid }
+        return value
     }
-    private func freshMailCredentialReferenced(_ id:String)throws->Bool {
+    func freshMailCredentialReferenced(_ id:String)throws->Bool {
         if try NativeUserCredentialCleanup.isHeld(db:db,family:.email,credentialID:id){return true}
         return try db.page("EmailAccount",fields:["id"],equal:["passwordEncrypted":.text(NativeUserCredentialCleanup.Family.email.prefix+id)],includeDeleted:true,limit:1).total>0
     }
@@ -113,6 +123,10 @@ extension CRMService {
         let before = try mailAccount(expected["id"].string)
         guard before.revision == expected.revision else { throw NativeDBError.conflict }
         try settings.validate()
+        if try db.metadata("mail.auth."+before["id"].string) == "google" {
+            try GoogleMailStoredGrant.validate(settings:settings,email:before["username"].string)
+            guard password == nil else { throw NativeDBError.message("Googleの認証は「Googleを接続し直す」から更新してください。") }
+        }
         let credential = try password.map { value -> NativeMailCredential in let credential=NativeMailCredential(password:value);try credential.validate();return credential }
         func publish(_ credentialID:String?)throws->NativeRecord {
             try db.transaction {
@@ -132,6 +146,7 @@ extension CRMService {
     }
     @discardableResult func replaceMailPassword(_ expected: NativeRecord,password: String,store: NativeMailSecretStore) throws -> NativeRecord {
         let before = try mailAccount(expected["id"].string); guard before.revision == expected.revision else { throw NativeDBError.conflict }
+        guard try db.metadata("mail.auth."+before["id"].string) != "google" else { throw NativeDBError.message("Googleの認証は「Googleを接続し直す」から更新してください。") }
         let value=NativeMailCredential(password:password);try value.validate()
         let changed=try NativeFreshCredentialPublication.perform(db:db,purpose:.email,ownerID:identity.id,authorize:authenticated,referenced:freshMailCredentialReferenced,save:{try store.save(id:$0,data:JSONEncoder().encode(value))},remove:{try store.remove(id:$0)}){id in
             try db.transaction{let current=try mailAccount(before["id"].string);guard current.revision==before.revision else{throw NativeDBError.conflict};return try db.update(current,changes:["passwordEncrypted":.text(NativeUserCredentialCleanup.Family.email.prefix+id)],actor:identity.id)}

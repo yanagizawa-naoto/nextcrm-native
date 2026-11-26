@@ -451,5 +451,16 @@
   "OrderWorkflow.swift",
   "PricingEngine.swift",
   "ProductCSV.swift",
-  "VirtualFormEditor.swift"
+  "VirtualFormEditor.swift",
+  "NativeDistributionConfiguration.swift",
+  "GoogleMailOAuth.swift",
+  "GoogleMailAccounts.swift",
+  "NativeConnectionsWindow.swift",
+  "NativeChatGPTCredentials.swift",
+  "NativeChatGPTIdentity.swift",
+  "NativeChatGPTInference.swift",
+  "NativeChatGPTLoopback.swift",
+  "NativeChatGPTOAuth.swift",
+  "NativeChatGPTSession.swift",
+  "NativeChatGPTSettingsWindow.swift"
 ]

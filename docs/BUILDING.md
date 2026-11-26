@@ -39,6 +39,8 @@ desktop/native/build/NextCRM Native.app
 
 実行時にNode.js、Web版サーバー、PostgreSQLは不要です。ソースからのビルド成果物に対するアドホック署名は、Developer ID署名やAppleの公証を意味しません。
 
+配布先でGoogleログインを使えるようにするには、配布元の公開OAuthクライアントIDをビルド時に指定します。[配布版の設定](DISTRIBUTION.md)を参照してください。設定なしのビルドではGoogleログインを未設定として表示します。利用者のトークンやAPIキーをビルドに含めないでください。
+
 アプリを起動すると個人用のデータを用意します。データ保存先は `~/Library/Application Support/NextCRMNative` です。旧データを復元した場合は、利用者と処理内容を確認してからローカル編集や必要な連携を再開します。[使い方](../desktop/native/使い方.txt)を参照してください。
 
 ## 公開用の確認
@@ -49,8 +51,19 @@ desktop/native/build/NextCRM Native.app
 python3 scripts/verify-publication.py
 zsh desktop/native/smoke-test.sh
 python3 desktop/native/test-provider-review.py
+python3 desktop/native/test-distribution-login-ui.py
 ```
 
-公開CIはmacOS 26のarm64環境とXcode 26.5で、これらの確認、復元後のメール・Google予定に関する433チェック、既存の生成・ビルド処理を実行します。外部サービスへの実接続や、全機能のAppKit操作を検証するCIではありません。
+ログイン画面の検証は、直前の復元後確認テストでビルドした同じアプリモジュールを使用します。本体ソースが変わった場合は古いモジュールを拒否します。認証・通信の個別検証は次のコマンドです。
+
+```sh
+python3 desktop/native/test-distribution-configuration.py
+python3 desktop/native/chatgpt-test.py
+python3 desktop/native/google-mail-test.py
+python3 desktop/native/google-mail-transport-test.py
+python3 desktop/native/native-mail-transport-test.py
+```
+
+公開CIはmacOS 26のarm64環境とXcode 26.5で、これらの確認、復元後のメール・Google予定に関する433チェック、既存の生成・ビルド処理を実行します。認証は合成トークンと注入応答、通信は隔離したローカルサーバーを使用します。外部サービスへの実接続や、全機能のAppKit操作を検証するCIではありません。
 
 機能別の検証スクリプトは`desktop/native`にあります。Swift・SQLiteの検証、元TypeScriptとの比較、AppKitの操作検証などが含まれます。全体の入口は`zsh desktop/native/test.sh`ですが、GUIセッションや追加の合成フィクスチャなど、各検証の前提を確認して使用してください。多数のバイナリと合成データを生成するため、本体だけのビルドより時間とディスク容量を使います。公開CIでこの全体スイートを実行したという意味にはなりません。[記録された検証範囲](VERIFICATION.md)を参照してください。

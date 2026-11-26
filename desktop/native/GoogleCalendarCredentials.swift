@@ -76,7 +76,9 @@ struct KeychainGoogleCalendarSecrets: GoogleCalendarSecretStore {
 
 struct GoogleCalendarClientReference: Codable, Equatable { let id: String; let clientID: String }
 struct GoogleCalendarAuthorizationTicket {
-    let id: String; let actorID: String; let client: GoogleCalendarClientSettings; let reference: GoogleCalendarClientReference
+    let id: String; let actorID: String; let client: GoogleCalendarClientSettings; let reference: GoogleCalendarClientReference?
+    let distributionClient: NativeDistributionConfiguration.GoogleClient?
+    let resolveDistributionClient: () throws -> NativeDistributionConfiguration.GoogleClient?
     let expected: NativeRecord?; let requested: GoogleCalendarScope
 }
 enum GoogleCalendarStorage {
@@ -122,15 +124,24 @@ extension CRMService {
     func googleCalendarConnection(_ id: String) throws -> NativeRecord {
         try authenticated(); guard let row = try db.get("CalendarConnection",key:["id":.text(id)]), row["userId"] == .text(identity.id), row["provider"] == .text("google") else { throw NativeDBError.message("カレンダーの接続が見つかりません。") }; return row
     }
-    func beginGoogleCalendarAuthorization(expected: NativeRecord?, requested: GoogleCalendarScope, store: GoogleCalendarSecretStore) throws -> GoogleCalendarAuthorizationTicket {
+    func beginGoogleCalendarAuthorization(expected: NativeRecord?, requested: GoogleCalendarScope, store: GoogleCalendarSecretStore, distributionClient: @escaping () throws -> NativeDistributionConfiguration.GoogleClient? = { try NativeDistributionConfiguration.googleClient() }) throws -> GoogleCalendarAuthorizationTicket {
         try db.transaction {
             try authenticated()
             if let expected { let current = try googleCalendarConnection(expected["id"].string); guard current.revision == expected.revision else { throw NativeDBError.conflict } }
-            guard let reference = try googleCalendarClientReference(), let data = try store.load(id:reference.id,interactive:true), let client = try? JSONDecoder().decode(GoogleCalendarClientSettings.self,from:data), client.clientID == reference.clientID else { throw NativeDBError.message("管理者がGoogleカレンダーのアプリ設定を保存してください。") }
+            let reference = try googleCalendarClientReference()
+            let client: GoogleCalendarClientSettings, bundled: NativeDistributionConfiguration.GoogleClient?
+            if let reference {
+                // An explicit developer override remains usable after an app update.
+                guard let data = try store.load(id:reference.id,interactive:true), let saved = try? JSONDecoder().decode(GoogleCalendarClientSettings.self,from:data), saved.clientID == reference.clientID else { throw NativeDBError.message("詳細設定に保存したGoogleの認証設定を読み込めません。設定を保存し直してください。") }
+                client = saved; bundled = nil
+            } else {
+                guard let value = try distributionClient() else { throw NativeDBError.message("この配布版ではGoogleログインの設定がまだ用意されていません。アプリの配布元に確認してください。") }
+                bundled = value; client = .init(clientID:value.clientID,clientSecret:value.clientSecret)
+            }
             _ = try client.validated(); let id = UUID().uuidString.lowercased()
             try db.setMetadata(GoogleCalendarStorage.pendingKey(identity.id),value:id)
             let level: GoogleCalendarScope = expected?["scopeLevel"] == .text("readwrite") ? .readwrite : requested
-            return .init(id:id,actorID:identity.id,client:client,reference:reference,expected:expected,requested:level)
+            return .init(id:id,actorID:identity.id,client:client,reference:reference,distributionClient:bundled,resolveDistributionClient:distributionClient,expected:expected,requested:level)
         }
     }
     func cancelGoogleCalendarAuthorization(_ ticket: GoogleCalendarAuthorizationTicket) throws {
@@ -142,6 +153,10 @@ extension CRMService {
         func validate() throws {
             try authenticated(); try Task.checkCancellation()
             guard ticket.actorID == identity.id, try db.metadata(GoogleCalendarStorage.pendingKey(identity.id)) == ticket.id, try googleCalendarClientReference() == ticket.reference else { throw NativeDBError.message("認証中に接続設定が変わりました。もう一度接続してください。") }
+            if ticket.reference == nil {
+                guard let bundled = ticket.distributionClient, try ticket.resolveDistributionClient() == bundled,
+                      ticket.client.clientID == bundled.clientID, ticket.client.clientSecret.isEmpty else { throw NativeDBError.message("認証中に配布版のGoogle設定が変わりました。もう一度ログインしてください。") }
+            }
             if let expected = ticket.expected { let current = try googleCalendarConnection(expected["id"].string); guard current.revision == expected.revision, current["accountEmail"].string.lowercased() == email else { throw NativeDBError.message("選択した接続とGoogleアカウントが一致しないか、接続が変更されています。") } }
         }
         let previous = try db.transaction { () -> NativeRecord? in

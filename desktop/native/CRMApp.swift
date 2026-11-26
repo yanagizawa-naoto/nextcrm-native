@@ -154,6 +154,9 @@ final class NativeCRMApplication: NSObject, NSApplicationDelegate, NSWindowDeleg
     private var aiKeys: NativeAIKeys!
     private var personalProviderStores: NativePersonalProviderStores?
     // Supplied by root runtime UI integration; do not duplicate on merge.
+    private var connectionsWindow: NativeConnectionsWindow?
+    private var chatGPTSession: NativeChatGPTSession?
+    private var chatGPTSettingsWindow: NativeChatGPTSettingsWindow?
     private var aiSettingsWindow: NativeAISettingsWindow?
     private var apiTokensWindow: NativeAPITokensWindow?
     private var mcpSettingsWindow: NativeMCPSettingsWindow?
@@ -734,7 +737,7 @@ final class NativeCRMApplication: NSObject, NSApplicationDelegate, NSWindowDeleg
         contactEnrichmentRuntime?.onError = { [weak self] in self?.status.stringValue = NativeEmbeddingJobs.message($0) }
         targetEnrichmentRuntime?.onError = { [weak self] in self?.status.stringValue = NativeEmbeddingJobs.message($0) }
         generalMailRuntime = try construct("mail.general") {
-            qa ? NativeMailRuntime(db:db,store:try stores.mailAccounts(),makeClient:{ _,_ in throw NativeMailQAServices.disabled },send:{ _ in throw NativeMailQAServices.disabled },recoverTemporary:{}) : NativeMailRuntime(db:db,store:try stores.mailAccounts())
+            qa ? NativeMailRuntime(db:db,store:try stores.mailAccounts(),makeClient:{ _,_ in throw NativeMailQAServices.disabled },send:{ _ in throw NativeMailQAServices.disabled },recoverTemporary:{},oauthRequest:{ _ in throw NativeMailQAServices.disabled }) : NativeMailRuntime(db:db,store:try stores.mailAccounts())
         }
         generalMailRuntime?.onError = { [weak self] in self?.status.stringValue = NativeMailJobs.message($0) }
         if policy.allowsAny(["campaign.dispatch","campaign.delivery","campaign.relay","ui.external-actions"]), let mailRuntime {
@@ -803,7 +806,7 @@ final class NativeCRMApplication: NSObject, NSApplicationDelegate, NSWindowDeleg
 
     func applicationWillTerminate(_ notification: Notification) { stopBackgroundWork(); if let workspaceWakeObserver { NSWorkspace.shared.notificationCenter.removeObserver(workspaceWakeObserver) } }
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool { true }
-    @MainActor private func confirmClose() -> Bool { personalRuntimeWindow?.confirmDiscard() != false && personalProviderReviewWindow?.confirmDiscard() != false && targetSpreadsheetWindow?.confirmDiscard() != false && caseStudyWindow?.confirmDiscard() != false && productImportWindow?.confirmDiscard() != false && targetListWindow?.confirmDiscard() != false && apiTokensWindow?.confirmDiscard() != false && adminAuditWindow?.confirmDiscard() != false && currencyAdministrationWindow?.confirmDiscard() != false && userAdministrationWindow?.confirmDiscard() != false && userProfileWindow?.confirmDiscard() != false && crmConfigurationWindow?.confirmDiscard() != false && crmFunnelSettingsWindow?.confirmDiscard() != false && crmAutomationJobsWindow?.confirmDiscard() != false && pluginsSettingsWindow?.confirmDiscard() != false && mcpSettingsWindow?.confirmDiscard() != false && leadJobsWindow?.confirmDiscard() != false && reportsWindow?.confirmDiscard() != false && reportReviewWindow?.confirmDiscard() != false && e2bSettingsWindow?.confirmDiscard() != false && targetContactsWindow?.confirmDiscard() != false && aiSettingsWindow?.confirmDiscard() != false && relatedMailWindow?.confirmDiscard() != false && generalMailAccountsWindow?.confirmDiscard() != false && editor?.confirmDiscard() != false && calendlySettingsWindow?.confirmDiscard() != false && calendarSettingsWindow?.confirmDiscard() != false && campaignSettingsWindow?.confirmDiscard() != false && campaignsWindow?.confirmDiscard() != false && templatesWindow?.confirmDiscard() != false && crmTasksWindow?.confirmDiscard() != false && documentsWindow?.confirmDiscard() != false && projectWindow?.confirmDiscard() != false && taskOverviewWindow?.confirmDiscard() != false && projectDashboardWindow?.confirmDiscard() != false && mailSettingsWindow?.confirmDiscard() != false && invoiceWindow?.confirmDiscard() != false && invoiceRecords?.confirmDiscard() != false && orderWindow?.confirmDiscard() != false && orderSettingsWindow?.confirmDiscard() != false && orderJobsWindow?.confirmDiscard() != false }
+    @MainActor private func confirmClose() -> Bool { connectionsWindow?.confirmDiscard() != false && chatGPTSettingsWindow?.confirmDiscard() != false && personalRuntimeWindow?.confirmDiscard() != false && personalProviderReviewWindow?.confirmDiscard() != false && targetSpreadsheetWindow?.confirmDiscard() != false && caseStudyWindow?.confirmDiscard() != false && productImportWindow?.confirmDiscard() != false && targetListWindow?.confirmDiscard() != false && apiTokensWindow?.confirmDiscard() != false && adminAuditWindow?.confirmDiscard() != false && currencyAdministrationWindow?.confirmDiscard() != false && userAdministrationWindow?.confirmDiscard() != false && userProfileWindow?.confirmDiscard() != false && crmConfigurationWindow?.confirmDiscard() != false && crmFunnelSettingsWindow?.confirmDiscard() != false && crmAutomationJobsWindow?.confirmDiscard() != false && pluginsSettingsWindow?.confirmDiscard() != false && mcpSettingsWindow?.confirmDiscard() != false && leadJobsWindow?.confirmDiscard() != false && reportsWindow?.confirmDiscard() != false && reportReviewWindow?.confirmDiscard() != false && e2bSettingsWindow?.confirmDiscard() != false && targetContactsWindow?.confirmDiscard() != false && aiSettingsWindow?.confirmDiscard() != false && relatedMailWindow?.confirmDiscard() != false && generalMailAccountsWindow?.confirmDiscard() != false && editor?.confirmDiscard() != false && calendlySettingsWindow?.confirmDiscard() != false && calendarSettingsWindow?.confirmDiscard() != false && campaignSettingsWindow?.confirmDiscard() != false && campaignsWindow?.confirmDiscard() != false && templatesWindow?.confirmDiscard() != false && crmTasksWindow?.confirmDiscard() != false && documentsWindow?.confirmDiscard() != false && projectWindow?.confirmDiscard() != false && taskOverviewWindow?.confirmDiscard() != false && projectDashboardWindow?.confirmDiscard() != false && mailSettingsWindow?.confirmDiscard() != false && invoiceWindow?.confirmDiscard() != false && invoiceRecords?.confirmDiscard() != false && orderWindow?.confirmDiscard() != false && orderSettingsWindow?.confirmDiscard() != false && orderJobsWindow?.confirmDiscard() != false }
     func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
         if hostLaunchPending {cancelPendingRestoreLaunch();return .terminateCancel}
         if mcpTerminating { return .terminateLater }
@@ -869,7 +872,7 @@ final class NativeCRMApplication: NSObject, NSApplicationDelegate, NSWindowDeleg
     }
     private var hasBackgroundWork: Bool {
         !backgroundJobRunners.isEmpty || mcpRuntime != nil || plugins != nil || currencyRuntime != nil ||
-        calendarRuntime != nil || calendlyRuntime != nil || generalMailRuntime != nil || aiRuntime != nil ||
+        calendarRuntime != nil || calendlyRuntime != nil || generalMailRuntime != nil || aiRuntime != nil || chatGPTSession != nil ||
         contactEnrichmentRuntime != nil || targetEnrichmentRuntime != nil || crmAutomationRuntime != nil || documentRecovery != nil || aiCredentialCleanup != nil
     }
     private var backgroundJobRunners:[InvoiceJobRunner] {
@@ -889,6 +892,8 @@ final class NativeCRMApplication: NSObject, NSApplicationDelegate, NSWindowDeleg
         documentRecovery?.cancel(); aiCredentialCleanup?.cancel()
     }
     @MainActor private func drainBackgroundWork() async {
+        await chatGPTSettingsWindow?.cancelAndDrain()
+        await chatGPTSession?.stopAndDrain()
         // All queues were fenced before the first await. Cancellation requests
         // alone do not prove that a transport's final receipt/file write ended.
         for runner in backgroundJobRunners { await runner.stopAndDrain() }
@@ -930,6 +935,7 @@ final class NativeCRMApplication: NSObject, NSApplicationDelegate, NSWindowDeleg
         case #selector(showCampaignSettings): groups = [.campaigns]
         case #selector(showCalendarSettings): groups = [.googleCalendar]
         case #selector(showCalendlySettings): groups = [.calendly]
+        case #selector(showChatGPTSettings): groups = [.aiDocumentsAndSearch]
         case #selector(showAISettings): groups = Self.aiSettingsGroups
         case #selector(showMCPSettings),#selector(showAPITokens): groups = [.mcp]
         case #selector(showPluginsSettings): groups = [.plugins]
@@ -984,6 +990,7 @@ final class NativeCRMApplication: NSObject, NSApplicationDelegate, NSWindowDeleg
     }
     @MainActor private func drainDataMaintenance() async {
         await targetSpreadsheetWindow?.stopAndDrain()
+        await generalMailAccountsWindow?.cancelAuthorizationAndDrain()
         guard let controller = dataMaintenanceWindow, let closeWaiters = dataMaintenanceClose else { return }
         await closeWaiters.wait { controller.dismissForNavigation() }
     }
@@ -1147,7 +1154,7 @@ final class NativeCRMApplication: NSObject, NSApplicationDelegate, NSWindowDeleg
     }
     private func campaignAIService() -> CampaignAIService? {
         guard effectPolicy?.allowsManual(["ai.embedding"])==true,let aiKeys else {return nil}
-        var ai = CampaignAIService(keys: aiKeys)
+        var ai = CampaignAIService(keys: aiKeys, chatGPT: usesQAServices ? nil : try? chatGPTService())
         if (usesQAServices) {
             ai.generate = { prompt, key in
                 try await Task.sleep(nanoseconds: 600_000_000)
@@ -1175,7 +1182,7 @@ final class NativeCRMApplication: NSObject, NSApplicationDelegate, NSWindowDeleg
             let top = NSMenuItem(); top.submenu = NSMenu(title:title); main.addItem(top)
             for (label,selector,key) in items { if personalHostConfigured && selector == #selector(showUserAdministration) {continue}; if label.isEmpty { top.submenu!.addItem(.separator()) } else { let item = NSMenuItem(title:label,action:selector,keyEquivalent:key); if selector == #selector(requestQuit) { item.target = self }; top.submenu!.addItem(item) } }
         }
-        menu("NextCRM Native",[("NextCRM Nativeについて",#selector(about),""),("自分のプロフィール…",#selector(showUserProfile),""),("AI連携の設定…",#selector(showAISettings),""),("APIトークン…",#selector(showAPITokens),""),("MCP接続の設定…",#selector(showMCPSettings),""),("連携・プラグインの設定…",#selector(showPluginsSettings),""),("AI検索の処理…",#selector(showAIJobs),""),("メールアカウント…",#selector(showGeneralMailAccounts),""),("通知メール送信の設定…",#selector(showMailSettings),","),("キャンペーンの受信窓口…",#selector(showCampaignSettings),""),("Googleカレンダーの接続…",#selector(showCalendarSettings),""),("Calendlyの予約連携…",#selector(showCalendlySettings),""),("",nil,""),("NextCRM Nativeを隠す",#selector(NSApplication.hide(_:)),"h"),("NextCRM Nativeを終了",#selector(requestQuit),"q")])
+        menu("NextCRM Native",[("NextCRM Nativeについて",#selector(about),""),("自分のプロフィール…",#selector(showUserProfile),""),("アカウントを接続…",#selector(showConnections),""),("AI連携の設定…",#selector(showAISettings),""),("APIトークン…",#selector(showAPITokens),""),("MCP接続の設定…",#selector(showMCPSettings),""),("連携・プラグインの設定…",#selector(showPluginsSettings),""),("AI検索の処理…",#selector(showAIJobs),""),("メールアカウント…",#selector(showGeneralMailAccounts),""),("通知メール送信の設定…",#selector(showMailSettings),","),("キャンペーンの受信窓口…",#selector(showCampaignSettings),""),("Googleカレンダーの接続…",#selector(showCalendarSettings),""),("Calendlyの予約連携…",#selector(showCalendlySettings),""),("",nil,""),("NextCRM Nativeを隠す",#selector(NSApplication.hide(_:)),"h"),("NextCRM Nativeを終了",#selector(requestQuit),"q")])
         menu("ファイル",[("新規登録",#selector(newRecord),"n"),("編集",#selector(editRecord),"e"),("リンクから開く…",#selector(openLinkPrompt),"l"),("",nil,""),("データフォルダを開く",#selector(openData),""),("閉じる",#selector(NSWindow.performClose(_:)),"w")])
         if personalUseRestored != nil || canReviewRestoredJobs || canManagePersonalRuntimes {
             var items:[(String,Selector?,String)]=[]
@@ -1487,6 +1494,76 @@ final class NativeCRMApplication: NSObject, NSApplicationDelegate, NSWindowDeleg
             controller.start()
         } catch { status.stringValue = error.localizedDescription }
     }
+    /// Constructing a session is local-only. Both account changes and AI use
+    /// recheck the live workspace authority on the main actor at each boundary.
+    private func chatGPTService() throws -> NativeChatGPTSession {
+        if let chatGPTSession { return chatGPTSession }
+        guard !usesQAServices, let service, !service.db.isReadOnly else {
+            throw NativeDBError.message("このモードでは実際のChatGPTアカウントに接続しません。")
+        }
+        let session = NativeChatGPTSession(
+            store: KeychainNativeChatGPTCredentials(databaseURL: service.db.url, ownerID: service.identity.id),
+            authorize: { [weak self, weak service] in
+                try await MainActor.run {
+                    guard let self, let service, self.service === service,
+                          !self.usesQAServices, !self.restoreAdmissionClosed,
+                          !self.quitPreflight, !self.mcpTerminating, !service.db.isReadOnly,
+                          self.effectPolicy?.allowsSettings(.aiDocumentsAndSearch) == true else {
+                        throw NativeDBError.message("現在の状態ではChatGPT接続を変更・利用できません。復元後の利用設定を確認してください。")
+                    }
+                    try service.authenticated()
+                }
+            },
+            authorizeUsage: { [weak self, weak service] in
+                try await MainActor.run {
+                    guard let self, let service, self.service === service,
+                          !self.restoreAdmissionClosed, !self.quitPreflight, !self.mcpTerminating,
+                          self.effectPolicy?.allowsManual(["ai.embedding"]) == true else {
+                        throw NativeDBError.message("AIの利用は保留中です。復元後の利用設定を確認してください。")
+                    }
+                    try service.authenticated()
+                }
+            })
+        chatGPTSession = session; return session
+    }
+    @MainActor @objc private func showChatGPTSettings() {
+        guard let window else { return }; presentChatGPTSettings(on: window)
+    }
+    @MainActor private func presentChatGPTSettings(on parent: NSWindow) {
+        guard !restoreAdmissionClosed, settings([.aiDocumentsAndSearch]),
+              parent.attachedSheet == nil else { return }
+        do {
+            let controller = NativeChatGPTSettingsWindow(session: try chatGPTService())
+            chatGPTSettingsWindow = controller
+            parent.beginSheet(controller.window) { [weak self] _ in
+                self?.chatGPTSettingsWindow = nil; self?.memory.settle()
+            }
+            controller.start()
+        } catch { status.stringValue = error.localizedDescription }
+    }
+    @objc private func showConnections() {
+        guard !restoreAdmissionClosed, !quitPreflight, !mcpTerminating,
+              !readOnlyWorkspace, let window, window.attachedSheet == nil else { return }
+        let mail = effectPolicy?.allowsSettings(.mailAccounts) == true
+        let calendar = effectPolicy?.allowsSettings(.googleCalendar) == true
+        let ai = Self.aiSettingsGroups.contains { effectPolicy?.allowsSettings($0) == true }
+        let controller = NativeConnectionsWindow(mailAllowed: mail, calendarAllowed: calendar, aiAllowed: ai)
+        connectionsWindow = controller
+        window.beginSheet(controller.window) { [weak self, weak controller] _ in
+            let selection = controller?.selection
+            self?.connectionsWindow = nil; self?.memory.settle()
+            DispatchQueue.main.async { [weak self] in
+                guard let self, !self.restoreAdmissionClosed, !self.quitPreflight, !self.mcpTerminating else { return }
+                switch selection {
+                case .mail: self.showGeneralMailAccounts()
+                case .calendar: self.showCalendarSettings()
+                case .chatGPT: self.showChatGPTSettings()
+                case .apiKeys: self.showAISettings()
+                case nil: break
+                }
+            }
+        }
+    }
     @objc private func showAISettings() {
         guard let window else { return }; presentAISettings(on: window)
     }
@@ -1496,6 +1573,9 @@ final class NativeCRMApplication: NSObject, NSApplicationDelegate, NSWindowDeleg
             let aiKeys = try self.aiKeys ?? providerStores().aiKeys()
             let controller = try NativeAISettingsWindow(keys: aiKeys); aiSettingsWindow = controller
             controller.onE2BSettings = { [weak self] parent in self?.presentE2BSettings(on: parent) }
+            controller.onChatGPTSettings = { [weak self] parent in
+                Task { @MainActor [weak self] in self?.presentChatGPTSettings(on: parent) }
+            }
             parent.beginSheet(controller.window) { [weak self] _ in self?.aiSettingsWindow = nil; self?.memory.settle() }
         } catch { status.stringValue = error.localizedDescription }
     }
@@ -1579,7 +1659,10 @@ final class NativeCRMApplication: NSObject, NSApplicationDelegate, NSWindowDeleg
         guard window?.attachedSheet == nil else { return }
         do {
             let probe:NativeMailConnectionCheck.Probe = (usesQAServices) ? NativeMailQAServices.probe : NativeMailConnectionCheck.run
-            let controller = try NativeMailAccountsWindow(service:service,store:try generalMailRuntime?.store ?? providerStores().mailAccounts(),probe:probe,allowsProcessing:effectPolicy?.allowsManualGroup(.mailAccounts) == true)
+            let authorize: NativeMailAccountsWindow.Authorize = usesQAServices
+                ? { _,_ in throw NativeDBError.message("検証モードでは実際のGoogleアカウントに接続しません。") }
+                : NativeMailAccountsWindow.browser
+            let controller = try NativeMailAccountsWindow(service:service,store:try generalMailRuntime?.store ?? providerStores().mailAccounts(),probe:probe,allowsProcessing:effectPolicy?.allowsManualGroup(.mailAccounts) == true,authorize:authorize)
             generalMailAccountsWindow = controller; controller.onChanged = { [weak self] in
                 self?.wakeSettingsWorker("mail.general") { self?.generalMailRuntime?.resume() }; self?.wakeSettingsWorker("ai.embedding") { self?.aiRuntime?.resume() }
             }
@@ -1663,6 +1746,7 @@ final class NativeCRMApplication: NSObject, NSApplicationDelegate, NSWindowDeleg
         let campaigns = NSButton(title:"キャンペーン…",target:self,action:#selector(showCampaigns)); campaigns.bezelStyle = .rounded; campaigns.alignment = .left; campaigns.widthAnchor.constraint(equalToConstant:156).isActive = true; items.append(campaigns)
         let templates = NSButton(title:"メールテンプレート…",target:self,action:#selector(showTemplates)); templates.bezelStyle = .rounded; templates.alignment = .left; templates.widthAnchor.constraint(equalToConstant:156).isActive = true; items.append(templates)
         let mail = NSButton(title:"メール…",target:self,action:#selector(showGeneralMailAccounts)); mail.bezelStyle = .rounded; mail.alignment = .left; mail.widthAnchor.constraint(equalToConstant:156).isActive = true; items.append(mail)
+        let connections = NSButton(title:"アカウントを接続…",target:self,action:#selector(showConnections)); connections.bezelStyle = .rounded; connections.alignment = .left; connections.widthAnchor.constraint(equalToConstant:156).isActive = true; items.append(connections)
         let sidebarContent = NSStackView(views:items); sidebarContent.orientation = .vertical; sidebarContent.alignment = .leading; sidebarContent.spacing = 13; sidebarContent.translatesAutoresizingMaskIntoConstraints = false
         let sidebar = NSScrollView(); sidebar.drawsBackground = false; sidebar.hasVerticalScroller = true; sidebar.autohidesScrollers = true; sidebar.widthAnchor.constraint(equalToConstant:170).isActive = true
         let navigationDocument = FlippedContentView(); navigationDocument.translatesAutoresizingMaskIntoConstraints = false; sidebar.documentView = navigationDocument; navigationDocument.addSubview(sidebarContent)
@@ -2263,6 +2347,8 @@ final class NativeCRMApplication: NSObject, NSApplicationDelegate, NSWindowDeleg
         if let value=invoiceRecords {live.append(("invoiceRecords",value.window))}
         if let value=mailSettingsWindow {live.append(("mailSettingsWindow",value.window))}
         if let value=generalMailAccountsWindow {live.append(("generalMailAccountsWindow",value.window))}
+        if let value=connectionsWindow {live.append(("connectionsWindow",value.window))}
+        if let value=chatGPTSettingsWindow {live.append(("chatGPTSettingsWindow",value.window))}
         if let value=aiSettingsWindow {live.append(("aiSettingsWindow",value.window))}
         if let value=apiTokensWindow {live.append(("apiTokensWindow",value.window))}
         if let value=mcpSettingsWindow {live.append(("mcpSettingsWindow",value.window))}

@@ -125,14 +125,16 @@ actor NativeMailSendWorker {
     typealias Send = (NativeMailWireRequest) async throws -> Void
     let db: NativeDatabase, store: NativeMailSecretStore, send: Send, clock: () -> Date
     private var active = false
+    let oauthRequest:GoogleMailOAuth.Request
     init(db:NativeDatabase,store:NativeMailSecretStore,send:@escaping Send = { request in
         let reply = try await NativeMailWire.perform(request)
         guard reply.serverCode == 250 else { throw NativeMailFailure.transport(code:56,uploaded:true) }
-    },clock:@escaping () -> Date = Date.init) { self.db = db; self.store = store; self.send = send; self.clock = clock }
+    },clock:@escaping () -> Date = Date.init,oauthRequest:@escaping GoogleMailOAuth.Request = GoogleMailOAuth.network) { self.db = db; self.store = store; self.send = send; self.clock = clock; self.oauthRequest = oauthRequest }
     @discardableResult func runNext() async throws -> Bool {
         guard !active else { return false }; active = true; defer { active = false }
         guard let claimed = try db.claimJob(events:[NativeMailDelivery.event],now:clock()) else { return false }
         var job = claimed, invoked = false
+        var credentialAccount:NativeRecord?, owner:CRMService?
         do {
             if job.result["smtpAccepted"] == "true" { try NativeMailDelivery.recordAccepted(db:db,job:job,now:clock()); return true }
             if job.deliveryStartedAt != nil {
@@ -140,11 +142,15 @@ actor NativeMailSendWorker {
             }
             guard let actorID = job.payload["actorID"], let accountID = job.payload["accountID"], let user = try db.get("Users",key:["id":.text(actorID)]) else { throw NativeDBError.conflict }
             let service = CRMService(db:db,identity:.init(id:actorID,role:user["role"].string,partnerAccountID:user["partnerAccountId"] == .null ? nil : user["partnerAccountId"].string))
-            let account = try service.mailAccount(accountID), settings = try service.mailSettings(account)
+            owner = service
+            var account = try service.mailAccount(accountID); credentialAccount = account
+            let settings = try service.mailSettings(account)
             let (summary,mime) = try NativeMailDelivery.payload(db:db,job:job)
             guard summary.endpoint == settings.smtp, (try NativeMailAddress.checked(summary.from).transportAddress) == (try NativeMailAddress.checked(settings.username).transportAddress) else { throw NativeMailFailure.invalid("送信待ちのメールを作成した後に送信元が変更されました。内容を確認して作成し直してください。") }
-            let credential = try service.mailCredential(account,store:store)
-            var request = NativeMailWireRequest(endpoint:summary.endpoint,username:settings.username,password:credential.password,sender:summary.from,recipients:summary.to+summary.cc+summary.bcc,upload:mime)
+            let prepared = try await service.readyMailCredential(account,store:store,request:oauthRequest,now:clock(),validate:{ try Task.checkCancellation(); _ = try self.db.requireJobLease(job) })
+            account = prepared.account; credentialAccount = account
+            let credential = prepared.credential
+            var request = NativeMailWireRequest(endpoint:summary.endpoint,username:settings.username,password:credential.password,sender:summary.from,recipients:summary.to+summary.cc+summary.bcc,upload:mime,oauthBearer:credential.oauthBearer)
             // SMTP responses contain only short protocol lines.
             request.maximumResponse = 262_144
             job = try db.transaction {
@@ -166,11 +172,12 @@ actor NativeMailSendWorker {
                 default:break
                 }
             }
+            let googleRetry = credentialAccount.map { owner?.noteGoogleMailAuthenticationFailure($0,error:error) ?? false } ?? false
             try db.transaction {
                 _ = try db.requireJobLease(current)
                 if invoked && !uncertain && !accepted { try db.clearMailDeliveryStarted(current); current = try db.requireJobLease(current) }
-                let retry = !uncertain && (accepted || NativeMailJobs.retryable(error)) && current.attempts < 4
-                let message = accepted ? "送信は受け付けられました。送信済みへの保存を再試行します。" : uncertain ? "送信結果を確認できません。送信済みフォルダを確認して、結果を指定してください。" : NativeMailJobs.message(error)
+                let retry = !uncertain && (accepted || googleRetry || NativeMailJobs.retryable(error)) && current.attempts < 4
+                let message = accepted ? "送信は受け付けられました。送信済みへの保存を再試行します。" : uncertain ? "送信結果を確認できません。送信済みフォルダを確認して、結果を指定してください。" : googleRetry ? GoogleMailFailure.reconnect.localizedDescription : NativeMailJobs.message(error)
                 try db.failJob(current,message:message,retryAt:retry ? clock().addingTimeInterval(min(300,5*pow(2,Double(current.attempts-1)))) : nil,needsReview:uncertain)
             }
         }

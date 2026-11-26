@@ -4,6 +4,9 @@ final class GoogleCalendarSettingsWindow: NSObject, NSTableViewDataSource, NSTab
     typealias Authorize = (GoogleCalendarClientSettings,GoogleCalendarScope,String?) async throws -> GoogleCalendarGrant
     let window = NSPanel(contentRect:NSRect(x:0,y:0,width:1040,height:730),styleMask:[.titled],backing:.buffered,defer:false)
     private let allowsProcessing:Bool
+    private let distributionClient: () throws -> NativeDistributionConfiguration.GoogleClient?
+    private let configurationInfo = NSTextField(wrappingLabelWithString:"")
+    private var advanced: NSStackView?, clientAvailable = false
     private let service: CRMService; private let store: GoogleCalendarSecretStore; private let authorize: Authorize
     private let clientID = NSTextField(), clientSecret = NSSecureTextField(), message = NSTextField(wrappingLabelWithString:"")
     private let info = NSTextField(labelWithString:""), table = NSTableView()
@@ -22,32 +25,38 @@ final class GoogleCalendarSettingsWindow: NSObject, NSTableViewDataSource, NSTab
             try await MainActor.run { guard NSWorkspace.shared.open(url) else { throw NativeDBError.message("Google認証のブラウザを開けませんでした。") } }
         })
     }
-    init(service: CRMService, store: GoogleCalendarSecretStore, authorize: @escaping Authorize = GoogleCalendarSettingsWindow.browser,allowsProcessing:Bool = true) throws {
-        try service.authenticated(); self.service = service; self.store = store; self.authorize = authorize; self.allowsProcessing = allowsProcessing
+    init(service: CRMService, store: GoogleCalendarSecretStore, authorize: @escaping Authorize = GoogleCalendarSettingsWindow.browser,allowsProcessing:Bool = true, distributionClient: @escaping () throws -> NativeDistributionConfiguration.GoogleClient? = { try NativeDistributionConfiguration.googleClient() }) throws {
+        try service.authenticated(); self.service = service; self.store = store; self.authorize = authorize; self.allowsProcessing = allowsProcessing; self.distributionClient = distributionClient
         let reference = try service.googleCalendarClientReference(); savedClientID = reference?.clientID ?? ""
         super.init(); window.title = "Googleカレンダーの接続"
         let title = NSTextField(labelWithString:window.title); title.font = .systemFont(ofSize:22,weight:.semibold)
         let help = NSTextField(wrappingLabelWithString:"Googleアカウントごとに、カレンダーへのアクセスを設定します。認証は通常のブラウザで行い、認証情報はこのMacのキーチェーンに保存します。")
         clientID.stringValue = savedClientID; clientID.placeholderString = "デスクトップアプリ用クライアントID"; clientID.setAccessibilityLabel("GoogleクライアントID")
         clientSecret.placeholderString = reference == nil ? "クライアントシークレット（発行されている場合）" : "保存済み・変更する場合だけ入力"; clientSecret.setAccessibilityLabel("Googleクライアントシークレット")
-        let appHelp = NSTextField(wrappingLabelWithString:"管理者：Google CloudでCalendar APIを有効にし、「デスクトップアプリ」のOAuthクライアントを作成して設定してください。Webアプリ用のクライアントは使用できません。")
+        let appHelp = NSTextField(wrappingLabelWithString:"自分でビルドする場合や別のOAuthアプリを使う場合だけ設定します。Google Cloudの「デスクトップアプリ」用クライアントが必要です。保存済みの詳細設定は、配布版の設定より優先されます。")
         appHelp.font = .systemFont(ofSize:12); appHelp.textColor = .secondaryLabelColor
         let saveRow = NSStackView(views:[NSView(),button("save","アプリ設定を保存",#selector(saveClient))])
         let header = LightweightTableCell(); header.configure(columns:columns,values:columns.map(\.title),heading:true); header.heightAnchor.constraint(equalToConstant:26).isActive = true
         let column = NSTableColumn(identifier:.init("calendar-connection")); column.width = 1000; table.addTableColumn(column); table.headerView = nil; table.rowHeight = 38; table.delegate = self; table.dataSource = self; table.setAccessibilityLabel("自分のGoogleカレンダー接続")
         let scroll = NSScrollView(); scroll.hasVerticalScroller = true; scroll.documentView = table; scroll.heightAnchor.constraint(greaterThanOrEqualToConstant:180).isActive = true
-        let connect = NSStackView(views:[button("read","読み取りで接続…",#selector(connectRead)),button("write","読み書きで接続…",#selector(connectWrite)),button("reauth","選択した接続を認証し直す…",#selector(reauth)),button("disconnect","接続を削除…",#selector(disconnect))]); connect.spacing = 8
+        let connect = NSStackView(views:[button("read","Google にログイン…",#selector(connectRead)),button("write","予定の編集も許可してログイン…",#selector(connectWrite)),button("reauth","選択した接続を認証し直す…",#selector(reauth)),button("disconnect","接続を削除…",#selector(disconnect))]); connect.spacing = 8
         let note = NSTextField(wrappingLabelWithString:"認証し直すときは現在の権限を要求し、Googleが実際に許可した権限を保存します。接続を削除しても、取り込んだCRMの活動は残ります。")
         note.font = .systemFont(ofSize:12); note.textColor = .secondaryLabelColor
         message.maximumNumberOfLines = 3; message.setAccessibilityLabel("カレンダー接続の結果")
         let footer = NSStackView(views:[info,NSView(),button("cancel","認証を中止",#selector(cancelAuthorization)),button("previous","前へ",#selector(previous)),button("next","次へ",#selector(next)),button("reload","再読み込み",#selector(reload)),button("close","閉じる",#selector(close))]); footer.spacing = 8; buttons["close"]?.keyEquivalent = "\u{1b}"
         var content: [NSView] = [title,help]
-        if service.identity.role == "admin" { content += [appHelp,InvoiceMailUI.row("クライアントID",clientID),InvoiceMailUI.row("シークレット",clientSecret),saveRow] }
-        else { content += [NSTextField(wrappingLabelWithString:reference == nil ? "管理者がGoogleのアプリ設定を保存すると接続できます。" : "Googleのアプリ設定は保存済みです。")] }
+        configurationInfo.setAccessibilityLabel("Googleログインの利用状況"); configurationInfo.textColor = .secondaryLabelColor
+        content.append(configurationInfo)
+        if service.identity.role == "admin" {
+            let details = NSStackView(views:[appHelp,InvoiceMailUI.row("クライアントID",clientID),InvoiceMailUI.row("シークレット",clientSecret),saveRow])
+            details.orientation = .vertical; details.alignment = .leading; details.spacing = 8; details.isHidden = true; advanced = details
+            for row in details.views { row.widthAnchor.constraint(equalTo:details.widthAnchor).isActive = true }
+            content += [button("advanced","詳細設定（開発者向け）…",#selector(toggleAdvanced)),details]
+        }
         syncInfo.maximumNumberOfLines = 3; syncInfo.setAccessibilityLabel("選択したカレンダーの同期状況"); syncInfo.setContentHuggingPriority(.defaultLow,for:.horizontal)
         let syncRow = NSStackView(views:[button("sync","選択した接続を同期",#selector(synchronize)),button("pushHistory","Googleへの反映履歴…",#selector(openPushHistory)),syncInfo]); syncRow.spacing = 12
         content += [header,scroll,connect,syncRow,note,message,footer]; InvoiceMailUI.layout(window,content)
-        clientID.setAccessibilityLabel("GoogleクライアントID"); clientSecret.setAccessibilityLabel("Googleクライアントシークレット"); load()
+        clientID.setAccessibilityLabel("GoogleクライアントID"); clientSecret.setAccessibilityLabel("Googleクライアントシークレット"); refreshClientReadiness(); load()
         observer = NotificationCenter.default.addObserver(forName:InvoiceJobRunner.didProcess,object:nil,queue:.main) { [weak self] notification in
             guard let self, notification.userInfo?["database"] as? String == self.service.db.url.path, !self.busy, self.window.attachedSheet == nil else { return }; self.load()
         }
@@ -58,7 +67,8 @@ final class GoogleCalendarSettingsWindow: NSObject, NSTableViewDataSource, NSTab
     private func controls() {
         let ready = !busy && !loading
         buttons.values.forEach{$0.isEnabled = ready}; table.isEnabled = ready; clientID.isEnabled = ready; clientSecret.isEnabled = ready
-        buttons["cancel"]?.isEnabled = busy; buttons["reauth"]?.isEnabled = ready && selected != nil; buttons["disconnect"]?.isEnabled = ready && selected != nil
+        buttons["read"]?.isEnabled = ready && clientAvailable; buttons["write"]?.isEnabled = ready && clientAvailable
+        buttons["cancel"]?.isEnabled = busy; buttons["reauth"]?.isEnabled = ready && clientAvailable && selected != nil; buttons["disconnect"]?.isEnabled = ready && selected != nil
         let job = selected.flatMap{jobs[$0["id"].string]}
         buttons["pushHistory"]?.isEnabled = allowsProcessing && ready
         buttons["sync"]?.isEnabled = allowsProcessing && ready && selected?["isActive"] == .integer(1) && !["running","pending"].contains(job?.status ?? "")
@@ -79,20 +89,36 @@ final class GoogleCalendarSettingsWindow: NSObject, NSTableViewDataSource, NSTab
                 case let .success(page):if page.rows.isEmpty && start > 0 { self.offset = max(0,((max(0,page.total-1))/100)*100); self.load(); return }; self.rows = page.rows; self.total = page.total; self.jobs = page.jobs
                 case let .failure(error):self.rows = []; self.total = 0; self.jobs = [:]; self.show(error.localizedDescription,error:true)
                 }
-                self.table.reloadData(); if let index = self.rows.firstIndex(where:{$0["id"].string == selectedID}) { self.table.selectRowIndexes(IndexSet(integer:index),byExtendingSelection:false) }; self.loading = false; self.controls()
+                self.table.reloadData(); if let index = self.rows.firstIndex(where:{$0["id"].string == selectedID}) { self.table.selectRowIndexes(IndexSet(integer:index),byExtendingSelection:false) }; self.loading = false; self.refreshClientReadiness(); self.controls()
             }
         }
+    }
+    private func refreshClientReadiness() {
+        do {
+            if try service.googleCalendarClientReference() != nil {
+                clientAvailable = true; configurationInfo.stringValue = "詳細設定に保存したGoogleアプリを使用します。ログイン後にカレンダーを接続します。"
+            } else if try distributionClient() != nil {
+                clientAvailable = true; configurationInfo.stringValue = "Google にログインしてカレンダーを接続します。通常は読み取りのみで利用できます。"
+            } else {
+                clientAvailable = false; configurationInfo.stringValue = "この配布版ではGoogleログインをまだ利用できません。アプリの配布元に確認してください。"
+            }
+        } catch { clientAvailable = false; configurationInfo.stringValue = error.localizedDescription }
+    }
+    @objc private func toggleAdvanced() {
+        guard !busy && !loading, service.identity.role == "admin", let advanced else { return }
+        advanced.isHidden.toggle(); buttons["advanced"]?.title = advanced.isHidden ? "詳細設定（開発者向け）…" : "詳細設定を閉じる"
+        window.contentView?.layoutSubtreeIfNeeded()
     }
     private func show(_ text: String,error: Bool = false) { message.stringValue = text; message.textColor = error ? .systemRed : .secondaryLabelColor }
     @objc private func saveClient() {
         guard !busy && !loading else { return }
-        do { try service.saveGoogleCalendarClient(clientID:clientID.stringValue,clientSecret:clientSecret.stringValue,store:store); savedClientID = clientID.stringValue.trimmingCharacters(in:.whitespacesAndNewlines); clientID.stringValue = savedClientID; clientSecret.stringValue = ""; clientSecret.placeholderString = "保存済み・変更する場合だけ入力"; show("Googleのアプリ設定を保存しました。") }
+        do { try service.saveGoogleCalendarClient(clientID:clientID.stringValue,clientSecret:clientSecret.stringValue,store:store); savedClientID = clientID.stringValue.trimmingCharacters(in:.whitespacesAndNewlines); clientID.stringValue = savedClientID; clientSecret.stringValue = ""; clientSecret.placeholderString = "保存済み・変更する場合だけ入力"; show("Googleのアプリ設定を保存しました。"); refreshClientReadiness(); controls() }
         catch { show(error.localizedDescription,error:true) }
     }
     private func connect(scope: GoogleCalendarScope, expected: NativeRecord?) {
         guard !busy && !loading else { return }
         do {
-            let ticket = try service.beginGoogleCalendarAuthorization(expected:expected,requested:scope,store:store)
+            let ticket = try service.beginGoogleCalendarAuthorization(expected:expected,requested:scope,store:store,distributionClient:distributionClient)
             busy = true; show("ブラウザでGoogleへのアクセスを許可してください。完了すると、この画面に接続を表示します。"); controls()
             task = Task { @MainActor [weak self] in
                 guard let self else { return }

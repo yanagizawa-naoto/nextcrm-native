@@ -18,7 +18,8 @@ extension NativePersonalRuntimePrerequisites {
                 _ = ref
             }
             try rows("EmailAccount",fields:["passwordEncrypted","isActive"],filter:.equal("isActive",.integer(1))){row in
-                f.add("mail-reference",[row["id"].string,try CRMService.mailCredentialID(row)])
+                let current=try service.mailAccount(row["id"].string)
+                f.add("mail-reference",[row["id"].string,try service.mailCredentialApprovalBinding(current)])
             }
             f.notes=["受信位置は保持します。次回同期で既存のUIDVALIDITY・接続先の照合を行い、不一致なら既存処理が再取得を判断します。"]
         case .resendSender:

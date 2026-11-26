@@ -28,7 +28,7 @@ class Request(C.Structure):
                 ('command', C.c_char_p), ('sender', C.c_char_p), ('recipients', C.c_char_p),
                 ('upload', C.c_void_p), ('upload_length', C.c_size_t), ('maximum_response', C.c_size_t),
                 ('tls_mode', C.c_int), ('allow_self_signed', C.c_int), ('cancelled', C.c_void_p), ('context', C.c_void_p),
-                ('stream_to_fd', C.c_int), ('output_fd', C.c_int), ('smtp_verify_only', C.c_int)]
+                ('stream_to_fd', C.c_int), ('output_fd', C.c_int), ('smtp_verify_only', C.c_int), ('oauth_bearer', C.c_char_p)]
 
 class Result(C.Structure):
     _fields_ = [('code', C.c_int), ('server_code', C.c_long), ('body', C.c_void_p), ('body_length', C.c_size_t),
@@ -307,7 +307,9 @@ def main():
         for mode in ['plain','starttls','tls']:
             server=Server(mode=mode,context=context,failure='fragmented',payload=text_body)
             result=subprocess.run([str(bridge),str(server.port),str({'plain':0,'starttls':1,'tls':2}[mode]),'body'],capture_output=True,text=True,timeout=15)
-            server.finish(); check(result.returncode==0,'Swift client exact Japanese BODY.PEEK '+mode+' '+result.stderr[-500:])
+            try: server.finish()
+            except AssertionError as error: raise AssertionError(str(error)+'; Swift exit '+str(result.returncode)+'; '+result.stderr[-500:]) from error
+            check(result.returncode==0,'Swift client exact Japanese BODY.PEEK '+mode+' '+result.stderr[-500:])
         for operation in ['body-generation','headers','discover','discover-generation','cancel-spool']:
             payload=(b'* SEARCH '+b' '.join(str(i).encode() for i in range(150000,0,-1))+b' 12 12\r\n') if operation=='discover' else None
             server=Server(failure='slow' if operation=='cancel-spool' else 'unsolicited',payload=payload)

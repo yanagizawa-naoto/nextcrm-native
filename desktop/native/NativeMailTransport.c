@@ -274,8 +274,9 @@ void native_mail_result_free(NativeMailResult *r) {
 }
 NativeMailResult native_mail_perform(const NativeMailRequest *q) {
     NativeMailResult r={0}; r.code=-1;
-    if (!q || !line_valid(q->url,8192,0) || !line_valid(q->username,1024,0) || !line_valid(q->password,16384,0) ||
-        q->maximum_response == 0 || q->maximum_response > (q->stream_to_fd ? 268435456 : 33554432) || q->upload_length > 33554432 || q->tls_mode < 0 || q->tls_mode > 3 ||
+    if (!q || !line_valid(q->url,8192,0) || !line_valid(q->username,1024,0) || (!q->oauth_bearer && !line_valid(q->password,16384,0)) ||
+        (q->oauth_bearer && (!line_valid(q->oauth_bearer,16384,0) || (q->password && *q->password))) ||
+        q->maximum_response == 0 || q->maximum_response > (q->stream_to_fd ? (size_t)INT64_MAX : 33554432) || q->upload_length > 33554432 || q->tls_mode < 0 || q->tls_mode > 3 ||
         (q->upload_length && !q->upload) || (q->command && !line_valid(q->command,4096,0))) return r;
     pthread_once(&once,initialize); if (initialized != CURLE_OK) { r.code=initialized; return r; }
     CURLU *url=curl_url(); CURL *curl=NULL; struct curl_slist *resolve=NULL,*recipients=NULL;
@@ -290,6 +291,9 @@ NativeMailResult native_mail_perform(const NativeMailRequest *q) {
     int smtp=!strcmp(scheme,"smtp") || !strcmp(scheme,"smtps"), imap=!strcmp(scheme,"imap") || !strcmp(scheme,"imaps");
     if (!smtp && !imap) goto done;
     if (imap && q->tls_mode==3) goto done;
+    /* A bearer token must never follow configurable legacy server settings. */
+    if (q->oauth_bearer && (q->tls_mode != 2 || q->allow_self_signed ||
+        (imap ? strcmp(host,"imap.gmail.com") || strcmp(port,"993") : strcmp(host,"smtp.gmail.com") || strcmp(port,"465")))) goto done;
     if ((q->tls_mode == 2) != (!strcmp(scheme,"smtps") || !strcmp(scheme,"imaps"))) goto done;
     if (q->smtp_verify_only && (!smtp || q->command || q->sender || q->recipients || q->upload_length)) goto done;
     if (smtp && !q->smtp_verify_only && (q->command || !line_valid(q->sender,1024,0) || !q->recipients || !q->upload_length)) goto done;
@@ -340,7 +344,9 @@ NativeMailResult native_mail_perform(const NativeMailRequest *q) {
     }
     curl=curl_easy_init(); if (!curl) goto done;
 #define SET(option,value) do { CURLcode c=curl_easy_setopt(curl,option,value); if(c!=CURLE_OK) { r.code=c; goto done; } } while(0)
-    SET(CURLOPT_URL,q->url); SET(CURLOPT_USERNAME,q->username); SET(CURLOPT_PASSWORD,q->password);
+    SET(CURLOPT_URL,q->url); SET(CURLOPT_USERNAME,q->username);
+    if (q->oauth_bearer) { SET(CURLOPT_XOAUTH2_BEARER,q->oauth_bearer); SET(CURLOPT_LOGIN_OPTIONS,"AUTH=XOAUTH2"); }
+    else { SET(CURLOPT_PASSWORD,q->password); }
     SET(CURLOPT_PROTOCOLS_STR,smtp?"smtp,smtps":"imap,imaps"); SET(CURLOPT_PROXY,""); SET(CURLOPT_NOPROXY,"*");
     SET(CURLOPT_RESOLVE,resolve); SET(CURLOPT_FOLLOWLOCATION,0L); SET(CURLOPT_NOSIGNAL,1L);
     SET(CURLOPT_CONNECTTIMEOUT,10L); SET(CURLOPT_TIMEOUT,60L); SET(CURLOPT_LOW_SPEED_LIMIT,1L); SET(CURLOPT_LOW_SPEED_TIME,15L);

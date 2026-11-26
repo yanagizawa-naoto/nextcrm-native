@@ -88,13 +88,25 @@ struct CampaignAIResult {
     let draft: CampaignAIDraft
     // Keep only a non-secret choice receipt while waiting to apply on the UI thread.
     let choice: NativeAIKeyChoice
+    var chatGPTReceipt: NativeChatGPTSession.Receipt? = nil
 }
 struct CampaignAIService {
     typealias Generate = (String, String) async throws -> CampaignAIDraft
     let keys: NativeAIKeys
+    var chatGPT: NativeChatGPTSession? = nil
     var generate: Generate = { try await CampaignAIClient(apiKey: $1).generate($0) }
     func create(prompt: String, context: CampaignAIContext) async throws -> CampaignAIResult {
         try CampaignAIClient.validatePrompt(prompt); try context.requireCurrent(keys.service); try Task.checkCancellation()
+        if let chatGPT, try await chatGPT.isSelectedForText() {
+            let generated = try await chatGPT.generate(instruction: CampaignAIClient.instruction, input: prompt)
+            struct Content: Decodable { let subject: String, html: String }
+            guard let value = try? JSONDecoder().decode(Content.self, from: Data(generated.text.utf8)),
+                  value.subject.utf8.count <= CampaignAIClient.maximumSubjectBytes, value.html.utf8.count <= CampaignAIClient.maximumHTMLBytes else {
+                throw NativeAIError(message: "ChatGPTが返したメール形式を読み取れません。指示を確認して作成し直してください。")
+            }
+            try await chatGPT.validate(generated.receipt); try context.requireCurrent(keys.service)
+            return .init(draft: .init(subject: value.subject, html: value.html), choice: .init(provider: .openai, source: .none), chatGPTReceipt: generated.receipt)
+        }
         guard let key = try keys.resolve(.openai, interactive: true) else { throw NativeAIError(message: "OpenAIのAPIキーが未設定です。「AI連携の設定」で登録してください。") }
         try context.requireCurrent(keys.service); try keys.requireCurrent(key); try Task.checkCancellation()
         let draft = try await generate(prompt, key.key)
@@ -103,5 +115,10 @@ struct CampaignAIService {
     }
     func validate(context: CampaignAIContext, choice: NativeAIKeyChoice) throws {
         try keys.service.db.transaction { try context.requireCurrent(keys.service); try keys.requireCurrent(choice) }
+    }
+    func validate(context: CampaignAIContext, result: CampaignAIResult) async throws {
+        if let receipt = result.chatGPTReceipt {
+            guard let chatGPT else { throw NativeDBError.conflict }; try await chatGPT.validate(receipt); try context.requireCurrent(keys.service)
+        } else { try validate(context: context, choice: result.choice) }
     }
 }

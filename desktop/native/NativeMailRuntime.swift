@@ -39,14 +39,14 @@ final class NativeMailRuntime {
     var isRunning:Bool { runners.contains{$0.isRunning} }
     var isStopped:Bool { stopped }
     var onError:((Error) -> Void)?
-    init(db:NativeDatabase,store:NativeMailSecretStore? = nil,makeClient:@escaping NativeMailSyncWorker.Factory = { NativeMailClient(endpoint:$0.imap,username:$0.username,password:$1.password) },send:NativeMailSendWorker.Send? = nil,clock:@escaping () -> Date = Date.init,interval:TimeInterval = NativeMailSchedule.interval,recoverTemporary:@escaping () async throws -> Void = { try await NativeMailTemporaryFiles.recover() }) {
+    init(db:NativeDatabase,store:NativeMailSecretStore? = nil,makeClient:@escaping NativeMailSyncWorker.Factory = { NativeMailClient(endpoint:$0.imap,username:$0.username,password:$1.password,oauthBearer:$1.oauthBearer) },send:NativeMailSendWorker.Send? = nil,clock:@escaping () -> Date = Date.init,interval:TimeInterval = NativeMailSchedule.interval,recoverTemporary:@escaping () async throws -> Void = { try await NativeMailTemporaryFiles.recover() },oauthRequest:@escaping GoogleMailOAuth.Request = GoogleMailOAuth.network) {
         self.db = db; self.clock = clock; self.interval = interval; enqueueDue = NativeMailSchedule.enqueueDue; self.recoverTemporary = recoverTemporary
         let secrets = store ?? KeychainNativeMailSecrets(databaseURL:db.url); self.store = secrets
-        let sync = NativeMailSyncWorker(db:db,store:secrets,makeClient:makeClient,clock:clock)
-        let content = NativeMailContentWorker(db:db,store:secrets,makeClient:makeClient,clock:clock)
+        let sync = NativeMailSyncWorker(db:db,store:secrets,makeClient:makeClient,clock:clock,oauthRequest:oauthRequest)
+        let content = NativeMailContentWorker(db:db,store:secrets,makeClient:makeClient,clock:clock,oauthRequest:oauthRequest)
         let delivery: NativeMailSendWorker
-        if let send { delivery = NativeMailSendWorker(db:db,store:secrets,send:send,clock:clock) }
-        else { delivery = NativeMailSendWorker(db:db,store:secrets,clock:clock) }
+        if let send { delivery = NativeMailSendWorker(db:db,store:secrets,send:send,clock:clock,oauthRequest:oauthRequest) }
+        else { delivery = NativeMailSendWorker(db:db,store:secrets,clock:clock,oauthRequest:oauthRequest) }
         runners = [
             InvoiceJobRunner(db:db,events:[NativeMailJobs.sync],runNext:{try await sync.runNext()}),
             InvoiceJobRunner(db:db,events:[NativeMailJobs.link,NativeMailJobs.body],runNext:{try await content.runNext()}),

@@ -88,6 +88,7 @@ struct NativeMailWireRequest: Sendable {
     var maximumResponse = 1_048_576
     var responseFile: NativeMailResponseFile? = nil
     var smtpVerifyOnly = false
+    var oauthBearer: String? = nil
 }
 enum NativeMailWire {
     // Serial, releasing temporary Foundation allocations after each operation.
@@ -113,7 +114,7 @@ enum NativeMailWire {
         }
         defer { for p in pointers { free(p) } }
         var q = NativeMailRequest()
-        q.url = try string(url); q.username = try string(request.username); q.password = try string(request.password)
+        q.url = try string(url); q.username = try string(request.username); q.password = try string(request.password); q.oauth_bearer = try string(request.oauthBearer)
         q.command = try string(request.command); q.sender = try string(request.sender)
         q.recipients = try string(smtp && !request.smtpVerifyOnly ? request.recipients.joined(separator:"\n") : nil)
         q.smtp_verify_only = request.smtpVerifyOnly ? 1 : 0
