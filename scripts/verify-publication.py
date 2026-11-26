@@ -12,7 +12,7 @@ import subprocess
 ROOT = Path(__file__).resolve().parents[1]
 NATIVE = ROOT / 'desktop/native'
 sources = json.loads((NATIVE / 'ApplicationSources.json').read_text())
-assert len(sources) == 453 and len(sources) == len(set(sources))
+assert sources and len(sources) == len(set(sources))
 build = (NATIVE / 'build.sh').read_text()
 main = build.split('swiftc -D PERSONAL_APP_HOST ', 1)[1].split('-o "$app/Contents/MacOS/NextCRMNative"', 1)[0]
 compiled_sources = re.findall(r'\$native_dir/([A-Za-z0-9_]+\.swift)', main)

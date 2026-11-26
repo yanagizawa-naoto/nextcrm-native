@@ -72,13 +72,14 @@ actor NativeMailContentWorker {
     let db: NativeDatabase, store: NativeMailSecretStore
     let makeClient: NativeMailSyncWorker.Factory, clock: () -> Date
     private var active = false
-    init(db: NativeDatabase,store: NativeMailSecretStore,makeClient: @escaping NativeMailSyncWorker.Factory = { NativeMailClient(endpoint:$0.imap,username:$0.username,password:$1.password) },clock: @escaping () -> Date = Date.init) {
-        self.db = db; self.store = store; self.makeClient = makeClient; self.clock = clock
+    let oauthRequest:GoogleMailOAuth.Request
+    init(db: NativeDatabase,store: NativeMailSecretStore,makeClient: @escaping NativeMailSyncWorker.Factory = { NativeMailClient(endpoint:$0.imap,username:$0.username,password:$1.password,oauthBearer:$1.oauthBearer) },clock: @escaping () -> Date = Date.init,oauthRequest:@escaping GoogleMailOAuth.Request = GoogleMailOAuth.network) {
+        self.db = db; self.store = store; self.makeClient = makeClient; self.clock = clock; self.oauthRequest = oauthRequest
     }
     @discardableResult func runNext() async throws -> Bool {
         guard !active else { return false }; active = true; defer { active = false }
         guard let job = try db.claimJob(events:[NativeMailJobs.link,NativeMailJobs.body],now:clock()) else { return false }
-        var owner: CRMService?, emailID: String?
+        var owner: CRMService?, emailID: String?, credentialAccount:NativeRecord?
         do {
             guard let actorID = job.payload["actorID"], let id = job.payload["emailID"], let accountID = job.payload["accountID"], let user = try db.get("Users",key:["id":.text(actorID)]) else { throw NativeDBError.conflict }
             let service = CRMService(db:db,identity:.init(id:actorID,role:user["role"].string,partnerAccountID:user["partnerAccountId"] == .null ? nil : user["partnerAccountId"].string)); owner = service; emailID = id
@@ -99,7 +100,7 @@ actor NativeMailContentWorker {
             // Pausing automatic sync must not disable an explicit open. A
             // queued background request can also be promoted by a user open.
             func requiresActive() throws -> Bool { try job.payload["background"] == "true" && db.metadata(NativeMailJobs.foreground(id)) != job.id }
-            let account = try service.mailAccount(accountID,active:requiresActive())
+            var account = try service.mailAccount(accountID,active:requiresActive()); credentialAccount = account
             func validate() throws -> NativeRecord {
                 try Task.checkCancellation(); _ = try db.requireJobLease(job)
                 let current = try service.mailMessage(id), currentAccount = try service.mailAccount(accountID,active:requiresActive())
@@ -116,7 +117,9 @@ actor NativeMailContentWorker {
             }
             let settings = try service.mailSettings(account)
             guard let location = try service.mailLocation(row), location.source == NativeMailSource(endpoint:settings.imap,username:settings.username,mailbox:location.folder == .inbox ? "INBOX" : settings.sentFolder) else { throw NativeMailFailure.mailboxChanged }
-            let credentials = try service.mailCredential(account,store:store); try heartbeat()
+            let prepared = try await service.readyMailCredential(account,store:store,request:oauthRequest,now:clock(),validate:heartbeat)
+            account = prepared.account; credentialAccount = account
+            let credentials = prepared.credential; try heartbeat()
             let result = try await makeClient(settings,credentials).body(mailbox:location.source!.mailbox,validity:location.uidValidity,uid:location.uid)
             try db.transaction {
                 let fresh = try validate()
@@ -135,6 +138,7 @@ actor NativeMailContentWorker {
             }
         } catch {
             guard let current = try? db.requireJobLease(job) else { return true }
+            let googleRetry = credentialAccount.map { owner?.noteGoogleMailAuthenticationFailure($0,error:error) ?? false } ?? false
             try db.transaction {
                 _ = try db.requireJobLease(job)
                 if case NativeMailFailure.mailboxChanged = error, let owner, let emailID,
@@ -142,8 +146,8 @@ actor NativeMailContentWorker {
                 // Preserve original subject/from-only embedding on body-fetch
                 // failure. Successful retrieval queues the complete text once.
                 if job.event == NativeMailJobs.body, let owner, let emailID, let row = try? owner.mailMessage(emailID) { _ = try owner.requestMailEmbedding(row,now:clock()) }
-                let retry = NativeMailJobs.retryable(error) && current.attempts < 4
-                try db.failJob(current,message:NativeMailJobs.message(error),retryAt:retry ? clock().addingTimeInterval(min(300,5*pow(2,Double(current.attempts-1)))) : nil)
+                let retry = (googleRetry || NativeMailJobs.retryable(error)) && current.attempts < 4
+                try db.failJob(current,message:googleRetry ? GoogleMailFailure.reconnect.localizedDescription : NativeMailJobs.message(error),retryAt:retry ? clock().addingTimeInterval(min(300,5*pow(2,Double(current.attempts-1)))) : nil)
             }
         }
         return true

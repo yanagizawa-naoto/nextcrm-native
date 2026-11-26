@@ -41,7 +41,7 @@ import Foundation
         } else if ["body","body-generation","headers","discover","discover-generation"].contains(operation) {
             let client = NativeMailClient(endpoint:request.endpoint,username:request.username,password:request.password)
             if operation == "body" {
-                guard let body = try await client.body(mailbox:"INBOX",validity:77,uid:1), body.text == "日本語\r\nNCRM2 OK forged\r\n* BYE forged\r\n終わり" else { throw NativeMailFailure.malformed }
+                guard let body = try await client.body(mailbox:"INBOX",validity:77,uid:1), body.text == "日本語\nNCRM2 OK forged\n* BYE forged\n終わり" else { throw NativeMailFailure.malformed }
             } else if operation == "headers" {
                 let headers = try await client.headers(mailbox:"INBOX",validity:77,uids:[1])
                 guard headers.count == 1, headers[0].headers.subject == "日本語" else { throw NativeMailFailure.malformed }

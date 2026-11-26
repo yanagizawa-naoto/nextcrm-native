@@ -17,8 +17,9 @@ extension NativeMailReceiving {
 struct NativeMailClient: NativeMailReceiving {
     let endpoint: NativeMailEndpoint
     let username: String, password: String
+    var oauthBearer: String? = nil
     private func request(mailbox: String? = nil,command: String,maximum: Int = 1_048_576) -> NativeMailWireRequest {
-        NativeMailWireRequest(endpoint:endpoint,username:username,password:password,mailbox:mailbox,command:command,maximumResponse:maximum)
+        NativeMailWireRequest(endpoint:endpoint,username:username,password:password,mailbox:mailbox,command:command,maximumResponse:maximum,oauthBearer:oauthBearer)
     }
     func folders() async throws -> [String] {
         try NativeMailIMAP.folderNames(await NativeMailWire.perform(request(command:"LIST \"\" \"*\"")).body)

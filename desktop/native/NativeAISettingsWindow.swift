@@ -11,6 +11,8 @@ final class NativeAISettingsWindow: NSObject {
     private var busy = false, selectedProvider = 0, selectedScope = 0
     var onChanged: (() -> Void)?
     var onE2BSettings: ((NSWindow) -> Void)?
+    var onChatGPTSettings: ((NSWindow) -> Void)? { didSet { controls() } }
+    private var chatGPTButton: NSButton?
 
     init(keys: NativeAIKeys) throws {
         try keys.service.authenticated(); self.keys = keys
@@ -36,7 +38,9 @@ final class NativeAISettingsWindow: NSObject {
         removeButton = button("保存したキーを削除…", #selector(remove))
         let edits = NSStackView(views: [removeButton, NSView(), save]); edits.spacing = 12
         let e2b = button("企業調査（E2B）の設定…", #selector(openE2B))
-        let footer = NSStackView(views: [reload, e2b, NSView(), close]); footer.spacing = 12
+        let chatGPT = button("ChatGPTで接続…", #selector(openChatGPT))
+        chatGPTButton = chatGPT
+        let footer = NSStackView(views: [reload, chatGPT, e2b, NSView(), close]); footer.spacing = 12
         views += [InvoiceMailUI.row("サービス", provider), InvoiceMailUI.row("保存先", scope), saved, InvoiceMailUI.row("APIキー", key), edits, note, message, footer]
         InvoiceMailUI.layout(window, views)
         try refresh()
@@ -47,6 +51,7 @@ final class NativeAISettingsWindow: NSObject {
     private func controls() {
         for control: NSControl in [provider, scope, key] { control.isEnabled = !busy }
         buttons.forEach { $0.isEnabled = !busy }; removeButton.isEnabled = !busy && setting?.isSet == true
+        chatGPTButton?.isEnabled = !busy && onChatGPTSettings != nil
     }
     private func refresh() throws {
         try keys.service.authenticated()
@@ -80,6 +85,7 @@ final class NativeAISettingsWindow: NSObject {
     func confirmDiscard() -> Bool { !busy && window.attachedSheet == nil && (key.stringValue.isEmpty || InvoiceMailUI.discard("入力中のAPIキーを保存せずに閉じますか？")) }
     @objc private func close() { if confirmDiscard() { key.stringValue = ""; window.sheetParent?.endSheet(window) } }
     @objc private func openE2B() { if !busy && window.attachedSheet == nil { onE2BSettings?(window) } }
+    @objc private func openChatGPT() { if !busy && window.attachedSheet == nil { onChatGPTSettings?(window) } }
     @objc private func selectionChanged() {
         if !key.stringValue.isEmpty && !InvoiceMailUI.discard("入力中のAPIキーを破棄して、設定先を切り替えますか？") { provider.selectItem(at: selectedProvider); scope.selectItem(at: selectedScope); return }
         key.stringValue = ""; selectedProvider = provider.indexOfSelectedItem; selectedScope = scope.indexOfSelectedItem; message.stringValue = ""

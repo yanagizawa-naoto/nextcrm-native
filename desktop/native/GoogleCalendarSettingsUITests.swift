@@ -45,13 +45,15 @@ import AppKit
         window.setFrameOrigin(.init(x:-10000,y:-10000)); try ready(window)
         let client = try field("GoogleクライアントID",window), secret = try field("Googleクライアントシークレット",window), message = try field("カレンダー接続の結果",window)
         try check(window.title == "Googleカレンダーの接続" && table(window).numberOfRows == 0 && secret is NSSecureTextField,"Japanese empty panel with secure input")
-        try click("読み取りで接続…",window)
+        try check(!(try button("Google にログイン…",window)).isEnabled,"unconfigured login is unavailable")
+        _ = controller.perform(NSSelectorFromString("connectRead"))
         try check(auth.requests.isEmpty && !message.stringValue.isEmpty,"missing client prevents authorization")
+        try click("詳細設定（開発者向け）…",window)
         client.stringValue = "ui-desktop.apps.googleusercontent.com"; secret.stringValue = "ui-fake-client-secret"
         try click("アプリ設定を保存",window)
         try check(try service.googleCalendarClientReference()?.clientID == client.stringValue && secret.stringValue.isEmpty && controller.confirmDiscard(),"settings published and secret input cleared")
         var connected = 0; controller.onConnected = { connected += 1 }
-        try click("読み書きで接続…",window); try ready(window)
+        try click("予定の編集も許可してログイン…",window); try ready(window)
         let first = try service.googleCalendarConnections().rows[0]
         try check(auth.requests.last?.0 == .readwrite && first["scopeLevel"] == .text("readonly") && table(window).numberOfRows == 1 && connected == 1,"requested write stores actual readonly grant and refreshes list")
         try check(message.stringValue.contains("読み取り") && !text(window).contains("ui-fake-"),"result shows actual permission without secrets")

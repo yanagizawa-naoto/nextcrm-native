@@ -59,7 +59,7 @@ final class CampaignTemplateEditor: NSObject, NSTextViewDelegate, NSTextFieldDel
         aiGenerate.target = self; aiGenerate.action = #selector(generateWithAI); aiGenerate.bezelStyle = .rounded; aiGenerate.isEnabled = self.ai != nil; aiPrompt.isEnabled = self.ai != nil
         aiCancel.target = self; aiCancel.action = #selector(cancelAI); aiCancel.bezelStyle = .rounded; aiCancel.isHidden = true
         let aiRow = NSStackView(views: [aiPrompt, aiGenerate, aiCancel]); aiRow.spacing = 8
-        let aiHint = NSTextField(wrappingLabelWithString: "指示をOpenAIへ送信して本文を作成します（API利用料が発生する場合があります）。確認・編集してから保存してください。")
+        let aiHint = NSTextField(wrappingLabelWithString: "指示をOpenAIへ送信します。AI接続設定で選んだChatGPTプラン・クレジット、またはAPIキーの利用枠を使います。確認・編集してから保存してください。")
         aiHint.font = .systemFont(ofSize:11); aiHint.textColor = .secondaryLabelColor
         saveButton.target = self; saveButton.action = #selector(save); saveButton.bezelStyle = .rounded; saveButton.keyEquivalent = "s"; saveButton.keyEquivalentModifierMask = [.command]
         cancel.target = self; cancel.action = #selector(close); cancel.bezelStyle = .rounded; cancel.keyEquivalent = "\u{1b}"
@@ -122,12 +122,14 @@ final class CampaignTemplateEditor: NSObject, NSTextViewDelegate, NSTextFieldDel
             do { result = .success(try await service.create(prompt: prompt, context: context)) }
             catch { result = .failure(error) }
             guard let self, self.aiGeneration == generation else { return }
-            self.aiTask = nil; self.aiGenerate.isEnabled = self.ai != nil; self.aiCancel.isHidden = true; self.saveButton.isEnabled = true
+            defer { if self.aiGeneration == generation { self.aiTask = nil; self.aiGenerate.isEnabled = self.ai != nil; self.aiCancel.isHidden = true; self.saveButton.isEnabled = true } }
             do {
                 let generated = try result.get(); try Task.checkCancellation()
                 self.window.makeFirstResponder(nil)
                 guard self.draftRevision == revision else { self.message.stringValue = "作成中に編集内容が変わったため、AIの結果は反映していません。現在の内容を確認して再作成してください。"; return }
-                try service.validate(context: context, choice: generated.choice)
+                try await service.validate(context: context, result: generated)
+                try Task.checkCancellation()
+                guard self.aiGeneration == generation, self.draftRevision == revision else { self.message.stringValue = "作成中に編集内容が変わったため、AIの結果は反映していません。"; return }
                 try self.replaceBody(generated.draft.html, subject: self.replaceSubject || self.subject.stringValue.isEmpty ? generated.draft.subject : self.subject.stringValue)
                 self.message.stringValue = "AIの内容を下書きに反映しました。確認・編集してから保存してください。"
             } catch { self.message.stringValue = error is CancellationError ? "AIの作成を中止しました。" : error.localizedDescription }

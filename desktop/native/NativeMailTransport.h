@@ -20,6 +20,7 @@ typedef struct {
     int stream_to_fd;         /* IMAP response spool; descriptor remains caller-owned. */
     int output_fd;
     int smtp_verify_only;     /* Authenticate and close, without MAIL/RCPT/DATA. */
+    const char *oauth_bearer;  /* Optional Google XOAUTH2; never a password fallback. */
 } NativeMailRequest;
 
 typedef struct {

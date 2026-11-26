@@ -39,8 +39,17 @@ jobs:
           xcrun --find swiftc
       - name: SQLite smoke tests with isolated data
         run: zsh desktop/native/smoke-test.sh
+      - name: Distribution configuration and account authentication
+        run: |
+          python3 desktop/native/test-distribution-configuration.py
+          python3 desktop/native/chatgpt-test.py
+          python3 desktop/native/google-mail-test.py
+          python3 desktop/native/google-mail-transport-test.py
+          python3 desktop/native/native-mail-transport-test.py
       - name: Restored provider review regression (433 checks)
         run: python3 desktop/native/test-provider-review.py
+      - name: Account login UI using the same verified application module
+        run: python3 desktop/native/test-distribution-login-ui.py
       - name: Build and verify the native application
         run: zsh desktop/native/build.sh
       - name: Reverify public sources
